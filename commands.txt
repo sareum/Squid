@@ -1,0 +1,8 @@
+Running the controller: 
+sudo python3 super_fish.py --seq 4 --fname trial6.5 --cycles 12 --period 4.5 --amp 20
+
+Removing saved folders to clear dirctory:
+sudo rm -rf seq*/
+
+Check which port Arduino and Dynamixels are connected:
+ls /dev/tty*
