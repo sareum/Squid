@@ -37,6 +37,8 @@ def main():
     temp_period = cp(period)
     #num_cycles = 10 / period
 
+    robot_paused = False
+
     sequence = 1
 
     # Pump state
@@ -50,10 +52,18 @@ def main():
         # Do something with gamepad
 
         # LED toggle to see if it's working
-        if gp.button_data["circle"] == 1:
+        if gp.button_data["triangle"] == 1:
             dynamixel.write_to_address(1, 1, 65, ID=dyn_id)
         else:
             dynamixel.write_to_address(0, 1, 65, ID=dyn_id)
+
+        # Turn robot on and off
+        if gp.button_data["circle"] == 1:
+            dynamixel.write_profile_velocity(0)
+            robot_paused = False
+
+        if gp.button_data["cross"] == 1:
+            robot_paused = True
 
         # Change sequence
         if gp.button_data["up"] == 1:
@@ -146,12 +156,20 @@ def main():
                 pump_state = [0,0]
 
         # Dynamixel stuff
-        demand_angle = amp_angle * np.sin( 2 * np.pi * t / period) 
-        demand_angle_dynamixel_units = (demand_angle * 4096 / 360) + 2048 + 4096 * (offset/ 360)
-        dynamixel.write_position(demand_angle_dynamixel_units, dyn_id)
+        if robot_paused:
+            arduino.send_message([0,0])
+            dynamixel.write_profile_velocity(20)
+            demand_angle = 0
+            demand_angle_dynamixel_units = (demand_angle * 4096 / 360) + 2048 + 4096 * (offset/ 360)
+            dynamixel.write_position(demand_angle_dynamixel_units, dyn_id)
 
-        # Send message to arduino
-        arduino.send_message(pump_state)
+        else:
+            demand_angle = amp_angle * np.sin( 2 * np.pi * t / period) 
+            demand_angle_dynamixel_units = (demand_angle * 4096 / 360) + 2048 + 4096 * (offset/ 360)
+            dynamixel.write_position(demand_angle_dynamixel_units, dyn_id)
+
+            # Send message to arduino
+            arduino.send_message(pump_state)
 
         time.sleep(0.001)
 if __name__ == "__main__":
