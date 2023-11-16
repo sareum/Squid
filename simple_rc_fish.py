@@ -36,7 +36,7 @@ def main():
 
     # Sine wave properties
     amp_angle = 0
-    period = 3
+    period = 5
     num_cycles = 10
     #num_cycles = 10 / period
 
@@ -99,7 +99,7 @@ def main():
                 if period < 5:
                     period += period_joystick * period_increment
             else:
-                if period > 3:
+                if period > 1.5:
                     period += period_joystick * period_increment
 
         print(sequence, round(true_amp,2), round(offset,2), round(period,2))
