@@ -17,8 +17,8 @@ def main():
     args = parser.parse_args()
 
     offset = 7
-    amp_increment = 0.01
-    offset_increment = 0.01
+    amp_increment = 0.05
+    offset_increment = 0.05
 
     # Connect gamepad
     gp = Gamepad()
@@ -63,18 +63,22 @@ def main():
             sequence = 3
         elif gp.button_data["left"] == 1:
             sequence = 4
-        
+
         # Change amplitude
-        amp_joystick = gp.axis_data["Ry"]
+        amp_joystick = gp.axis_data["Ry"]*-1
         if abs(amp_joystick) > 0.2:
             # Amp increase
             if amp_joystick > 0:
                 if amp_angle < 20:
                     amp_angle += amp_joystick * amp_increment
-                
             else:
                 if amp_angle > 0:
-                    amp_angle -= amp_joystick * amp_increment
+                    amp_angle += amp_joystick * amp_increment
+
+        if abs(amp_angle) < 0.05:
+            true_amp = 0
+        else:
+            true_amp = amp_angle
 
         # Change offset
         offset_joystick = gp.axis_data["Lx"]
@@ -83,12 +87,12 @@ def main():
             if offset_joystick > 0:
                 if offset < 14:
                     offset += offset_joystick * offset_increment
-                
             else:
                 if offset > 0:
-                    offset -= offset_joystick * offset_increment
+                    offset += offset_joystick * offset_increment
 
-        print(sequence, round(amp_angle,2), round(offset,2))
+
+        print(sequence, round(true_amp,2), round(offset,2))
         # t = time.time() - timer
         # period_timer = t%period
 
@@ -127,6 +131,5 @@ def main():
         # arduino.send_message(pump_state)
 
         time.sleep(0.001)
-        
 if __name__ == "__main__":
     main()
