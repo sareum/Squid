@@ -2,13 +2,10 @@ from comms_wrapper import Arduino
 from dynamixel_controller import Dynamixel
 import time
 import numpy as np
-import os
 from utility import *
 from copy import deepcopy as cp
 from gamepad import Gamepad
 import argparse
-import os
-import shutil
 
 def main():
     parser = argparse.ArgumentParser()
@@ -45,7 +42,8 @@ def main():
     # Pump state
     pump_state = [0,0]
 
-    timer = time.time()
+    timer = cp(time.time())
+    print_timer = cp(time.time())
     while 1:
         # Do something with gamepad
 
@@ -102,43 +100,49 @@ def main():
                 if period > 1.5:
                     period += period_joystick * period_increment
 
-        print(sequence, round(true_amp,2), round(offset,2), round(period,2))
-        # t = time.time() - timeroffset_increment
-        # period_timer = t%period
+        print_time = time.time() - print_timer
+        if print_time > 1:
+            print("\n\n==========================")
+            print("seq:",sequence, "  amp:",round(true_amp,2),  "  offset:",round(offset,2), "  period:", round(period,2))
+            print("==========================")
+            print_timer = cp(time.time())
+            
+        t = time.time() - timer
+        period_timer = t%period
 
-        # if sequence == 1:
-        #     # Sequence 1
-        #     pump_state = [0,0]
+        if sequence == 1:
+            # Sequence 1
+            pump_state = [0,0]
 
-        # elif sequence == 2:
-        #     # Sequence 2
-        #     pump_state = [1,1]
+        elif sequence == 2:
+            # Sequence 2
+            pump_state = [1,1]
 
-        # elif sequence == 3:
-        #     # Sequence 3
-        #     if period_timer < period/4:
-        #         pump_state = [1,1]
-        #     elif period_timer > period/2 and period_timer < period*3/4:
-        #         pump_state = [1,1]
-        #     else:
-        #         pump_state = [0,0]
+        elif sequence == 3:
+            # Sequence 3
+            if period_timer < period/4:
+                pump_state = [1,1]
+            elif period_timer > period/2 and period_timer < period*3/4:
+                pump_state = [1,1]
+            else:
+                pump_state = [0,0]
 
-        # elif sequence == 4:
-        #     # Sequence 4
-        #     if period_timer > period/4 and period_timer < period/2:
-        #         pump_state = [1,1]
-        #     elif period_timer > period*3/4:
-        #         pump_state = [1,1]
-        #     else:
-        #         pump_state = [0,0]
+        elif sequence == 4:
+            # Sequence 4
+            if period_timer > period/4 and period_timer < period/2:
+                pump_state = [1,1]
+            elif period_timer > period*3/4:
+                pump_state = [1,1]
+            else:
+                pump_state = [0,0]
 
-        # # Dynamixel stuff
-        # demand_angle = amp_angle * np.sin( 2 * np.pi * t / period) 
-        # demand_angle_dynamixel_units = (demand_angle * 4096 / 360) + 2048 + 4096 * (offset/ 360)
-        # dynamixel.write_position(demand_angle_dynamixel_units, dyn_id)
+        # Dynamixel stuff
+        demand_angle = amp_angle * np.sin( 2 * np.pi * t / period) 
+        demand_angle_dynamixel_units = (demand_angle * 4096 / 360) + 2048 + 4096 * (offset/ 360)
+        dynamixel.write_position(demand_angle_dynamixel_units, dyn_id)
 
-        # # Send message to arduino
-        # arduino.send_message(pump_state)
+        # Send message to arduino
+        arduino.send_message(pump_state)
 
         time.sleep(0.001)
 if __name__ == "__main__":
