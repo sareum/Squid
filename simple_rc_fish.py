@@ -35,9 +35,8 @@ def main():
     amp_angle = 0
     period = 5
     temp_period = cp(period)
-    #num_cycles = 10 / period
 
-    robot_paused = False
+    robot_paused = True
 
     sequence = 1
 
@@ -49,20 +48,15 @@ def main():
     while 1:
         t = time.time() - timer
 
-        # Do something with gamepad
-
-        # LED toggle to see if it's working
-        if gp.button_data["triangle"] == 1:
-            dynamixel.write_to_address(1, 1, 65, ID=dyn_id)
-        else:
-            dynamixel.write_to_address(0, 1, 65, ID=dyn_id)
-
         # Turn robot on and off
         if gp.button_data["circle"] == 1:
             dynamixel.write_profile_velocity(0)
+            dynamixel.write_to_address(1, 1, 65, ID=dyn_id)
+            timer = cp(time.time())
             robot_paused = False
 
         if gp.button_data["cross"] == 1:
+            dynamixel.write_to_address(0, 1, 65, ID=dyn_id)
             robot_paused = True
 
         # Change sequence
