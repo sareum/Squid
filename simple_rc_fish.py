@@ -45,6 +45,8 @@ def main():
     timer = cp(time.time())
     print_timer = cp(time.time())
     while 1:
+        t = time.time() - timer
+
         # Do something with gamepad
 
         # LED toggle to see if it's working
@@ -100,7 +102,13 @@ def main():
                 if temp_period > 1.5:
                     temp_period += period_joystick * period_increment
         else:
-            period = cp(temp_period)
+            # if there is a change in period
+            if abs(period - temp_period) > 0.1:
+                if abs(np.sin( 2 * np.pi * t / period)- np.sin( 2 * np.pi * t / temp_period)) < 0.2:
+                    print("Change period")
+                    period = cp(temp_period)
+            else:
+                period = cp(temp_period)
 
         print_time = time.time() - print_timer
         if print_time > 1:
@@ -109,7 +117,6 @@ def main():
             print("==========================")
             print_timer = cp(time.time())
             
-        t = time.time() - timer
         period_timer = t%period
 
         if sequence == 1:
