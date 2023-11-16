@@ -19,6 +19,7 @@ def main():
     offset = 7
     amp_increment = 0.05
     offset_increment = 0.05
+    period_increment = 0.01
 
     # Connect gamepad
     gp = Gamepad()
@@ -83,7 +84,7 @@ def main():
         # Change offset
         offset_joystick = gp.axis_data["Lx"]
         if abs(offset_joystick) > 0.2:
-            # Amp increase
+            # Offset increase
             if offset_joystick > 0:
                 if offset < 14:
                     offset += offset_joystick * offset_increment
@@ -91,9 +92,18 @@ def main():
                 if offset > 0:
                     offset += offset_joystick * offset_increment
 
+        period_joystick = ((gp.axis_data["Ltrigger"] + 1) - (gp.axis_data["Rtrigger"] + 1))/2
+        if abs(period_joystick) > 0.2:
+            # Period increase
+            if period_joystick > 0:
+                if period < 5:
+                    period += period_joystick * period_increment
+            else:
+                if period > 3:
+                    period += period_joystick * period_increment
 
-        print(sequence, round(true_amp,2), round(offset,2))
-        # t = time.time() - timer
+        print(sequence, round(true_amp,2), round(offset,2), round(period,2))
+        # t = time.time() - timeroffset_increment
         # period_timer = t%period
 
         # if sequence == 1:
