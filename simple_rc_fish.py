@@ -34,7 +34,7 @@ def main():
     # Sine wave properties
     amp_angle = 0
     period = 5
-    num_cycles = 10
+    temp_period = cp(period)
     #num_cycles = 10 / period
 
     sequence = 1
@@ -94,16 +94,16 @@ def main():
         if abs(period_joystick) > 0.2:
             # Period increase
             if period_joystick > 0:
-                if period < 5:
-                    period += period_joystick * period_increment
+                if temp_period < 5:
+                    temp_period += period_joystick * period_increment
             else:
-                if period > 1.5:
-                    period += period_joystick * period_increment
+                if temp_period > 1.5:
+                    temp_period += period_joystick * period_increment
 
         print_time = time.time() - print_timer
         if print_time > 1:
             print("\n\n==========================")
-            print("seq:",sequence, "  amp:",round(true_amp,2),  "  offset:",round(offset,2), "  period:", round(period,2))
+            print("seq:",sequence, "  amp:",round(true_amp,2),  "  offset:",round(offset,2), "  period:", round(temp_period,2))
             print("==========================")
             print_timer = cp(time.time())
             
@@ -137,6 +137,10 @@ def main():
                 pump_state = [0,0]
 
         # Dynamixel stuff
+        if abs(np.sin( 2 * np.pi * t / period)) < 0.02:
+            print("Change period")
+            period = cp(temp_period)
+            
         demand_angle = amp_angle * np.sin( 2 * np.pi * t / period) 
         demand_angle_dynamixel_units = (demand_angle * 4096 / 360) + 2048 + 4096 * (offset/ 360)
         dynamixel.write_position(demand_angle_dynamixel_units, dyn_id)
