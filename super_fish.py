@@ -69,6 +69,7 @@ def main():
         # if there is a change in cycle
         if temp - period_timer < 0.2:
             cycle_count += 1
+            print(cycle_count)
             if cycle_count == cycles_list[idx_count]:
                 idx_count += 1
 
@@ -136,7 +137,7 @@ def main():
     arduino.send_message(pump_state)
     time.sleep(2)
     
-    base_name = "seq" + str(args.seq) + "_per" + str(args.period) + "_" + args.fname
+    base_name = "seq" + args.seq_list + "_per" + args.period_list + "_cycles" + args.cycles_list + "_" + args.fname
     if os.path.exists(base_name):
         shutil.rmtree(base_name)
 
