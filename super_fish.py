@@ -61,16 +61,17 @@ def main():
     amp_angle = args.amp
     period = period_list[idx_count]
     sequence = seq_list[idx_count]
-    
+    print("New setting:","period",period," sequence",sequence)
+
     while 1:
         t = time.time() - local_timer
         temp = t%period
         
-        print(temp, period_timer)
+        #print(temp, period_timer)
         # if there is a change in cycle
-        if temp - period_timer < 0.2:
+        if temp - period_timer < -0.2:
             cycle_count += 1
-            print(cycle_count)
+            print("cycle:", cycle_count)
             if cycle_count == cycles_list[idx_count]:
                 idx_count += 1
 
@@ -80,6 +81,7 @@ def main():
                 period = period_list[idx_count]
                 sequence = seq_list[idx_count]
                 cycle_count = 0
+                print("New setting:","period",period," sequence",sequence)
 
         period_timer = cp(temp)
 
