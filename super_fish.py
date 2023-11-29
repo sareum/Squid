@@ -11,17 +11,17 @@ import shutil
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--seq", type=int, default=1, choices=[1,2,3,4], help="1 = off, 2 = on, 3 = seq3, 4 = seq4")
     parser.add_argument("--fname", type=str, help="filename of saving file")
-    parser.add_argument("--cycles", type=int, help="number of actuation cycles.")
-    parser.add_argument("--period", type=float, default=3, help="length of period in seconds")
     parser.add_argument("--amp", type=int, default=20, help="amplitude angle in degrees")
     parser.add_argument("--arduino_port", default="/dev/ttyUSB0", help="port of arduino")
     parser.add_argument("--dyn_port", default="/dev/ttyUSB1", help="port of dynamixel")
+    parser.add_argument("--seq_list", type=list, default=[1])
+    parser.add_argument("--period_list", type=list, default=[1])
+    parser.add_argument("--cycles_list", type=list, default=[3])
     args = parser.parse_args()
 
     offset = 7
-    config = {"seq":args.seq, "cycles":args.cycles, "period":args.period, "amp":args.amp}
+    config = {"seq":args.seq_list, "cycles":args.cycles_list, "period":args.period_list, "amp":args.amp}
 
     print("config:", config)
 
@@ -34,13 +34,7 @@ def main():
     dynamixel = Dynamixel(dyn_id, "Fishtail setup dynamixel", args.dyn_port, 1000000, "xl")
     dynamixel.begin_communication()
     dynamixel.set_operating_mode("position", dyn_id)
-
-    # Sine wave properties
-    amp_angle = args.amp
-    period = args.period
-    num_cycles = args.cycles
-    #num_cycles = 10 / period
-
+    
     # Pump state
     pump_state = [0,0]
     
@@ -51,20 +45,45 @@ def main():
     rpm_data = []
     deg_data = []
 
-    timer = time.time()
-    while 1:
-        t = time.time() - timer
-        period_timer = t%period
+    local_timer = cp(time.time())
+    global_timer = cp(time.time())
+    period_timer = 0
+    
+    cycle_count = 0
+    idx_count = 0
 
-        if args.seq == 1:
+    amp_angle = args.amp
+    period = args.period_list[idx_count]
+    sequence = args.seq_list[idx_count]
+    
+    while 1:
+        t = time.time() - local_timer
+        temp = t%period
+        
+        # if there is a change in cycle
+        if temp - period_timer < 0.2:
+            cycle_count += 1
+            if cycle_count == args.cycles_list[idx_count]:
+                idx_count += 1
+
+                if idx_count == len(cycle_count):
+                    break
+
+                period = args.period_list[idx_count]
+                sequence = args.seq_list[idx_count]
+                cycle_count = 0
+
+        period_timer = cp(temp)
+
+        if sequence == 1:
             # Sequence 1
             pump_state = [0,0]
 
-        elif args.seq == 2:
+        elif sequence == 2:
             # Sequence 2
             pump_state = [1,1]
 
-        elif args.seq == 3:
+        elif sequence == 3:
             # Sequence 3
             if period_timer < period/4:
                 pump_state = [1,1]
@@ -73,7 +92,7 @@ def main():
             else:
                 pump_state = [0,0]
 
-        elif args.seq == 4:
+        elif sequence == 4:
             # Sequence 4
             if period_timer > period/4 and period_timer < period/2:
                 pump_state = [1,1]
@@ -98,7 +117,8 @@ def main():
         # Receive message from arduino
         arduino.receive_message()
 
-        time_data.append(t)
+        t_global = time.time() - global_timer
+        time_data.append(t_global)
         lc2_data.append(float(arduino.receivedMessages["lc2"]))
         rpm_data.append(float(rpm))
         deg_data.append(float(posdeg))
@@ -106,12 +126,10 @@ def main():
         # Send message to arduino
         arduino.send_message(pump_state)
 
-        if t > period * num_cycles:
-            pump_state = [0,0]
-            arduino.send_message(pump_state)
-            time.sleep(2)
-            break
-
+    pump_state = [0,0]
+    arduino.send_message(pump_state)
+    time.sleep(2)
+    
     base_name = "seq" + str(args.seq) + "_per" + str(args.period) + "_" + args.fname
     if os.path.exists(base_name):
         shutil.rmtree(base_name)
