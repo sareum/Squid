@@ -13,10 +13,10 @@ def main():
     parser.add_argument("--dyn_port", default="/dev/ttyUSB1", help="port of dynamixel")
     args = parser.parse_args()
 
-    offset = 7
+    offset = 0
     amp_increment = 0.2
-    offset_increment = 0.05
-    period_increment = 0.05
+    offset_increment = 0.1
+    period_increment = 0.01
 
     # Connect gamepad
     gp = Gamepad()
@@ -90,10 +90,10 @@ def main():
         if abs(offset_joystick) > 0.2:
             # Offset increase
             if offset_joystick > 0:
-                if offset < 14:
+                if offset < 15:
                     offset += offset_joystick * offset_increment
             else:
-                if offset > 0:
+                if offset > -15:
                     offset += offset_joystick * offset_increment
 
         period_joystick = ((gp.axis_data["Ltrigger"] + 1) - (gp.axis_data["Rtrigger"] + 1))/2
@@ -115,9 +115,9 @@ def main():
                 period = cp(temp_period)
 
         print_time = time.time() - print_timer
-        if print_time > 1:
+        if print_time > 0.1:
             print("\n\n==========================")
-            print("seq:",sequence, "  amp:",round(true_amp,2),  "  offset:",round(offset,2), "  period:", round(temp_period,2))
+            print("seq:",sequence, "  amp:",round(true_amp,2),  "  offset:",round(offset,2), "  demand period:", round(temp_period,2), "  applied period:", round(period,2))
             print("==========================")
             print_timer = cp(time.time())
             
