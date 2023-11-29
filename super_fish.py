@@ -16,14 +16,15 @@ def main():
     parser.add_argument("--offset", type=int, default=7, help="offset in amplitude angle")
     parser.add_argument("--arduino_port", default="/dev/ttyUSB0", help="port of arduino")
     parser.add_argument("--dyn_port", default="/dev/ttyUSB1", help="port of dynamixel")
-    parser.add_argument("--seq_list", type=list, default=[1])
-    parser.add_argument("--period_list", type=list, default=[1])
-    parser.add_argument("--cycles_list", type=list, default=[3])
+    parser.add_argument("--seq_list", type=str)
+    parser.add_argument("--period_list", type=str)
+    parser.add_argument("--cycles_list", type=str)
     args = parser.parse_args()
 
-    seq_list = [float(x) for x in args.seq_list]
-    cycles_list = [float(x) for x in args.cycles_list]
-    period_list = [float(x) for x in args.period_list]
+
+    seq_list = [float(x) for x in args.seq_list.split(",")]
+    cycles_list = [float(x) for x in args.cycles_list(",")]
+    period_list = [float(x) for x in args.period_list(",")]
     
     offset = args.offset
     config = {"seq":seq_list, "cycles":cycles_list, "period":period_list, "amp":args.amp}
