@@ -21,8 +21,12 @@ def main():
     parser.add_argument("--cycles_list", type=list, default=[3])
     args = parser.parse_args()
 
+    seq_list = [float(x) for x in args.seq_list]
+    cycles_list = [float(x) for x in args.cycles_list]
+    period_list = [float(x) for x in args.period_list]
+    
     offset = args.offset
-    config = {"seq":args.seq_list, "cycles":args.cycles_list, "period":args.period_list, "amp":args.amp}
+    config = {"seq":seq_list, "cycles":cycles_list, "period":period_list, "amp":args.amp}
 
     print("config:", config)
 
@@ -54,8 +58,8 @@ def main():
     idx_count = 0
 
     amp_angle = args.amp
-    period = args.period_list[idx_count]
-    sequence = args.seq_list[idx_count]
+    period = period_list[idx_count]
+    sequence = seq_list[idx_count]
     
     while 1:
         t = time.time() - local_timer
@@ -64,14 +68,14 @@ def main():
         # if there is a change in cycle
         if temp - period_timer < 0.2:
             cycle_count += 1
-            if cycle_count == args.cycles_list[idx_count]:
+            if cycle_count == cycles_list[idx_count]:
                 idx_count += 1
 
                 if idx_count == len(cycle_count):
                     break
 
-                period = args.period_list[idx_count]
-                sequence = args.seq_list[idx_count]
+                period = period_list[idx_count]
+                sequence = seq_list[idx_count]
                 cycle_count = 0
 
         period_timer = cp(temp)
