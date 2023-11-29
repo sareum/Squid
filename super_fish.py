@@ -72,7 +72,7 @@ def main():
             if cycle_count == cycles_list[idx_count]:
                 idx_count += 1
 
-                if idx_count == len(cycle_count):
+                if idx_count == len(cycles_list):
                     break
 
                 period = period_list[idx_count]
