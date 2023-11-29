@@ -66,6 +66,7 @@ def main():
         t = time.time() - local_timer
         temp = t%period
         
+        print(temp, period_timer)
         # if there is a change in cycle
         if temp - period_timer < 0.2:
             cycle_count += 1
