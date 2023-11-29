@@ -23,8 +23,8 @@ def main():
 
 
     seq_list = [float(x) for x in args.seq_list.split(",")]
-    cycles_list = [float(x) for x in args.cycles_list(",")]
-    period_list = [float(x) for x in args.period_list(",")]
+    cycles_list = [float(x) for x in args.cycles_list.split(",")]
+    period_list = [float(x) for x in args.period_list.split(",")]
     
     offset = args.offset
     config = {"seq":seq_list, "cycles":cycles_list, "period":period_list, "amp":args.amp}
