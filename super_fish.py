@@ -13,6 +13,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--fname", type=str, help="filename of saving file")
     parser.add_argument("--amp", type=int, default=20, help="amplitude angle in degrees")
+    parser.add_argument("--offset", type=int, default=7, help="offset in amplitude angle")
     parser.add_argument("--arduino_port", default="/dev/ttyUSB0", help="port of arduino")
     parser.add_argument("--dyn_port", default="/dev/ttyUSB1", help="port of dynamixel")
     parser.add_argument("--seq_list", type=list, default=[1])
@@ -20,7 +21,7 @@ def main():
     parser.add_argument("--cycles_list", type=list, default=[3])
     args = parser.parse_args()
 
-    offset = 7
+    offset = args.offset
     config = {"seq":args.seq_list, "cycles":args.cycles_list, "period":args.period_list, "amp":args.amp}
 
     print("config:", config)
