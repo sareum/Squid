@@ -1,6 +1,5 @@
 import time
 import numpy as np
-from plot_module import show_graph
 from dynamixel_controller import Dynamixel
 from time import sleep
 
