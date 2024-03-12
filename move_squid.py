@@ -4,7 +4,7 @@ from dynamixel_controller import Dynamixel
 from time import sleep
 
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
-                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/tty.usbserial-FT78LT9E")
+                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB1")
 
 servo.begin_communication()
 
