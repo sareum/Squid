@@ -1,1 +1,0 @@
-time,loadcell2,dyn rpm,dyn deg
