@@ -31,8 +31,8 @@ a = 45 #Amplitude en degré
 c = position_center
 
 Straight = 1
-Turn_right = 0
-Turn_left = 0
+Turn_right = 1
+Turn_left = 1
 
 #read_position = np.empty(1000)
 #read_velocity = np.empty(1000)
