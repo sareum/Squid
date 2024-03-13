@@ -25,8 +25,8 @@ servo.write_position(2048, ID="all") #180°
 sleep(1)
 
 i = 0
-num_cycles = 100
-T = 0.5 #Period
+num_cycles = 10
+T = 1 #Period
 a = 45 #Amplitude en degré
 c = position_center
 
