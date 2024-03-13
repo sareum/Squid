@@ -26,7 +26,7 @@ sleep(1)
 
 i = 0
 num_cycles = 10
-T = 1 #Period
+T = 0.5 #Period
 a = 45 #Amplitude en degré
 c = position_center
 
