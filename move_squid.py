@@ -59,6 +59,29 @@ while Straight :
     if t > T*num_cycles : 
         break
 
+while Turn_left : 
+
+     t = time.time() - timer
+
+     q = int(set_position(t,a,T))
+     q_dynamixel = (q * 4096 / 360) + c #Angle in dynamixel units
+     servo.write_position(q_dynamixel, ID=[1,2])
+
+     if t > 2*T*num_cycles : 
+        t=0
+        break
+     
+while Turn_right : 
+
+     t = time.time() - timer
+
+     q = int(set_position(t,a,T))
+     q_dynamixel = (q * 4096 / 360) + c #Angle in dynamixel units
+     servo.write_position(q_dynamixel, ID=[3,4])
+
+     if t > 3*T*num_cycles : 
+        break
+
 #show_graph([read_position, function_value] , time, ["real values", "function values"]) 
 #show_graph([error] , time, ["Error in degree"])
 #show_graph([read_velocity] , time, ["Velocity"])
