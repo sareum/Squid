@@ -72,6 +72,7 @@ while running :
 
 
     if t > 2*T*num_cycles :
+        write_position(2048, [1,2]) #180°
         a = 45
         c = 180
         T = 1
