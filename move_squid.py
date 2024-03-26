@@ -1,38 +1,44 @@
 import time
 import numpy as np
+import cv2
+import pygame
+#from plot_module import show_graph
 from dynamixel_controller import Dynamixel
 from time import sleep
 
+def set_position(time, a, c, T) : 
+    position = a*np.sin(2*np.pi/T*time) + c 
+    return position
+
+def write_position(q_dynamixel, IDs) :
+    servo.write_position(q_dynamixel, ID=IDs)
+
+# Initialize Pygame
+pygame.init()
+
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
                     series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
+                    #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/tty.usbserial-FT78LT9E")
 
 servo.begin_communication()
 
 servo.set_operating_mode("position", ID = "all")
-
-def set_position(time, a, T) : 
-    position = a*np.sin(2*np.pi/T*time)
-    return position
-
-position_max = 2560 #225°
-position_min = 1536 #135°
-position_center = 2048 #180°
-
-motor_rpm = 53 #rpm
-time_per_increment = 60/motor_rpm/(2*position_center) #Seconds per position increment
-
-servo.write_position(2048, ID="all") #180°
+    
+write_position(2048, [1,2,3,4]) #180°
 sleep(1)
 
 i = 0
 num_cycles = 10
+IDs = [1,2,3,4]
 T = 1 #Period
-a = 45 #Amplitude en degré
-c = position_center
 
-Straight = 1
-Turn_right = 1
-Turn_left = 1
+# Real values
+a = 45 #Amplitude en degré
+c = 180 # Center position
+
+# Dynamixel values
+a_dyna = a * 2048/180
+c_dyna = c * 2048/180 
 
 #read_position = np.empty(1000)
 #read_velocity = np.empty(1000)
@@ -41,50 +47,52 @@ Turn_left = 1
 
 timer = time.time()
 
-while Straight :
+# Set up the display
+screen = pygame.display.set_mode((640, 480))
+
+running = True
+
+while running :
 
     t = time.time() - timer
 
-    q = int(set_position(t,a,T))
-    q_dynamixel = (q * 4096 / 360) + c #Angle in dynamixel units
-    servo.write_position(q_dynamixel, ID="all")
+    q_dynamixel = int(set_position(t,a_dyna, c_dyna, T))
+    write_position(q_dynamixel, IDs)
 
     #function_value[i] = q   
     #read_position[i] = servo.read_position(4)
     #read_velocity[i] = servo.read_velocity(4)
     #error[i] = 180*(function_value[i] - read_position[i])/position_center
 
-    #i+=1
+    if t > T*num_cycles :
+        a = 27
+        c = 63
+        T = 1
+        a_dyna = a * 2048/180
+        c_dyna = c * 2048/180
 
-    if t > T*num_cycles : 
-        break
 
-while Turn_left : 
+    if t > 2*T*num_cycles :
+        a = 45
+        c = 180
+        T = 1
+        a_dyna = a * 2048/180
+        c_dyna = c * 2048/180
+        IDs = [3,4]
 
-     t = time.time() - timer
+    # Event handling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
 
-     q = int(set_position(t,a,T))
-     q_dynamixel = (q * 4096 / 360) + c #Angle in dynamixel units
-     servo.write_position(q_dynamixel, ID=[1,2])
-
-     if t > 2*T*num_cycles : 
-        t=0
-        break
-     
-while Turn_right : 
-
-     t = time.time() - timer
-
-     q = int(set_position(t,a,T))
-     q_dynamixel = (q * 4096 / 360) + c #Angle in dynamixel units
-     servo.write_position(q_dynamixel, ID=[3,4])
-
-     if t > 3*T*num_cycles : 
-        break
 
 #show_graph([read_position, function_value] , time, ["real values", "function values"]) 
 #show_graph([error] , time, ["Error in degree"])
 #show_graph([read_velocity] , time, ["Velocity"])
 
 servo.end_communication()
+pygame.quit()
 
