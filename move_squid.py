@@ -1,6 +1,6 @@
 import time
 import numpy as np
-import cv2
+import keyboard
 #from plot_module import show_graph
 from dynamixel_controller import Dynamixel
 from time import sleep
@@ -89,8 +89,8 @@ while True :
     if t > 20 :
         go_left(t)
 
-    # Break the loop when 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if keyboard.is_pressed('q'):
+        print("You pressed the 'q' key.")
         break
 
     '''show_graph([read_position, function_value] , time, ["real values", "function values"]) 
