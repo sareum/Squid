@@ -78,24 +78,26 @@ while True :
     if user_input == 'q':
         break
 
-    t = time.time() - timer
+    else :
 
-    go_forward(t)
+        t = time.time() - timer
 
-    '''function_value[i] = q   
-    read_position[i] = servo.read_position(4)
-    read_velocity[i] = servo.read_velocity(4)
-    error[i] = 180*(function_value[i] - read_position[i])/position_center'''
+        go_forward(t)
 
-    if t > 10 :
-        go_reverse(t)
+        '''function_value[i] = q   
+        read_position[i] = servo.read_position(4)
+        read_velocity[i] = servo.read_velocity(4)
+        error[i] = 180*(function_value[i] - read_position[i])/position_center'''
 
-    if t > 20 :
-        go_left(t)
+        if t > 10 :
+            go_reverse(t)
 
-'''show_graph([read_position, function_value] , time, ["real values", "function values"]) 
-show_graph([error] , time, ["Error in degree"])
-show_graph([read_velocity] , time, ["Velocity"])'''
+        if t > 20 :
+            go_left(t)
+
+    '''show_graph([read_position, function_value] , time, ["real values", "function values"]) 
+    show_graph([error] , time, ["Error in degree"])
+    show_graph([read_velocity] , time, ["Velocity"])'''
 
 servo.end_communication()
 
