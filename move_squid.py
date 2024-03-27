@@ -73,27 +73,25 @@ timer = time.time()
 
 while True :
 
-    user_input = input("Appuyez sur 'q' pour quitter : ")
+    #user_input = input("Appuyez sur 'q' pour quitter : ")
 
-    if user_input == 'q':
-        break
+    #if user_input == 'q':
+        #break
 
-    else :
+    t = time.time() - timer
 
-        t = time.time() - timer
+    go_forward(t)
 
-        go_forward(t)
+    '''function_value[i] = q   
+    read_position[i] = servo.read_position(4)
+    read_velocity[i] = servo.read_velocity(4)
+    error[i] = 180*(function_value[i] - read_position[i])/position_center'''
 
-        '''function_value[i] = q   
-        read_position[i] = servo.read_position(4)
-        read_velocity[i] = servo.read_velocity(4)
-        error[i] = 180*(function_value[i] - read_position[i])/position_center'''
+    if t > 10 :
+        go_reverse(t)
 
-        if t > 10 :
-            go_reverse(t)
-
-        if t > 20 :
-            go_left(t)
+    if t > 20 :
+        go_left(t)
 
     '''show_graph([read_position, function_value] , time, ["real values", "function values"]) 
     show_graph([error] , time, ["Error in degree"])
