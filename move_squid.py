@@ -73,11 +73,6 @@ timer = time.time()
 
 while True :
 
-    #user_input = input("Appuyez sur 'q' pour quitter : ")
-
-    #if user_input == 'q':
-        #break
-
     t = time.time() - timer
 
     if t < 10 : 
