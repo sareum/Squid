@@ -75,7 +75,7 @@ while True :
 
     t = time.time() - timer
 
-    if t < 10 : 
+    if t < 15 : 
         go_forward(t)
 
     '''function_value[i] = q   
@@ -83,7 +83,7 @@ while True :
     read_velocity[i] = servo.read_velocity(4)
     error[i] = 180*(function_value[i] - read_position[i])/position_center'''
 
-    if t > 10 and t < 20 :
+    if t > 15 and t < 20 :
         go_reverse(t)
 
     if t > 20 :
