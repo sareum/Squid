@@ -54,7 +54,7 @@ def go_left(time) :
     write_position(2048, [3,4])
     
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
-                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/tty.USB0")
+                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
 
 servo.begin_communication()
 
