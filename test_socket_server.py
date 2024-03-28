@@ -111,7 +111,7 @@ while True :
 
 
     try :
-        print("Connection from", client_address)
+        #print("Connection from", client_address)
         
         # Receive data from the client
         while True:
