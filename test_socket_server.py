@@ -81,7 +81,7 @@ servo.begin_communication()
 
 servo.set_operating_mode("position", ID = "all")
     
-write_position(2048, [1,2,3,4]) #180°
+write_position(2040, [1,2,3,4]) #180°
 sleep(1)
 
 '''read_position = np.empty(1000)
@@ -100,16 +100,15 @@ while True :
         
         # Receive data from the client
         while True:
+            go_forward(time)
             json_data = connection.recv(1024).decode() # Receive data
             data = json.loads(json_data) # Deserialize JSON data
             if not data:
                 break
             print("Received:", data)
-
+    
     finally:
-    # Clean up the connection
+        # Clean up the connection
         connection.close()
-
-    go_forward(t)
 
 servo.end_communication()
