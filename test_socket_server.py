@@ -70,9 +70,6 @@ server_socket.bind(server_address)
 # Listen for incoming connections
 server_socket.listen(1)
 
-# Set server socket as non-blocking
-server_socket.setblocking(False)
-
 # Wait for a connection
 print("Waiting for a connection...")
 connection, client_address = server_socket.accept()
