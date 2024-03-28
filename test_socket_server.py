@@ -94,40 +94,25 @@ error = np.empty(1000)'''
 
 timer = time.time()
 
-while True:
-    try:
-        # Check for incoming connections
-        readable, _, _ = select.select([server_socket], [], [], 0.1)
-        for sock in readable:
-            # Accept the connection
-            connection, client_address = server_socket.accept()
-            connection.setblocking(False)
-            print("Connection from", client_address)
+while True :
 
-            try:
-                # Receive data from the client
-                while True:
-                    try:
-                        json_data = connection.recv(1024).decode()  # Receive data
-                        if not json_data:
-                            break
-                        data = json.loads(json_data)  # Deserialize JSON data
-                        print("Received:", data)
-                    except json.JSONDecodeError:
-                        print("Invalid JSON received")
-            except socket.error:
-                pass  # No data available
-            finally:
-                # Clean up the connection
-                connection.close()
+    t = time.time() - timer
 
-        # Execute go_forward function
-        t = time.time() - timer
-        go_forward(t)
+    try :
+        #print("Connection from", client_address)
+        
+        # Receive data from the client
+        while True:
+            json_data = connection.recv(1024).decode() # Receive data
+            data = json.loads(json_data) # Deserialize JSON data
+            if not data:
+                break
+            print("Received:", data)
 
-    except BlockingIOError:
-        pass  # No incoming connections available
+    finally:
+    # Clean up the connection
+        connection.close()
 
-# Close the server socket
-server_socket.close()
+    go_forward(t)
+
 servo.end_communication()
