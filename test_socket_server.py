@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import socket
+import select
 import json
 #from plot_module import show_graph
 from dynamixel_controller import Dynamixel
@@ -69,6 +70,9 @@ server_socket.bind(server_address)
 # Listen for incoming connections
 server_socket.listen(1)
 
+# Set server socket as non-blocking
+server_socket.setblocking(False)
+
 # Wait for a connection
 print("Waiting for a connection...")
 connection, client_address = server_socket.accept()
@@ -92,23 +96,36 @@ timer = time.time()
 
 while True :
 
+    # Check for incoming connections
+    readable, _, _ = select.select([server_socket], [], [], 0.1)
+    for sock in readable:
+        # Accept the connection
+        connection, client_address = server_socket.accept()
+        connection.setblocking(False)
+        print("Connection from", client_address)
+
     t = time.time() - timer
 
-    try :
-        #print("Connection from", client_address)
-        
+    try:
         # Receive data from the client
         while True:
-            json_data = connection.recv(1024).decode() # Receive data
-            data = json.loads(json_data) # Deserialize JSON data
-            if not data:
-                break
-            print("Received:", data)
+            try:
+                json_data = connection.recv(1024).decode()  # Receive data
+                if not json_data:
+                    break
+                data = json.loads(json_data)  # Deserialize JSON data
+                print("Received:", data)
+                
+            except json.JSONDecodeError:
+                print("Invalid JSON received")
+
+    except socket.error:
+                pass  # No data available
 
     finally:
-    # Clean up the connection
-        connection.close()
+        connection.close() # Clean up the connection
 
+    t = time.time() - timer
     go_forward(t)
 
 servo.end_communication()
