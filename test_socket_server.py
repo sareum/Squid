@@ -96,14 +96,14 @@ while True :
     t = time.time() - timer
 
     try :
-        #print("Connection from", client_address)
+        print("Connection from", client_address)
         
         # Receive data from the client
         while True:
             json_data = connection.recv(1024).decode() # Receive data
             data = json.loads(json_data) # Deserialize JSON data
-            #if not data:
-                #break
+            if not data:
+                break
             print("Received:", data)
 
     finally:
