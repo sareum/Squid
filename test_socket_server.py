@@ -102,8 +102,8 @@ while True :
         while True:
             json_data = connection.recv(1024).decode() # Receive data
             data = json.loads(json_data) # Deserialize JSON data
-            if not data:
-                break
+            #if not data:
+                #break
             print("Received:", data)
 
     finally:
