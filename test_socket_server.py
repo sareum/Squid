@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import socket
+import json
 #from plot_module import show_graph
 from dynamixel_controller import Dynamixel
 from time import sleep
@@ -77,7 +78,8 @@ try :
     
     # Receive data from the client
     while True:
-        data = connection.recv(1024)
+        json_data = connection.recv(1024).decode() # Receive data
+        data = json.loads(json_data) # Deserialize JSON data
         if not data:
             break
         print("Received:", data.decode())
