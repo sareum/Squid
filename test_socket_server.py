@@ -82,7 +82,7 @@ try :
         data = json.loads(json_data) # Deserialize JSON data
         if not data:
             break
-        print("Received:", data.decode())
+        print("Received:", data)
 
 finally:
     # Clean up the connection
