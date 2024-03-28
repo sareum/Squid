@@ -100,7 +100,7 @@ while True :
         
         # Receive data from the client
         while True:
-            go_forward(time)
+            go_forward(t)
             json_data = connection.recv(1024).decode() # Receive data
             data = json.loads(json_data) # Deserialize JSON data
             if not data:
