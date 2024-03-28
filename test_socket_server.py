@@ -109,6 +109,22 @@ while True :
 
     t = time.time() - timer
 
+
+    try :
+        print("Connection from", client_address)
+        
+        # Receive data from the client
+        while True:
+            json_data = connection.recv(1024).decode() # Receive data
+            data = json.loads(json_data) # Deserialize JSON data
+            if not data:
+                break
+            print("Received:", data.decode())
+
+    finally:
+    # Clean up the connection
+        connection.close()
+
     go_forward(t)
 
 servo.end_communication()
