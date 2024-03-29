@@ -73,6 +73,10 @@ server_socket.listen(1)
 # Wait for a connection
 print("Waiting for a connection...")
 connection, client_address = server_socket.accept()
+
+###########################################################################
+# MOTOR CONNECTION
+########################################################################### 
     
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
                     series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
@@ -80,7 +84,8 @@ servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor"
 servo.begin_communication()
 
 servo.set_operating_mode("position", ID = "all")
-    
+
+# Initialize motor position
 write_position(2040, [1,2,3,4]) #180°
 sleep(1)
 
@@ -91,21 +96,26 @@ error = np.empty(1000)'''
 
 timer = time.time()
 
-while True :
+###########################################################################
+# MOTOR LOOP
+########################################################################### 
 
-    try :
-        print("Connection from", client_address)
-        
+try:
+    while True:
         # Receive data from the client
-        while True:
-            t = time.time() - timer
-            go_forward(t)
-            json_data = connection.recv(1024).decode() # Receive data
-            data = json.loads(json_data) # Deserialize JSON data
+        json_data = connection.recv(1024).decode()  # Receive data
+        if json_data:
+            data = json.loads(json_data)  # Deserialize JSON data
             print("Received:", data)
-    
-    finally:
-        # Clean up the connection
-        connection.close()
 
-servo.end_communication()
+        # Perform motor operation
+        t = time.time() - timer
+        go_forward(t)
+
+finally:
+    # Clean up the connection and motor communication
+    connection.close()
+    servo.end_communication()
+
+# Close the server socket
+server_socket.close()
