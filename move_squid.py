@@ -71,7 +71,7 @@ error = np.empty(1000)'''
 
 timer = time.time()
 
-while True :
+while t<30 :
 
     t = time.time() - timer
 
