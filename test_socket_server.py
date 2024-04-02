@@ -126,7 +126,7 @@ while True :
 
     # Receive data from the client
     receive_data(HOST, PORT)
-    sleep(0.1)
+    sleep(1)
 
     # Perform motor operation
     t = time.time() - timer
