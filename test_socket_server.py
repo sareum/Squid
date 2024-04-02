@@ -108,18 +108,32 @@ timer = time.time()
 
 while True :
 
+    t = time.time() - timer
+
     # Receive data from the client
     data = client_socket.recv(1024).decode()  # Receive data
 
     if data == "1" :
+
+        start_reverse = time.time()
+
+        # Goes reverse for 10 seconds
+        while time.time() - start_reverse < 10 :
+            t = time.time() - timer
+            go_reverse(t)
+
+        # Turn around for 10 seconds
+        while time.time() - start_reverse < 20 :
+            t = time.time() - timer
+            go_right(t)
+    
+
         print('TURN AROUND')
 
-    # Perform motor operation
-    t = time.time() - timer
-    go_forward(t)
-
-    if t>100000 :
+    if data == "2" :
         break
+
+    go_forward(t)
 
 # Close the client socket
 client_socket.close()
