@@ -126,9 +126,6 @@ while True :
         while time.time() - start_reverse < 20 :
             t = time.time() - timer
             go_right(t)
-    
-
-        print('TURN AROUND')
 
     if data == "2" :
         break
