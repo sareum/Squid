@@ -100,22 +100,24 @@ timer = time.time()
 # MOTOR LOOP
 ########################################################################### 
 
-try:
-    while True:
-        # Receive data from the client
-        json_data = connection.recv(1024).decode()  # Receive data
-        if json_data:
-            data = json.loads(json_data)  # Deserialize JSON data
-            print("Received:", data)
 
-        # Perform motor operation
-        t = time.time() - timer
-        go_forward(t)
+while True:
+    # Receive data from the client
+    json_data = connection.recv(1024).decode()  # Receive data
+    if json_data:
+        data = json.loads(json_data)  # Deserialize JSON data
+        print("Received:", data)
 
-finally:
-    # Clean up the connection and motor communication
-    connection.close()
-    servo.end_communication()
+    # Perform motor operation
+    t = time.time() - timer
+    go_forward(t)
+
+    if t>10 :
+        break
+
+# Clean up the connection and motor communication
+connection.close()
+servo.end_communication()
 
 # Close the server socket
 server_socket.close()
