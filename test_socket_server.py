@@ -20,7 +20,7 @@ def receive_data(HOST, PORT) :
     server_socket.bind(server_address)
 
     # Listen for incoming connections
-    server_socket.listen()
+    server_socket.listen(1)
 
     # Wait for a connection
     print("Waiting for a connection...")
@@ -134,5 +134,5 @@ while True :
 
     if t>100000 :
         break
-    
+
 servo.end_communication()
