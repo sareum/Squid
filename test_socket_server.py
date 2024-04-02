@@ -29,7 +29,7 @@ def receive_data(HOST, PORT) :
     # Receive data from the client
     json_data = client_socket.recv(1024).decode()  # Receive data
     # Decode received data
-    json_data = json.loads(json_data.decode('utf-8'))
+    json_data = json.loads(json_data.encode('utf-8'))
 
     print("Received data:", json_data)
 
