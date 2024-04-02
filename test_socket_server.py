@@ -111,7 +111,7 @@ while True :
     # Receive data from the client
     data = client_socket.recv(1024).decode()  # Receive data
 
-    if data == "0" :
+    if data == "1" :
         print('TURN AROUND')
 
     # Perform motor operation
