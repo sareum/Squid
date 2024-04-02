@@ -15,7 +15,7 @@ def write_position(q_dynamixel, IDs) :
     servo.write_position(q_dynamixel, ID=IDs)
 
 def go_forward(time) :
-    IDs = [1,2,3,4]
+    IDs = [1]
     a = 45
     c = 180
     T = 1
