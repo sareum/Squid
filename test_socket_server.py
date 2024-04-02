@@ -68,7 +68,7 @@ server_address = ('10.20.30.10', 12345)  # Use the Raspberry Pi's IP address
 server_socket.bind(server_address)
 
 # Listen for incoming connections
-server_socket.listen(1)
+server_socket.listen()
 
 # Wait for a connection
 print("Waiting for a connection...")
