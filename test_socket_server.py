@@ -10,7 +10,7 @@ from time import sleep
 ###########################################################################
 # Create Socket
 ########################################################################### 
-def receive_data(HOST, PORT) :
+'''def receive_data(HOST, PORT) :
 
     # Create a TCP/IP socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,7 +37,7 @@ def receive_data(HOST, PORT) :
     client_socket.close()
     
     # Close the server socket
-    server_socket.close()
+    server_socket.close()'''
 
 
 ###########################################################################
@@ -92,8 +92,26 @@ def go_left(time) :
     write_position(q_dynamixel, IDs)
     write_position(2048, [3,4])
 
+###########################################################################
+# Create Socket
+########################################################################### 
+
 HOST = '10.20.30.10'
 PORT = 12345
+
+# Create a TCP/IP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket to the address and port
+server_address = (HOST, PORT)  # Use the Raspberry Pi's IP address
+server_socket.bind(server_address)
+
+# Listen for incoming connections
+server_socket.listen(1)
+
+# Wait for a connection
+print("Waiting for a connection...")
+client_socket, client_address = server_socket.accept()
 
 ###########################################################################
 # MOTOR CONNECTION
@@ -121,11 +139,14 @@ timer = time.time()
 # MOTOR LOOP
 ########################################################################### 
 
-
 while True :
 
     # Receive data from the client
-    receive_data(HOST, PORT)
+    json_data = client_socket.recv(1024).decode()  # Receive data
+    # Decode received data
+    json_data = json.loads(json_data.encode('utf-8'))
+
+    print("Received data:", json_data)
 
     # Perform motor operation
     t = time.time() - timer
@@ -134,4 +155,11 @@ while True :
     if t>100000 :
         break
 
+# Close the client socket
+client_socket.close()
+
+# Close the server socket
+server_socket.close()
+
+# Close motor communication
 servo.end_communication()
