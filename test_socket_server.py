@@ -112,7 +112,7 @@ while True:
     t = time.time() - timer
     go_forward(t)
 
-    if t>10 :
+    if t>20 :
         break
 
 # Clean up the connection and motor communication
