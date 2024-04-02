@@ -8,39 +8,6 @@ from dynamixel_controller import Dynamixel
 from time import sleep
 
 ###########################################################################
-# Create Socket
-########################################################################### 
-'''def receive_data(HOST, PORT) :
-
-    # Create a TCP/IP socket
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Bind the socket to the address and port
-    server_address = (HOST, PORT)  # Use the Raspberry Pi's IP address
-    server_socket.bind(server_address)
-
-    # Listen for incoming connections
-    server_socket.listen(1)
-
-    # Wait for a connection
-    print("Waiting for a connection...")
-    client_socket, client_address = server_socket.accept()
-
-    # Receive data from the client
-    json_data = client_socket.recv(1024).decode()  # Receive data
-    # Decode received data
-    json_data = json.loads(json_data.encode('utf-8'))
-
-    print("Received data:", json_data)
-
-    # Close the client socket
-    client_socket.close()
-    
-    # Close the server socket
-    server_socket.close()'''
-
-
-###########################################################################
 # Motion functions
 ########################################################################### 
 def set_position(time, a, c, T) : 
@@ -142,13 +109,9 @@ timer = time.time()
 while True :
 
     # Receive data from the client
-    json_data = client_socket.recv(1024).decode()  # Receive data
-    # Decode received data
-    json_data = json.loads(json_data.encode('utf-8'))
+    data = client_socket.recv(1024).decode()  # Receive data
 
-    print("Received data:", json_data)
-
-    sleep(0.5)
+    print("Received data:", data)
 
     # Perform motor operation
     t = time.time() - timer
