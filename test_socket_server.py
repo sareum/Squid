@@ -101,7 +101,7 @@ timer = time.time()
 ########################################################################### 
 
 
-while True:
+while True :
     # Receive data from the client
     json_data = connection.recv(1024).decode()  # Receive data
     if json_data:
@@ -112,7 +112,7 @@ while True:
     t = time.time() - timer
     go_forward(t)
 
-    if t>20 :
+    if t>100000 :
         break
 
 # Clean up the connection and motor communication
