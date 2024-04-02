@@ -148,6 +148,8 @@ while True :
 
     print("Received data:", json_data)
 
+    sleep(0.5)
+
     # Perform motor operation
     t = time.time() - timer
     go_forward(t)
