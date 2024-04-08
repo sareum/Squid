@@ -22,6 +22,7 @@ def go_forward(time) :
     c_dyna = c * 2048/180 
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
     write_position(q_dynamixel, IDs)
+    return q_dynamixel
 
 def go_reverse(time) :
     IDs = [1,2,3,4]
@@ -56,7 +57,8 @@ def go_left(time) :
     write_position(2048, [3,4])
     
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
-                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
+                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/tty.usbserial-FT78LT9E")
+                    #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
 
 servo.begin_communication()
 
@@ -72,19 +74,25 @@ t = 0
 function_value =[]
 read_position = []
 read_velocity = []
-error = []
+error = [0]
 
-while t < 5 :
+first_loop = True
+
+while t < 3 :
 
     t = time.time() - start_time
 
     timer.append(t)
+    #go_forward(t)
 
-    function_value.append(set_position(t, 45, 180, 1))
-    go_forward(t)
+    function_value.append(180*go_forward(t)/2048)
     read_position.append(180*servo.read_position(4)/2048)
-    read_velocity.append(servo.read_velocity(4))
-    error.append(function_value[-1] - read_position[-1])
+    read_velocity.append(180*servo.read_velocity(4)/2048)
+
+    if not first_loop :
+        error.append(abs(function_value[-2] - read_position[-1]))
+
+    first_loop = False
 
     if keyboard.is_pressed('q'):
         print("You pressed the 'q' key.")
@@ -97,10 +105,21 @@ plt.ylabel('Angular position (deg)')
 plt.title('Angular position of the motor')
 plt.plot(timer, function_value, 'b-', label='Function value')
 plt.plot(timer, read_position, 'r-', markersize=10, label='Real angular position')
-plt.legend()
 
-# Add a delay before showing the plot
-plt.pause(2)
+# Position plot
+plt.figure(2)
+plt.xlabel('Time (s)')
+plt.ylabel('Angular velocity (deg/s)')
+plt.title('Angular velocity of the motor')
+plt.plot(timer, read_velocity, 'r-')
+
+# Position plot
+plt.figure(3)
+plt.xlabel('Time (s)')
+plt.ylabel('Error (deg)')
+plt.title('Error in angular position')
+plt.plot(timer, error, 'r-')
+
 
 # Show plots
 plt.show()
