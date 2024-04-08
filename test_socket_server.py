@@ -18,7 +18,7 @@ def write_position(q_dynamixel, IDs) :
     servo.write_position(q_dynamixel, ID=IDs)
 
 def go_forward(time) :
-    IDs = [1]
+    IDs = [1,2,3,4]
     a = 45
     c = 180
     T = 1
@@ -94,11 +94,6 @@ servo.set_operating_mode("position", ID = "all")
 # Initialize motor position
 write_position(2040, [1,2,3,4]) #180°
 sleep(1)
-
-'''read_position = np.empty(1000)
-read_velocity = np.empty(1000)
-function_value = np.empty(1000)
-error = np.empty(1000)'''
 
 timer = time.time()
 
