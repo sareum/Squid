@@ -99,5 +99,8 @@ plt.plot(timer, function_value, 'b-', label='Function value')
 plt.plot(timer, read_position, 'r-', markersize=10, label='Real angular position')
 plt.legend()
 
+# Show plots
+plt.show()
+
 servo.end_communication()
 
