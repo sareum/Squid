@@ -100,6 +100,7 @@ plt.plot(timer, read_position, 'r-', markersize=10, label='Real angular position
 plt.legend()
 
 # Show plots
+plt.ioff()
 plt.show()
 
 servo.end_communication()
