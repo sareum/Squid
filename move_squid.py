@@ -68,7 +68,7 @@ sleep(1)
 start_time = time.time()
 timer = []
 t = 0
-i=1
+i=0
 
 function_value =[]
 read_position = []
