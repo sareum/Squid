@@ -68,7 +68,7 @@ sleep(1)
 start_time = time.time()
 timer = []
 t = 0
-i=0
+i=1
 
 function_value =[]
 read_position = []
@@ -82,6 +82,7 @@ while t < 5 :
     timer.append(t)
 
     function_value[i] = set_position(t, 45, 180, 1)
+    go_forward(t)
     read_position[i] = 180*servo.read_position(4)/2048
     read_velocity[i] = servo.read_velocity(4)
     error[i] = function_value[i] - read_position[i]
