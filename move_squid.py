@@ -17,12 +17,11 @@ def go_forward(time) :
     IDs = [1,2,3,4]
     a = 45
     c = 180
-    T = 0.5
+    T = 1
     a_dyna = a * 2048/180
     c_dyna = c * 2048/180 
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
     write_position(q_dynamixel, IDs)
-    return q_dynamixel
 
 def go_reverse(time) :
     IDs = [1,2,3,4]
@@ -82,7 +81,7 @@ while t < 5 :
 
     timer.append(t)
 
-    function_value[i] = 180*go_forward(t)/2048
+    function_value[i] = set_position(t, 45, 180, 1)
     read_position[i] = 180*servo.read_position(4)/2048
     read_velocity[i] = servo.read_velocity(4)
     error[i] = function_value[i] - read_position[i]
