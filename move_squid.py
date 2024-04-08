@@ -2,6 +2,7 @@ import time
 import numpy as np
 import keyboard
 #from plot_module import show_graph
+import matplotlib.pyplot as plt
 from dynamixel_controller import Dynamixel
 from time import sleep
 
@@ -21,6 +22,7 @@ def go_forward(time) :
     c_dyna = c * 2048/180 
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
     write_position(q_dynamixel, IDs)
+    return q_dynamixel
 
 def go_reverse(time) :
     IDs = [1,2,3,4]
@@ -64,38 +66,40 @@ servo.set_operating_mode("position", ID = "all")
 write_position(2048, [1,2,3,4]) #180°
 sleep(1)
 
-'''read_position = np.empty(1000)
-read_velocity = np.empty(1000)
-function_value = np.empty(1000)
-error = np.empty(1000)'''
+start_time = time.time()
+timer = []
+t = 0
+i=0
 
-timer = time.time()
+function_value =[]
+read_position = []
+read_velocity = []
+error = []
 
-while True :
+while t < 5 :
 
-    t = time.time() - timer
+    t = time.time() - start_time
 
-    if t < 15 : 
-        go_forward(t)
+    timer.append(t)
 
-    '''function_value[i] = q   
-    read_position[i] = servo.read_position(4)
+    function_value[i] = 180*go_forward(t)/2048
+    read_position[i] = 180*servo.read_position(4)/2048
     read_velocity[i] = servo.read_velocity(4)
-    error[i] = 180*(function_value[i] - read_position[i])/position_center'''
-
-    if t > 15 and t < 20 :
-        go_reverse(t)
-
-    if t > 20 :
-        go_left(t)
+    error[i] = function_value[i] - read_position[i]
+    i = i+1
 
     if keyboard.is_pressed('q'):
         print("You pressed the 'q' key.")
         break
 
-    '''show_graph([read_position, function_value] , time, ["real values", "function values"]) 
-    show_graph([error] , time, ["Error in degree"])
-    show_graph([read_velocity] , time, ["Velocity"])'''
+# Position plot
+plt.figure(1)
+plt.xlabel('Time (s)')
+plt.ylabel('Angular position (deg)')
+plt.title('Angular position of the motor')
+plt.plot(timer, function_value, 'b-', label='Function value')
+plt.plot(timer, read_position, 'r-', markersize=10, label='Real angular position')
+plt.legend()
 
 servo.end_communication()
 
