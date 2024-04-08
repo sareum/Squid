@@ -65,9 +65,6 @@ servo.set_operating_mode("position", ID = "all")
 write_position(2048, [1,2,3,4]) #180°
 sleep(1)
 
-# Turn on interactive mode for Matplotlib
-plt.ion()  
-
 start_time = time.time()
 timer = []
 t = 0
@@ -102,8 +99,10 @@ plt.plot(timer, function_value, 'b-', label='Function value')
 plt.plot(timer, read_position, 'r-', markersize=10, label='Real angular position')
 plt.legend()
 
+# Add a delay before showing the plot
+plt.pause(2)
+
 # Show plots
-plt.tight_layout()
 plt.show()
 
 servo.end_communication()
