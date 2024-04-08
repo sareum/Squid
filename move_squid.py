@@ -68,7 +68,6 @@ sleep(1)
 start_time = time.time()
 timer = []
 t = 0
-i=0
 
 function_value =[]
 read_position = []
@@ -81,12 +80,11 @@ while t < 5 :
 
     timer.append(t)
 
-    function_value[i] = set_position(t, 45, 180, 1)
+    function_value.append(set_position(t, 45, 180, 1))
     go_forward(t)
-    read_position[i] = 180*servo.read_position(4)/2048
-    read_velocity[i] = servo.read_velocity(4)
-    error[i] = function_value[i] - read_position[i]
-    i = i+1
+    read_position.append(180*servo.read_position(4)/2048)
+    read_velocity.append(servo.read_velocity(4))
+    error.append(function_value[-1] - read_position[-1])
 
     if keyboard.is_pressed('q'):
         print("You pressed the 'q' key.")
