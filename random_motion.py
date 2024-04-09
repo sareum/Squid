@@ -117,18 +117,19 @@ while True :
 
     if data == "Reverse" :
 
-        t = time.time() - timer
         go_reverse(t)
 
     if data == "Turn" :
-        t = time.time() - timer
+
         go_right(t)
 
-    if data == "Stop" :
-        break
-
     if data == "Forward" :
+
         go_forward(t)
+
+    if data == "Stop" :
+
+        break
 
     print(data)
 
