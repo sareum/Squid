@@ -117,14 +117,11 @@ while True :
 
     if data == "Reverse" :
 
-        t = time.time() - timer
-        go_reverse(t)
-
-        '''start_reverse = time.time()
+        start_reverse = time.time()
         # Goes reverse for 10 seconds
         while time.time() - start_reverse < 10 :
             t = time.time() - timer
-            go_reverse(t)'''
+            go_reverse(t)
 
     elif data == '"Turn"' :
         t = time.time() - timer
