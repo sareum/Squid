@@ -134,6 +134,8 @@ while True :
     else :
         go_forward(t)
 
+    print(data)
+
 # Close the client socket
 client_socket.close()
 
