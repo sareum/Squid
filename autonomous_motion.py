@@ -38,15 +38,22 @@ def go_reverse(time) :
     write_position(q_dynamixel, IDs)
 
 def go_right(time) : 
-    IDs = [3,4]
-    a = 45
-    c = 180
+    ID_forward = [3,4]
+    ID_reverse = [1,2]
+    a_forward = 45
+    c_forward = 180
+    a_reverse = 27
+    c_reverse = 63
     T = 0.5
-    a_dyna = a * 2048/180
-    c_dyna = c * 2048/180 
-    q_dynamixel = set_position(time, a_dyna, c_dyna, T)
-    write_position(q_dynamixel, IDs)
-    write_position(2048, [1,2])
+    a_dyna_forward = a_forward * 2048/180
+    c_dyna_forward = c_forward* 2048/180 
+    q_dynamixel_forward = set_position(time, a_dyna_forward, c_dyna_forward, T)
+    write_position(q_dynamixel_forward, ID_forward)
+    a_dyna_reverse = a_reverse * 2048/180
+    c_dyna_reverse = c_reverse* 2048/180 
+    q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
+    write_position(q_dynamixel_reverse, ID_reverse)
+    
 
 def go_left(time) : 
     IDs = [1,2]
