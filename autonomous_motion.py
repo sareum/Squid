@@ -126,11 +126,11 @@ while True :
             t = time.time() - timer
             go_reverse(t)'''
 
-    if data == '"Turn"' :
+    elif data == '"Turn"' :
         t = time.time() - timer
         go_right(t)
 
-    if data == "Stop" :
+    elif data == "Stop" :
         break
 
     else :
