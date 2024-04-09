@@ -128,7 +128,7 @@ while True :
         t = time.time() - timer
         go_right(t)
 
-    if data == "2" :
+    if data == "Stop" :
         break
 
     else :
