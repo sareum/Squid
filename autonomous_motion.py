@@ -125,7 +125,7 @@ while True :
             t = time.time() - timer
             go_reverse(t)'''
 
-    if data == '"Turn"' :
+    if data == "Turn" :
         t = time.time() - timer
         go_right(t)
 
