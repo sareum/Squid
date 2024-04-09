@@ -130,8 +130,6 @@ while True :
             go_right(t)
 
     if data == "2" :
-        # Close motor communication
-        servo.end_communication()  
         break
 
     go_forward(t)
@@ -141,3 +139,6 @@ client_socket.close()
 
 # Close the server socket
 server_socket.close()
+
+# Close motor communication
+servo.end_communication()  
