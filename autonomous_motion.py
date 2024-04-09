@@ -115,7 +115,7 @@ while True :
     # Receive data from the client
     data = client_socket.recv(1024).decode()  # Receive data
 
-    if data == "1" :
+    if data == "Reverse" :
 
         start_reverse = time.time()
 
@@ -124,15 +124,15 @@ while True :
             t = time.time() - timer
             go_reverse(t)
 
-        # Turn around for 10 seconds
-        while time.time() - start_reverse < 20 :
-            t = time.time() - timer
-            go_right(t)
+    if data == 'Turn' :
+        t = time.time() - timer
+        go_right(t)
 
     if data == "2" :
         break
 
-    go_forward(t)
+    else :
+        go_forward(t)
 
 # Close the client socket
 client_socket.close()
