@@ -132,7 +132,7 @@ while True :
     if data == "Stop" :
         break
 
-    if data == "0" :
+    if data == "Forward" :
         go_forward(t)
 
     print(data)
