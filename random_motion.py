@@ -1,9 +1,6 @@
 import time
 import numpy as np
 import socket
-import select
-import json
-#from plot_module import show_graph
 from dynamixel_controller import Dynamixel
 from time import sleep
 
