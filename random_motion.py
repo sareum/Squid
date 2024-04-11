@@ -115,6 +115,10 @@ while True :
     # Receive data from the client
     data = client_socket.recv(1024).decode()  # Receive data
 
+    if b"Forward" in data :
+
+        go_forward(t)
+
     if b"Reverse" in data :
 
         go_reverse(t)
@@ -122,10 +126,6 @@ while True :
     if b"Turn" in data :
 
         go_right(t)
-
-    if b"Forward" in data :
-
-        go_forward(t)
 
     if b"Stop" in data :
 
