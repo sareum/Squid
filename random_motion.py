@@ -34,7 +34,7 @@ def go_reverse(time) :
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
     write_position(q_dynamixel, IDs)
 
-def go_right(time) : 
+def turn_around(time) : 
     ID_forward = [3,4]
     ID_reverse = [1,2]
     a_forward = 45
@@ -51,6 +51,16 @@ def go_right(time) :
     q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
     write_position(q_dynamixel_reverse, ID_reverse)
     
+def go_right(time) : 
+    IDs = [3,4]
+    a = 45
+    c = 180
+    T = 1
+    a_dyna = a * 2048/180
+    c_dyna = c * 2048/180 
+    q_dynamixel = set_position(time, a_dyna, c_dyna, T)
+    write_position(q_dynamixel, IDs)
+    write_position(2048, [1,2])
 
 def go_left(time) : 
     IDs = [1,2]
@@ -122,7 +132,15 @@ while True :
 
     if "Turn" in data :
 
-        go_right(t)
+        turn_around(t)
+
+    if "Right" in data :
+
+        go_right(t) 
+
+    if "Left" in data :
+
+        go_left(t) 
 
     if "Stop" in data :
 
