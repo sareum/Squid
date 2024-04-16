@@ -146,8 +146,6 @@ while True :
 
         break
 
-    print(data)
-
 # Close the client socket
 client_socket.close()
 
