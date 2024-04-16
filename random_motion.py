@@ -41,7 +41,7 @@ def turn_around(time) :
     c_forward = 180
     a_reverse = 27
     c_reverse = 63
-    T = 0.5
+    T = 1
     a_dyna_forward = a_forward * 2048/180
     c_dyna_forward = c_forward* 2048/180 
     q_dynamixel_forward = set_position(time, a_dyna_forward, c_dyna_forward, T)
