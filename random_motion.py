@@ -155,11 +155,11 @@ while True :
 
         turn_left(t)
 
-    if "Go Right" in data :
+    if "Go right" in data :
 
         go_right(t) 
 
-    if "Go Left" in data :
+    if "Go left" in data :
 
         go_left(t) 
 
