@@ -55,7 +55,7 @@ def go_right(time) :
     IDs = [3,4]
     a = 45
     c = 180
-    T = 0.5
+    T = 1
     a_dyna = a * 2048/180
     c_dyna = c * 2048/180 
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
@@ -66,7 +66,7 @@ def go_left(time) :
     IDs = [1,2]
     a = 45
     c = 180
-    T = 0.5
+    T = 1
     a_dyna = a * 2048/180
     c_dyna = c * 2048/180 
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
