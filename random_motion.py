@@ -69,26 +69,32 @@ def turn_left(time) :
     write_position(q_dynamixel_reverse, ID_reverse)
     
 def go_right(time) : 
-    IDs = [1,2]
+    ID_right = [1,2]
+    ID_left = [3,4]
     a = 45
     c = 180
-    T = 1
+    T_right = 0.5
+    T_left = 1
     a_dyna = a * 2048/180
     c_dyna = c * 2048/180 
-    q_dynamixel = set_position(time, a_dyna, c_dyna, T)
-    write_position(q_dynamixel, IDs)
-    write_position(2048, [1,2])
+    q_dynamixel_right = set_position(time, a_dyna, c_dyna, T_right)
+    q_dynamixel_left = set_position(time, a_dyna, c_dyna, T_left)
+    write_position(q_dynamixel_right, ID_right)
+    write_position(q_dynamixel_left, ID_left)
 
 def go_left(time) : 
-    IDs = [3,4]
+    ID_right = [1,2]
+    ID_left = [3,4]
     a = 45
     c = 180
-    T = 1
+    T_right = 1
+    T_left = 0.5
     a_dyna = a * 2048/180
     c_dyna = c * 2048/180 
-    q_dynamixel = set_position(time, a_dyna, c_dyna, T)
-    write_position(q_dynamixel, IDs)
-    write_position(2048, [3,4])
+    q_dynamixel_right = set_position(time, a_dyna, c_dyna, T_right)
+    q_dynamixel_left = set_position(time, a_dyna, c_dyna, T_left)
+    write_position(q_dynamixel_right, ID_right)
+    write_position(q_dynamixel_left, ID_left)
 
 ###########################################################################
 # Create Socket
