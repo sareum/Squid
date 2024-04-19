@@ -34,24 +34,7 @@ def go_reverse(time) :
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
     write_position(q_dynamixel, IDs)
 
-def turn_right(time) : 
-    ID_forward = [1,2]
-    ID_reverse = [3,4]
-    a_forward = 45
-    c_forward = 180
-    a_reverse = 27
-    c_reverse = 63
-    T = 0.5
-    a_dyna_forward = a_forward * 2048/180
-    c_dyna_forward = c_forward* 2048/180 
-    q_dynamixel_forward = set_position(time, a_dyna_forward, c_dyna_forward, T)
-    write_position(q_dynamixel_forward, ID_forward)
-    a_dyna_reverse = a_reverse * 2048/180
-    c_dyna_reverse = c_reverse* 2048/180 
-    q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
-    write_position(q_dynamixel_reverse, ID_reverse)
-
-def turn_left(time) : 
+def turn_around_right(time) : 
     ID_forward = [3,4]
     ID_reverse = [1,2]
     a_forward = 45
@@ -67,10 +50,27 @@ def turn_left(time) :
     c_dyna_reverse = c_reverse* 2048/180 
     q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
     write_position(q_dynamixel_reverse, ID_reverse)
+
+def turn_around_left(time) : 
+    ID_forward = [1,2]
+    ID_reverse = [3,4]
+    a_forward = 45
+    c_forward = 180
+    a_reverse = 27
+    c_reverse = 63
+    T = 0.5
+    a_dyna_forward = a_forward * 2048/180
+    c_dyna_forward = c_forward* 2048/180 
+    q_dynamixel_forward = set_position(time, a_dyna_forward, c_dyna_forward, T)
+    write_position(q_dynamixel_forward, ID_forward)
+    a_dyna_reverse = a_reverse * 2048/180
+    c_dyna_reverse = c_reverse* 2048/180 
+    q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
+    write_position(q_dynamixel_reverse, ID_reverse)
     
 def go_right(time) : 
-    ID_right = [1,2]
-    ID_left = [3,4]
+    ID_right = [3,4]
+    ID_left = [1,2]
     a = 45
     c = 180
     T_right = 0.5
@@ -155,11 +155,11 @@ while True :
 
     if "Turn right" in data :
 
-        turn_right(t)
+        turn_around_right(t)
 
     if "Turn left" in data :
 
-        turn_left(t)
+        turn_around_left(t)
 
     if "Go right" in data :
 
