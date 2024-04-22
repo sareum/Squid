@@ -18,7 +18,7 @@ def go_forward(time) :
     IDs = [1,2,3,4]
     a = 60
     c = 180
-    T = 0.8
+    T = 0.6
     a_dyna = a * 2048/180
     c_dyna = c * 2048/180 
     q_dynamixel = set_position(time, a_dyna, c_dyna, T)
