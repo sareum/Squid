@@ -72,7 +72,7 @@ while True :
 
     # Receive data from the client
     # data = client_socket.recv(1024).decode()  # Receive data
-    data = socket.recv(1024)
+    data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
     print(data)
@@ -94,9 +94,6 @@ while True :
 
 # Close the client socket
 client_socket.close()
-
-# Close the server socket
-server_socket.close()
 
 # Close motor communication
 servo.end_communication()  
