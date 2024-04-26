@@ -75,6 +75,8 @@ while True :
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
+    client_socket.sendall(b"Received")
+
     a_right = data.get("a_right")
     c_right = data.get("c_right")
     T_right = data.get("T_right")
