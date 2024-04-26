@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import socket
+import json
 from dynamixel_controller import Dynamixel
 from time import sleep
 
@@ -11,90 +12,17 @@ def set_position(time, a, c, T) :
     position = a*np.sin(2*np.pi/T*time) + c 
     return position
 
-def write_position(q_dynamixel, IDs) :
-    servo.write_position(q_dynamixel, ID=IDs)
-
-def go_forward(time) :
-    IDs = [1,2,3,4]
-    a = 45
-    c = 180
-    T = 0.6
-    a_dyna = a * 2048/180
-    c_dyna = c * 2048/180 
-    q_dynamixel = set_position(time, a_dyna, c_dyna, T)
-    write_position(q_dynamixel, IDs)
-
-def go_reverse(time) :
-    IDs = [1,2,3,4]
-    a = 27
-    c = 63
-    T = 0.6
-    a_dyna = a * 2048/180
-    c_dyna = c * 2048/180 
-    q_dynamixel = set_position(time, a_dyna, c_dyna, T)
-    write_position(q_dynamixel, IDs)
-
-def turn_around_right(time) : 
-    ID_forward = [3,4]
-    ID_reverse = [1,2]
-    a_forward = 45
-    c_forward = 180
-    a_reverse = 27
-    c_reverse = 63
-    T = 0.5
-    a_dyna_forward = a_forward * 2048/180
-    c_dyna_forward = c_forward* 2048/180 
-    q_dynamixel_forward = set_position(time, a_dyna_forward, c_dyna_forward, T)
-    write_position(q_dynamixel_forward, ID_forward)
-    a_dyna_reverse = a_reverse * 2048/180
-    c_dyna_reverse = c_reverse* 2048/180 
-    q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
-    write_position(q_dynamixel_reverse, ID_reverse)
-
-def turn_around_left(time) : 
-    ID_forward = [1,2]
-    ID_reverse = [3,4]
-    a_forward = 45
-    c_forward = 180
-    a_reverse = 27
-    c_reverse = 63
-    T = 0.5
-    a_dyna_forward = a_forward * 2048/180
-    c_dyna_forward = c_forward* 2048/180 
-    q_dynamixel_forward = set_position(time, a_dyna_forward, c_dyna_forward, T)
-    write_position(q_dynamixel_forward, ID_forward)
-    a_dyna_reverse = a_reverse * 2048/180
-    c_dyna_reverse = c_reverse* 2048/180 
-    q_dynamixel_reverse = set_position(time, a_dyna_reverse, c_dyna_reverse, T)
-    write_position(q_dynamixel_reverse, ID_reverse)
-    
-def go_right(time) : 
+def write_motor_position(time, a_right, c_right, T_right, a_left, c_left, T_left) :
     ID_right = [1,2]
     ID_left = [3,4]
-    a = 45
-    c = 180
-    #T_right = 1
-    T_left = 0.6
-    a_dyna = a * 2048/180
-    c_dyna = c * 2048/180 
-    #q_dynamixel_right = set_position(time, a_dyna, c_dyna, T_right)
-    q_dynamixel_left = set_position(time, a_dyna, c_dyna, T_left)
-    #write_position(q_dynamixel_right, ID_right)
-    write_position(q_dynamixel_left, ID_left)
-
-def go_left(time) : 
-    ID_right = [1,2]
-    ID_left = [3,5]
-    a = 45
-    c = 180
-    T_right = 0.6
-    #T_left = 1
-    a_dyna = a * 2048/180
-    c_dyna = c * 2048/180 
-    q_dynamixel_right = set_position(time, a_dyna, c_dyna, T_right)
-    #q_dynamixel_left = set_position(time, a_dyna, c_dyna, T_left)
-    write_position(q_dynamixel_right, ID_right)
-    #write_position(q_dynamixel_left, ID_left)
+    a_dyna_right = a_right * 2048/180
+    c_dyna_right = c_right * 2048/180 
+    a_dyna_left = a_left * 2048/180
+    c_dyna_left = c_left * 2048/180 
+    q_dynamixel_right = set_position(time, a_dyna_right, c_dyna_right, T_right)
+    servo.write_position(q_dynamixel_right, ID_right)
+    q_dynamixel_left = set_position(time, a_dyna_left, c_dyna_left, T_left)
+    servo.write_position(q_dynamixel_left, ID_left)
 
 ###########################################################################
 # Create Socket
@@ -129,7 +57,7 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
 # Initialize motor position
-write_position(2040, [1,2,3,4]) #180°
+servo.write_position(2040, [1,2,3,4]) #180°
 sleep(1)
 
 timer = time.time()
@@ -143,35 +71,26 @@ while True :
     t = time.time() - timer
 
     # Receive data from the client
-    data = client_socket.recv(1024).decode()  # Receive data
+    # data = client_socket.recv(1024).decode()  # Receive data
+    data = socket.recv(1024)
+    data = json.loads(data.decode())
 
-    if "Forward" in data :
+    print(data)
 
-        go_forward(t)
+    a_right = data.get("a_right")
+    c_right = data.get("c_right")
+    T_right = data.get("T_right")
 
-    if "Reverse" in data :
+    a_left = data.get("a_left")
+    c_left = data.get("c_left")
+    T_left = data.get("T_left")
 
-        go_reverse(t)
-
-    if "Turn right" in data :
-
-        turn_around_right(t)
-
-    if "Turn left" in data :
-
-        turn_around_left(t)
-
-    if "Go right" in data :
-
-        go_right(t) 
-
-    if "Go left" in data :
-
-        go_left(t) 
-
+    write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
+ 
     if "Stop" in data :
 
         break
+
 
 # Close the client socket
 client_socket.close()
