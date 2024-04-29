@@ -87,9 +87,7 @@ while True :
     T_left = data.get("T_left")
 
     State = data.get("State")
-
-    print(a_right)
-
+    
     write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
  
     if State == 0  :
