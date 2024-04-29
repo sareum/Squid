@@ -60,6 +60,7 @@ servo.set_operating_mode("position", ID = "all")
 servo.write_position(2040, [1,2,3,4]) #180°
 sleep(1)
 
+read_position = []
 timer = time.time()
 
 ###########################################################################
@@ -70,13 +71,14 @@ while True :
 
     t = time.time() - timer
 
+    read_position.append(180*servo.read_position(1)/2048)
+
     # Receive data from the client
-    # data = client_socket.recv(1024).decode()  # Receive data
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
     # Sends answer to client
-    client_socket.sendall(b"Received")
+    client_socket.sendall(read_position[-1])
 
     a_right = data.get("a_right")
     c_right = data.get("c_right")
@@ -89,6 +91,7 @@ while True :
     State = data.get("State")
     
     write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
+
 
     print(a_left)
  
