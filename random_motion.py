@@ -86,8 +86,8 @@ while True :
 
     State = data.get("State")
     
-    motor_command = write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
-    
+    motor_command = 180*write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
+
     # Read motor position
     read_position = 180*servo.read_position(1)/2048
     json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
