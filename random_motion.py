@@ -71,14 +71,15 @@ while True :
 
     t = time.time() - timer
 
-    read_position.append(180*servo.read_position(1)/2048)
+    read_position = 180*servo.read_position(1)/2048
+    json_position = json.dumps({ "Motor_position" : read_position})
 
     # Receive data from the client
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
     # Sends answer to client
-    client_socket.sendall(read_position[-1])
+    client_socket.send(json_position.encode())
 
     a_right = data.get("a_right")
     c_right = data.get("c_right")
