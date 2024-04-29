@@ -75,6 +75,9 @@ while True :
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
+    # Sends answer to client
+    client_socket.sendall(b"Received")
+
     a_right = data.get("a_right")
     c_right = data.get("c_right")
     T_right = data.get("T_right")
@@ -83,13 +86,13 @@ while True :
     c_left = data.get("c_left")
     T_left = data.get("T_left")
 
+    State = data.get("State")
+
     print(a_right)
 
     write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
-
-    client_socket.sendall(b"Received")
  
-    if "Stop" in data :
+    if State == 0  :
 
         break
 
