@@ -23,6 +23,7 @@ def write_motor_position(time, a_right, c_right, T_right, a_left, c_left, T_left
     servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left = set_position(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
+    return q_dynamixel_right
 
 ###########################################################################
 # Create Socket
@@ -91,13 +92,12 @@ while True :
 
     State = data.get("State")
     
-    write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
+    motor_command = write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
 
     print(a_left)
 
     # Read motor position
     read_position = 180*servo.read_position(1)/2048
-    motor_command = set_position(t, a_right, c_right, T_right)
     json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
 
     # Sends answer to client
