@@ -93,8 +93,15 @@ while True :
     
     write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
 
-
     print(a_left)
+
+    # Read motor position
+    read_position = 180*servo.read_position(1)/2048
+    motor_command = set_position(t, a_right, c_right, T_right)
+    json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
+
+    # Sends answer to client
+    client_socket.send(json_position.encode())
  
     if State == 0  :
 
