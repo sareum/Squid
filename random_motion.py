@@ -72,9 +72,6 @@ while True :
 
     t = time.time() - timer
 
-    read_position = 180*servo.read_position(1)/2048
-    json_position = json.dumps({ "Motor_position" : read_position})
-
     # Receive data from the client
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
