@@ -89,6 +89,8 @@ while True :
     State = data.get("State")
     
     write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
+
+    print(a_left)
  
     if State == 0  :
 
