@@ -96,6 +96,7 @@ while True :
     # Read motor position
     read_position = 180*servo.read_position(1)/2048
     json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
+    print(json_position)
 
     # Sends answer to client
     client_socket.send(json_position.encode())
