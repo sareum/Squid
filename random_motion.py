@@ -76,9 +76,6 @@ while True :
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
-    # Sends answer to client
-    client_socket.send(json_position.encode())
-
     a_right = data.get("a_right")
     c_right = data.get("c_right")
     T_right = data.get("T_right")
@@ -90,9 +87,7 @@ while True :
     State = data.get("State")
     
     motor_command = write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)
-
-    print(motor_command)
-
+    
     # Read motor position
     read_position = 180*servo.read_position(1)/2048
     json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
