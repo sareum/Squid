@@ -101,7 +101,6 @@ while True :
 
         break
 
-
 # Close the client socket
 client_socket.close()
 
