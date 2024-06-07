@@ -15,6 +15,7 @@ def sin_position(time, a, c, T) :
 def step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down) :
 
     T = T_up + T_hold_up, T_down + T_hold_down
+    print(T)
 
     t = time % T
 
