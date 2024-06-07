@@ -15,7 +15,6 @@ def sin_position(time, a, c, T) :
 def step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down) :
 
     T = T_up + T_hold_up + T_down + T_hold_down
-    print(T)
 
     t = time % T
 
@@ -49,6 +48,7 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
 def write_motor_position_step(time, a_max, T_up, T_hold_up, T_down, T_hold_down) :
     ID = [1,2,3,4]
     q_dynamixel = step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down)*2048/180
+    print(q_dynamixel)
     servo.write_position(q_dynamixel, ID)
     return q_dynamixel
 
@@ -117,6 +117,8 @@ while True :
 
     go_straight = data.get("Go_straight")
     State = data.get("State")
+
+    print(go_straight)
 
     #print(data)
 
