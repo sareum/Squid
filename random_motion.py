@@ -8,22 +8,49 @@ from time import sleep
 ###########################################################################
 # Motion functions
 ########################################################################### 
-def set_position(time, a, c, T) : 
+def sin_position(time, a, c, T) : 
     position = a*np.sin(2*np.pi/T*time) + c 
     return position
 
-def write_motor_position(time, a_right, c_right, T_right, a_left, c_left, T_left) :
+def step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down) :
+
+    T = T_up + T_hold_up, T_down + T_hold_down
+
+    t = time % T
+
+    if t < T_up :
+        q = 2*a_max/T_up*t - a_max
+
+    elif t < T_up + T_hold_up :
+        q = a_max
+
+    elif t < T_up + T_hold_up + T_down :
+        q = -2*a_max/T_down*(t-T_up-T_hold_up-T_down/2)
+
+    elif t < T_up + T_hold_up + T_down + T_hold_down :
+        q = - a_max
+
+    return q
+
+def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_left) :
     ID_right = [1,2]
     ID_left = [3,4]
     a_dyna_right = a_right * 2048/180
     c_dyna_right = c_right * 2048/180 
     a_dyna_left = a_left * 2048/180
     c_dyna_left = c_left * 2048/180 
-    q_dynamixel_right = set_position(time, a_dyna_right, c_dyna_right, T_right)
+    q_dynamixel_right = sin_position(time, a_dyna_right, c_dyna_right, T_right)
     servo.write_position(q_dynamixel_right, ID_right)
-    q_dynamixel_left = set_position(time, a_dyna_left, c_dyna_left, T_left)
+    q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
     return q_dynamixel_right
+
+def write_motor_position_step(time, a_max, T_up, T_hold_up, T_down, T_hold_down) :
+    ID = [1,2,3,4]
+    q_dynamixel = step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down)*2048/180
+    servo.write_position(q_dynamixel, ID)
+    return q_dynamixel
+
 
 ###########################################################################
 # Create Socket
@@ -76,19 +103,40 @@ while True :
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
 
-    a_right = data.get("a_right")
-    c_right = data.get("c_right")
-    T_right = data.get("T_right")
+    ###########################################################################
+    # MOTOR LOOP - SIN COMMAND
+    ########################################################################### 
 
-    a_left = data.get("a_left")
-    c_left = data.get("c_left")
-    T_left = data.get("T_left")
+    param_1 = data.get("param_1")
+    param_2 = data.get("param_2")
+    param_3 = data.get("param_3")
+    param_4 = data.get("param_4")
+    param_5 = data.get("param_5")
+    param_6 = data.get("param_6")
 
+    go_straight = data.get("Go_straight")
     State = data.get("State")
 
     #print(data)
-        
-    motor_command = 180*write_motor_position(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
+
+    if go_straight == False  :   
+        motor_command = 180*write_motor_position_sin(t, param_1, param_2, param_3, param_4, param_5, param_6)/2048
+
+    else : 
+        motor_command = 180*write_motor_position_step(t, param_1, param_2, param_3, param_4, param_5)/2048
+
+    ###########################################################################
+    # MOTOR LOOP - STEP COMMAND
+    ########################################################################### 
+    '''
+    a_max = data.get("a_max")
+    T_up = data.get("T_up")
+    T_hold_up = data.get("T_hold_hup")
+    T_down = data.get("T_hold")
+    T_hold_down = data.get("T_hold_down")
+
+    State = data.get("State")
+    '''
 
     # Read motor position
     read_position = 180*servo.read_position(1)/2048
