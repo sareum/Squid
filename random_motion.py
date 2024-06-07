@@ -118,7 +118,7 @@ while True :
     go_straight = data.get("Go_straight")
     State = data.get("State")
 
-    print(param_1, param_2, param_3, param_4, param_5, param_6, go_straight)
+    print(param_1, param_2, param_3, param_4, param_5, param_6, go_straight, State)
 
     #print(data)
 
