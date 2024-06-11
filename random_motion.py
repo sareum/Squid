@@ -45,9 +45,9 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     servo.write_position(q_dynamixel_left, ID_left)
     return q_dynamixel_right
 
-def write_motor_position_step(time, a_max, T_up, T_hold_up, T_down, T_hold_down) :
+def write_motor_position_step(time, a_max, T_up, T_hold_up, T_down, T_hold_down, center_pos) :
     ID = [1,2,3,4]
-    q_dynamixel = step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down)*2048/180 + 2048
+    q_dynamixel = step_position(time, a_max, T_up, T_hold_up, T_down, T_hold_down)*2048/180 + center_pos*2048/180
     #print(q_dynamixel)
     servo.write_position(q_dynamixel, ID)
     return q_dynamixel
@@ -126,7 +126,7 @@ while True :
         motor_command = 180*write_motor_position_sin(t, param_1, param_2, param_3, param_4, param_5, param_6)/2048
 
     else : 
-        motor_command = 180*write_motor_position_step(t, param_1, param_2, param_3, param_4, param_5)/2048
+        motor_command = 180*write_motor_position_step(t, param_1, param_2, param_3, param_4, param_5, param_6)/2048
 
     ###########################################################################
     # MOTOR LOOP - STEP COMMAND
