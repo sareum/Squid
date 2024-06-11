@@ -121,12 +121,15 @@ while True :
     print(param_1, param_2, param_3, param_4, param_5, param_6, go_straight, State)
 
     #print(data)
-
+    
+    motor_command = 180*write_motor_position_sin(t, param_1, param_2, param_3, param_4, param_5, param_6)/2048
+    '''
     if go_straight == False  :   
         motor_command = 180*write_motor_position_sin(t, param_1, param_2, param_3, param_4, param_5, param_6)/2048
 
     else : 
         motor_command = 180*write_motor_position_step(t, param_1, param_2, param_3, param_4, param_5, param_6)/2048
+    '''
 
     ###########################################################################
     # MOTOR LOOP - STEP COMMAND
