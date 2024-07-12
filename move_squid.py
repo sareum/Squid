@@ -57,7 +57,7 @@ def go_left(time) :
     write_position(2048, [3,4])
     
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
-                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/tty.usbserial-FT78LT9E")
+                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/tty.usbserial-FT78LT9E") #probably change it
                     #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
 
 servo.begin_communication()
@@ -78,6 +78,7 @@ error = [0]
 
 first_loop = True
 
+#go forward for 3 seconds
 while t < 3 :
 
     t = time.time() - start_time
@@ -99,7 +100,7 @@ while t < 3 :
         break
 
 # Position plot
-plt.figure(1)
+'''plt.figure(1)
 plt.xlabel('Time (s)')
 plt.ylabel('Angular position (deg)')
 plt.title('Angular position of the motor')
@@ -122,7 +123,7 @@ plt.plot(timer, error, 'r-')
 
 
 # Show plots
-plt.show()
+plt.show()'''
 
 servo.end_communication()
 
