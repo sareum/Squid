@@ -36,7 +36,7 @@ if __name__=="__main__":
     servo.write_position(0)
     sleep(1)
 
-        '''if user_input == 'w':
+    '''if user_input == 'w':
             velocity += 10
             velocity = velocity_security(velocity)
             servo.write_position(velocity)
