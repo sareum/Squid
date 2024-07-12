@@ -100,7 +100,7 @@ while t < 3 :
         break
 
 # Position plot
-'''plt.figure(1)
+plt.figure(1)
 plt.xlabel('Time (s)')
 plt.ylabel('Angular position (deg)')
 plt.title('Angular position of the motor')
@@ -123,7 +123,7 @@ plt.plot(timer, error, 'r-')
 
 
 # Show plots
-plt.show()'''
+plt.show()
 
 servo.end_communication()
 
