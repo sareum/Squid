@@ -75,7 +75,8 @@ while True :
     # Receive data from the client
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
-
+    
+    print("waiting for param")
     param_1 = data.get("param_1")
     param_2 = data.get("param_2")
     param_3 = data.get("param_3")
