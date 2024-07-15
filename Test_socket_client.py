@@ -58,11 +58,11 @@ def write_motor_position_sin(time, a_right, c_right, T_right) :
     servo.write_position(q_dynamixel_right, ID_right)
     return q_dynamixel_right
 
-#servo.begin_communication()
-#servo.set_operating_mode("position", ID = "all")
+servo.begin_communication()
+servo.set_operating_mode("position", ID = "all")
 
 # Initialize motor position
-#servo.write_position(2040, [1,2,3,4]) #180°
+servo.write_position(2040, [1,2,3,4]) #180°
 sleep(1)
 
 read_position = []
