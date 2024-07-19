@@ -63,9 +63,8 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
-    print(q_dynamixel_right)
-    print(q_dynamixel_left) 
-    return q_dynamixel_right 
+    data = [q_dynamixel_right, q_dynamixel_left]
+    return data 
 
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
