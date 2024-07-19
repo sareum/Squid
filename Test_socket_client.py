@@ -50,28 +50,21 @@ def go_forward(time) :
     write_position(q_dynamixel, IDs)
     return q_dynamixel
 
-def write_motor_position_sin(time, a_right, c_right, T_right) :
-    ID_right = [1]
-    a_dyna_right = a_right * 2048/180
-    c_dyna_right = c_right * 2048/180  
-    q_dynamixel_right = sin_position(time, a_dyna_right, c_dyna_right, T_right)
-    servo.write_position(q_dynamixel_right, ID_right)
-    return q_dynamixel_right
-
-'''
 def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_left) :
     ID_right = [1,2]
     ID_left = [3,4]
+
     a_dyna_right = a_right * 2048/180
     c_dyna_right = c_right * 2048/180 
     a_dyna_left = a_left * 2048/180
     c_dyna_left = c_left * 2048/180 
+
     q_dynamixel_right = sin_position(time, a_dyna_right, c_dyna_right, T_right)
     servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
-    return q_dynamixel_right
-'''
+    return q_dynamixel_right, q_dynamixel_left 
+
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
@@ -79,7 +72,8 @@ servo.set_operating_mode("position", ID = "all")
 servo.write_position(2040, [1,2,3,4]) #180°
 sleep(1)
 
-read_position = []
+read_position_right = []
+read_position_left = []
 timer = time.time()
 
 while True :
@@ -93,13 +87,22 @@ while True :
     a_right = data.get("a_right")
     c_right = data.get("c_right")
     T_right = data.get("T_right")
+
+    a_left = data.get("a_left")
+    c_left = data.get("c_left")
+    T_left = data.get("T_left")
     
     State = data.get("State")
      
-    motor_command = 180*write_motor_position_sin(t, a_right, c_right, T_right)/2048
+    motor_command = 180*write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
+    
+    motor_command_right = motor_command[0]
+    motor_command_left = motor_command[1]
 
-    read_position = 180*servo.read_position(1)/2048
-    json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
+    read_position_right = 180*servo.read_position(1)/2048
+    read_position_left = 180*servo.read_position(3)/2048
+
+    json_position = json.dumps({ "Motor_position_right" : read_position_right, "Motor_position_left" : read_position_left, "Motor_command_right" : motor_command_right, "Motor_command_left" : motor_command_left})
 
     # Sends answer to client
     client_socket.send(json_position.encode())
