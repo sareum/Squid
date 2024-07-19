@@ -100,7 +100,7 @@ while True :
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
 
-    json_position = json.dumps({ "Motor_position_right" : read_position_right, "Motor_position_left" : read_position_left, "Motor_command_right" : motor_command_right, "Motor_command_left" : motor_command_left})
+    json_position = json.dumps({ "Motor_position_right" : read_position_right, "Motor_command_right" : motor_command_right})
 
     # Sends answer to client
     client_socket.send(json_position.encode())
