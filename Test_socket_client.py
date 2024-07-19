@@ -76,6 +76,7 @@ sleep(1)
 read_position_right = []
 read_position_left = []
 timer = time.time()
+motor_command = []
 
 while True :
 
