@@ -58,6 +58,20 @@ def write_motor_position_sin(time, a_right, c_right, T_right) :
     servo.write_position(q_dynamixel_right, ID_right)
     return q_dynamixel_right
 
+'''
+def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_left) :
+    ID_right = [1,2]
+    ID_left = [3,4]
+    a_dyna_right = a_right * 2048/180
+    c_dyna_right = c_right * 2048/180 
+    a_dyna_left = a_left * 2048/180
+    c_dyna_left = c_left * 2048/180 
+    q_dynamixel_right = sin_position(time, a_dyna_right, c_dyna_right, T_right)
+    servo.write_position(q_dynamixel_right, ID_right)
+    q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
+    servo.write_position(q_dynamixel_left, ID_left)
+    return q_dynamixel_right
+'''
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
@@ -76,14 +90,13 @@ while True :
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
     
-    print("waiting for param")
-    param_1 = data.get("param_1")
-    param_2 = data.get("param_2")
-    param_3 = data.get("param_3")
+    a_right = data.get("a_right")
+    c_right = data.get("c_right")
+    T_right = data.get("T_right")
     
     State = data.get("State")
      
-    motor_command = 180*write_motor_position_sin(t, param_1, param_2, param_3)/2048
+    motor_command = 180*write_motor_position_sin(t, a_right, c_right, T_right)/2048
 
     read_position = 180*servo.read_position(1)/2048
     json_position = json.dumps({ "Motor_position" : read_position, "Motor_command" : motor_command})
