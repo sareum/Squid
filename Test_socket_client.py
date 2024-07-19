@@ -95,11 +95,11 @@ while True :
     
     State = data.get("State")
      
-    motor_command_right, motor_command_left = 180*write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
+    [motor_command_right, motor_command_left] = 180*write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
 
     print(motor_command_right)
     print(motor_command_left)
-    
+
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
 
