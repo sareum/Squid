@@ -64,7 +64,7 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
     
-    return q_dynamixel_right, q_dynamixel_left 
+    return [q_dynamixel_right, q_dynamixel_left] 
 
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
@@ -94,9 +94,12 @@ while True :
     T_left = data.get("T_left")
     
     State = data.get("State")
-     
-    [motor_command_right, motor_command_left] = 180*write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
-
+ 
+    motor_command = 180*write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
+    
+    motor_command_right = motor_command[0]
+    motor_command_left = motor_command[1] 
+    
     print(motor_command_right)
     print(motor_command_left)
 
