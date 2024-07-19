@@ -96,10 +96,10 @@ while True :
     
     State = data.get("State")
  
-    motor_command = 180*write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)/2048
+    motor_command = write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)
     print(motor_command)
-    motor_command_right = motor_command[0]
-    motor_command_left = motor_command[1] 
+    motor_command_right = motor_command[0] * 180/2048
+    motor_command_left = motor_command[1]  * 180/2048
     
     print(motor_command_right)
     print(motor_command_left)
