@@ -78,10 +78,11 @@ read_position_right = []
 read_position_left = []
 timer = time.time()
 motor_command = []
-
+t = timer
 while True :
 
-    t = time.time() - timer
+    t += 0.01
+    #time.time() - timer
 
     # Receive data from the client
     data = client_socket.recv(1024)
