@@ -85,7 +85,7 @@ while True :
     t = time.time() - timer
 
     # Receive data from the client
-    data = client_socket.recv(1024)
+    data = client_socket.recv(2048)
     data = json.loads(data.decode())
     
     a_right = data.get("a_right")
