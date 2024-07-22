@@ -78,12 +78,11 @@ read_position_right = []
 read_position_left = []
 timer = time.time()
 motor_command = []
-t = timer
+
 while True :
 
-    t += 0.01
-    #time.time() - timer
-
+    t = time.time() - timer
+    print(t)
     # Receive data from the client
     data = client_socket.recv(1024)
     data = json.loads(data.decode())
