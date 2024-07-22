@@ -121,7 +121,7 @@ while True :
         "Motor_command_left" : motor_command_left,
         "time": t
     })
-    time.sleep(0.01)
+    time.sleep(0.05)
     if State == 0  :
         break
 
