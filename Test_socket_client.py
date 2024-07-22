@@ -133,6 +133,7 @@ for i in range(len(data_to_send)):
     time.sleep(0.1)
 
 client_socket.send('end'.encode())
+print("sent the end")
 
 #json_position = json.dumps(data_to_send)
 #client_socket.send(json_position.encode())
