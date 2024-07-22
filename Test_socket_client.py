@@ -63,6 +63,7 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
+    
     data = [q_dynamixel_right, q_dynamixel_left]
     return data 
 
@@ -98,8 +99,8 @@ while True :
  
     motor_command = write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)
     
-    motor_command_right = motor_command[0] * 180/2048
-    motor_command_left = motor_command[1]  * 180/2048
+    motor_command_right = 180*motor_command[0]/2048
+    motor_command_left = 180*motor_command[1]/2048
 
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
