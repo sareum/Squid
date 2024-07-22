@@ -124,8 +124,15 @@ while True :
     if State == 0  :
         break
 
-json_position = json.dumps(data_to_send)
-client_socket.send(json_position.encode())
+len = json.dumps(len(data_to_send))
+client_socket.send(len.encode())
+
+for i in range(len(data_to_send)):
+    json_position = json.dumps(data_to_send[i])
+    client_socket.send(json_position.encode())
+
+#json_position = json.dumps(data_to_send)
+#client_socket.send(json_position.encode())
 
 # Close the client socket
 client_socket.close()
