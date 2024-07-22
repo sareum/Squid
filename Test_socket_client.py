@@ -130,6 +130,7 @@ for i in range(len(data_to_send)):
     print('sending the',i,'batch...')
     json_position = json.dumps(data_to_send[i])
     client_socket.send(json_position.encode())
+    time.sleep(0.1)
 
 client_socket.send('end'.encode())
 
