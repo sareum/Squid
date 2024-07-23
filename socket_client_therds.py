@@ -19,6 +19,9 @@ server_socket.bind(server_address)
 server_socket.listen(1)
 
 print("Waiting for a connection...")
+lock = Lock()
+data_to_send = []
+running = True
 client_socket, client_address = server_socket.accept()
 
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
@@ -51,9 +54,7 @@ servo.set_operating_mode("position", ID="all")
 servo.write_position(2040, [1,2,3,4])
 time.sleep(1)
 
-lock = Lock()
-data_to_send = []
-running = True
+
 
 def communication_thread():
     global data_to_send
