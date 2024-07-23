@@ -58,6 +58,7 @@ time.sleep(1)
 
 def communication_thread():
     global data_to_send
+    running = True
     while running:
         data = client_socket.recv(1024)
         if not data:
