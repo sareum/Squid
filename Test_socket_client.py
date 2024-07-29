@@ -51,14 +51,13 @@ def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
     t_mod = t % period
     
     if t_mod < rise_time:
-        position = 2*a * (t_mod / rise_time) 
+        position = a * (t_mod / rise_time) + c
     elif t_mod < rise_time + fall_time:
-        position = 2*a * (1 - (t_mod - rise_time) / fall_time) 
+        position = a * (1 - (t_mod - rise_time) / fall_time) + c
     else:
-        position = 2*a * (t_mod - rise_time - fall_time) / rise_time 
-    position =-position+(200)+a-c
-    return position , t_mod
-
+        position = a * (t_mod - rise_time - fall_time) / rise_time + c
+    
+    return position, t_mod
 
 
 
@@ -112,7 +111,7 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
 # Initialize motor position
-servo.write_position(2260, [1,2,3,4]) #200°
+servo.write_position(2040, [1,2,3,4]) #200° è 2260 
 sleep(1)
 
 read_position_right = []
