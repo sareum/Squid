@@ -51,11 +51,11 @@ def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
     t_mod = t % period
     
     if t_mod < rise_time:
-        position = a * (t_mod / rise_time) + c
+        position = 2*a * (t_mod / rise_time) + c - a
     elif t_mod < rise_time + fall_time:
-        position = a * (1 - (t_mod - rise_time) / fall_time) + c
+        position = 2*a * (1 - (t_mod - rise_time) / fall_time) + c - a
     else:
-        position = a * (t_mod - rise_time - fall_time) / rise_time + c
+        position = 2*a * (t_mod - rise_time - fall_time) / rise_time + c - a
     
     return position, t_mod
 
