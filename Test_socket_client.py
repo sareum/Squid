@@ -125,7 +125,7 @@ while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
         data = json.loads(data.decode())
-        if data == "cameraok":
+        if data == data.get("cameraok"):
             camera_ready  = True
 
     t = time.time() - timer
