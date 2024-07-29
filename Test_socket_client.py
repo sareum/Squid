@@ -128,7 +128,7 @@ while True :
         if data.get("message") == "cameraok":
             camera_ready  = True
         time.sleep(0.1)
-    print("cameraok recieved")
+        print("cameraok recieved")
 
     t = time.time() - timer
 
