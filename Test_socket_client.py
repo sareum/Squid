@@ -56,7 +56,7 @@ def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
         position = 2*a * (1 - (t_mod - rise_time) / fall_time) 
     else:
         position = 2*a * (t_mod - rise_time - fall_time) / rise_time 
-    position =-position+(200)
+    position =-position+(200)+a-c
     return position , t_mod
 
 
