@@ -117,7 +117,7 @@ sleep(1)
 
 read_position_right = []
 read_position_left = []
-timer = time.time()
+
 motor_command = []
 data_to_send = []
 camera_ready = False
@@ -127,8 +127,10 @@ while True :
         data = json.loads(data.decode())
         if data.get("message") == "cameraok":
             camera_ready  = True
+            timer = time.time()
         time.sleep(0.1)
         print("cameraok recieved")
+       
 
     t = time.time() - timer
 
