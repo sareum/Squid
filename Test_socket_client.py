@@ -2,7 +2,6 @@ import time
 import numpy as np
 import socket
 import json
-from scipy import signal
 import numpy as np
 
 from dynamixel_controller import Dynamixel
@@ -42,8 +41,20 @@ def sin_position(time, a, c, T) :
     position = a*np.sin(2*np.pi/T*time) + c 
     return position
 
-def saw_tooth(time, a, c, T) :
-    position = signal.sawtooth(a * 2*np.pi/T * time, 0.8) + c
+def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
+    period = T
+    rise_time = rise_time_ratio * period
+    fall_time = fall_time_ratio * period
+    
+    t_mod = t % period
+    
+    if t_mod < rise_time:
+        position = a * (t_mod / rise_time) + c
+    elif t_mod < rise_time + fall_time:
+        position = a * (1 - (t_mod - rise_time) / fall_time) + c
+    else:
+        position = a * (t_mod - rise_time - fall_time) / rise_time + c
+    
     return position
 
 def go_forward(time) :
@@ -74,18 +85,18 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     data = [q_dynamixel_right, q_dynamixel_left]
     return data 
 
-def write_motor_position_saw(time, a_right, c_right, T_right, a_left, c_left, T_left) :
+def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_right, fall_time_ratio_right, a_left, c_left, T_left, rise_time_ratio_left, fall_time_ratio_left):
     ID_right = [1,2]
     ID_left = [3,4]
 
-    a_dyna_right = a_right * 2048/180
-    c_dyna_right = c_right * 2048/180 
-    a_dyna_left = a_left * 2048/180
-    c_dyna_left = c_left * 2048/180 
+    a_dyna_right = a_right * 2048 / 180
+    c_dyna_right = c_right * 2048 / 180
+    a_dyna_left = a_left * 2048 / 180
+    c_dyna_left = c_left * 2048 / 180
 
-    q_dynamixel_right = saw_tooth(time, a_dyna_right, c_dyna_right, T_right)
+    q_dynamixel_right = triangle_wave_position(t, a_dyna_right, c_dyna_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
     servo.write_position(q_dynamixel_right, ID_right)
-    q_dynamixel_left = saw_tooth(time, a_dyna_left, c_dyna_left, T_left)
+    q_dynamixel_left = triangle_wave_position(t, a_dyna_left, c_dyna_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
     servo.write_position(q_dynamixel_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
@@ -122,7 +133,7 @@ while True :
     
     State = data.get("State")
  
-    motor_command = write_motor_position_saw(t, a_right, c_right, T_right, a_left, c_left, T_left)
+    motor_command = write_motor_position_triangle(t, a_right, c_right, T_right, 0.7, 0.3, a_left, c_left, T_left, 0.7, 0.3)
     
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
