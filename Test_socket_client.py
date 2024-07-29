@@ -123,13 +123,12 @@ while True :
     if State == 0  :
         break
 
-
 print('starting to send data...')
 for i in range(len(data_to_send)):
     print('sending the',i,'batch...')
     json_position = json.dumps(data_to_send[i])
     client_socket.send(json_position.encode())
-    time.sleep(0.3)
+    time.sleep(1)
 
 message = 'end'
 message_json = json.dumps(message)
