@@ -120,8 +120,13 @@ read_position_left = []
 timer = time.time()
 motor_command = []
 data_to_send = []
-
+camera_ready = False
 while True :
+    while camera_ready == False:
+        data = client_socket.recv(1024)
+        data = json.loads(data.decode())
+        if data == "cameraok":
+            camera_ready  = True
 
     t = time.time() - timer
 
@@ -152,7 +157,7 @@ while True :
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
         print('request sent')
-        time.sleep(0.2)
+        time.sleep(0.5)
         
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
