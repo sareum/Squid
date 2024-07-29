@@ -196,7 +196,7 @@ client_socket.send(message_json.encode())
 time.sleep(2)'''
 print('starting to send data...')
 for i in range(len(data_to_send)):
-    print('sending the',i,'batch...')
+    print('sending the',i,' batch...')
     json_position = json.dumps(data_to_send[i])
     client_socket.send(json_position.encode())
     if i == 0:
