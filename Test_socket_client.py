@@ -185,6 +185,7 @@ while True :
     })
     
     if t >20:
+        print("sono nell'if dei 20 secondi")
         State=0
         break
 '''message = 'start'
