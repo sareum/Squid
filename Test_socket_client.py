@@ -126,7 +126,7 @@ while True :
     t = time.time() - timer
 
     # Receive data from the client
-    data = client_socket.recv(1024)
+    '''data = client_socket.recv(1024)
     data = json.loads(data.decode())
     
     a_right = data.get("a_right")
@@ -138,7 +138,13 @@ while True :
     T_left = data.get("T_left")
     
     State = data.get("State")
- 
+ '''
+    a_right = 45
+    c_right = 180
+    T_right = 1
+    a_left = 45
+    c_left = 180
+    T_left = 1
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
     print("t_mod: ",t_mod)
     motor_command_right = 180*motor_command[0]/2048
@@ -164,7 +170,8 @@ while True :
         "Motor_command_left" : motor_command_left
     })
     
-    if State == 0  :
+    if t >20:
+        State=0
         break
 '''message = 'start'
 message_json = json.dumps(message)
