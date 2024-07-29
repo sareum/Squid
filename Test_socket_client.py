@@ -2,6 +2,9 @@ import time
 import numpy as np
 import socket
 import json
+from scipy import signal
+import numpy as np
+
 from dynamixel_controller import Dynamixel
 from time import sleep
 
@@ -39,6 +42,10 @@ def sin_position(time, a, c, T) :
     position = a*np.sin(2*np.pi/T*time) + c 
     return position
 
+def saw_tooth(time, a, c, T) :
+    position = signal.sawtooth(a * 2*np.pi/T * time, 0.8) + c
+    return position
+
 def go_forward(time) :
     IDs = [1,2,3,4]
     a = 45
@@ -62,6 +69,23 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     q_dynamixel_right = sin_position(time, a_dyna_right, c_dyna_right, T_right)
     servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left = sin_position(time, a_dyna_left, c_dyna_left, T_left)
+    servo.write_position(q_dynamixel_left, ID_left)
+    
+    data = [q_dynamixel_right, q_dynamixel_left]
+    return data 
+
+def write_motor_position_saw(time, a_right, c_right, T_right, a_left, c_left, T_left) :
+    ID_right = [1,2]
+    ID_left = [3,4]
+
+    a_dyna_right = a_right * 2048/180
+    c_dyna_right = c_right * 2048/180 
+    a_dyna_left = a_left * 2048/180
+    c_dyna_left = c_left * 2048/180 
+
+    q_dynamixel_right = saw_tooth(time, a_dyna_right, c_dyna_right, T_right)
+    servo.write_position(q_dynamixel_right, ID_right)
+    q_dynamixel_left = saw_tooth(time, a_dyna_left, c_dyna_left, T_left)
     servo.write_position(q_dynamixel_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
@@ -98,10 +122,14 @@ while True :
     
     State = data.get("State")
  
-    motor_command = write_motor_position_sin(t, a_right, c_right, T_right, a_left, c_left, T_left)
+    motor_command = write_motor_position_saw(t, a_right, c_right, T_right, a_left, c_left, T_left)
     
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
+
+    if(motor_command_right < (c_right - a_right + 3)):
+        print("fine periodo destro")
+        print(t)
 
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
