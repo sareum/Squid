@@ -41,6 +41,8 @@ def sin_position(time, a, c, T) :
     position = a*np.sin(2*np.pi/T*time) + c 
     return position
 
+
+
 def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
     period = T
     rise_time = rise_time_ratio * period
@@ -55,7 +57,11 @@ def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
     else:
         position = 2*a * (t_mod - rise_time - fall_time) / rise_time + c - a
     
-    return position
+    return position, t_mod
+
+
+
+
 
 def go_forward(time) :
     IDs = [1,2,3,4]
@@ -94,13 +100,13 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     a_dyna_left = a_left * 2048 / 180
     c_dyna_left = c_left * 2048 / 180
 
-    q_dynamixel_right = triangle_wave_position(t, a_dyna_right, c_dyna_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
+    q_dynamixel_right,t_mod = triangle_wave_position(t, a_dyna_right, c_dyna_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
     servo.write_position(q_dynamixel_right, ID_right)
-    q_dynamixel_left = triangle_wave_position(t, a_dyna_left, c_dyna_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+    q_dynamixel_left,_ = triangle_wave_position(t, a_dyna_left, c_dyna_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
     servo.write_position(q_dynamixel_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
-    return data 
+    return data,t_mod
 
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
@@ -133,14 +139,13 @@ while True :
     
     State = data.get("State")
  
-    motor_command = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
-    
+    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
+    print("t_mod: ",t_mod)
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
 
     if(motor_command_right < (c_right - a_right + 3)):
-        print("fine periodo destro")
-        print(t)
+        pass
 
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
