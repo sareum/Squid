@@ -49,11 +49,11 @@ def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
     t_mod = t % period
     
     if t_mod < rise_time:
-        position = a * (t_mod / rise_time) + c
+        position = a * (t_mod / rise_time) + c - a
     elif t_mod < rise_time + fall_time:
-        position = a * (1 - (t_mod - rise_time) / fall_time) + c
+        position = a * (1 - (t_mod - rise_time) / fall_time) + c - a
     else:
-        position = a * (t_mod - rise_time - fall_time) / rise_time + c
+        position = a * (t_mod - rise_time - fall_time) / rise_time + c - a
     
     return position
 
@@ -133,7 +133,7 @@ while True :
     
     State = data.get("State")
  
-    motor_command = write_motor_position_triangle(t, a_right, c_right, T_right, 0.7, 0.3, a_left, c_left, T_left, 0.7, 0.3)
+    motor_command = write_motor_position_triangle(t, a_right, c_right, T_right, 0.8, 0.2, a_left, c_left, T_left, 0.8, 0.2)
     
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
