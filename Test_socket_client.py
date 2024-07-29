@@ -147,6 +147,13 @@ while True :
     T_left = 1
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
     print("t_mod: ",t_mod)
+    if t_mod > 0.9:
+        message = 'ready'
+        message_json = json.dumps(message)
+        client_socket.send(message_json.encode())
+        print('request sent')
+        time.sleep(0.2)
+        
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
 
