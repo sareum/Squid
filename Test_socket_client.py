@@ -133,7 +133,7 @@ while True :
     
     State = data.get("State")
  
-    motor_command = write_motor_position_triangle(t, a_right, c_right, T_right, 0.8, 0.2, a_left, c_left, T_left, 0.8, 0.2)
+    motor_command = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
     
     motor_command_right = 180*motor_command[0]/2048
     motor_command_left = 180*motor_command[1]/2048
