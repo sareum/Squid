@@ -124,7 +124,7 @@ while True :
     if State == 0  :
         break
 
-json_position = len(data_to_send)
+json_position = [len(data_to_send)]
 client_socket.send(json_position.encode())
 
 print('starting to send data...')
