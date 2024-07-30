@@ -138,9 +138,10 @@ c_right = 180
 T = 1
 a_left = 75
 c_left = 180
-amplitude_timeline_vector = []
-amplitude_timeline_vector.append(a_right)
-
+amplitude_timeline_vector_right = []
+amplitude_timeline_vector_right.append(a_right)
+amplitude_timeline_vector_left = []
+amplitude_timeline_vector_left.append(a_left)
 while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
@@ -179,11 +180,11 @@ while True :
         #check if something has been sent:
         data = client_socket.recv(1024)
         data = json.loads(data.decode())  
-        amplitude_timeline_vector.append(data.get("data"))
+        amplitude_timeline_vector_right.append(data.get("data1"))
+        amplitude_timeline_vector_left.append(data.get("data2"))
 
-
-    a_right = amplitude_timeline_vector[-1]
-    a_left = amplitude_timeline_vector[-1]    
+    a_right = amplitude_timeline_vector_right[-1]
+    a_left = amplitude_timeline_vector_left[-1]    
     motor_command_right = motor_command[0]
     motor_command_left = motor_command[1]
 
