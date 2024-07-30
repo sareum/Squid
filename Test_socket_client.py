@@ -131,10 +131,7 @@ while True :
             print("cameraok recieved")
         time.sleep(0.1)
         
-       
-    
     t = time.time() - timer
-    time_values.append(t)
     # Receive data from the client
     '''data = client_socket.recv(1024)
     data = json.loads(data.decode())
@@ -161,7 +158,9 @@ while True :
         message = 'ready'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
-        print('request sent')
+        t = time.time() - timer
+        time_values.append(t)
+        print('request sent. Time: ', t)
         time.sleep(0.1)
         
     motor_command_right = 180*motor_command[0]/2048
