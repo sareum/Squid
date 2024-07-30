@@ -232,7 +232,7 @@ while True :
         "Time": time_values[-1]
     })
     
-    if t >10:
+    if t >50:
         State=0
         break
 
