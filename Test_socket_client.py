@@ -67,7 +67,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio,its_opening
         # Gestione di eventuali errori: questa parte non dovrebbe essere raggiunta
         position = peak_value
 
-    return position, t_mod,its_opening,was_closing
+    return position, t_mod,its_opening
 
 
 
@@ -109,9 +109,9 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     #a_dyna_left = a_left * 2048 / 180
     #c_dyna_left = c_left * 2048 / 180
 
-    q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right,its_opening,was_closing)
+    q_dynamixel_right,t_mod,its_opening = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right,its_opening,was_closing)
     #position in deg
-    q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,its_opening,was_closing)
+    q_dynamixel_left,_,its_opening = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,its_opening,was_closing)
     
     position_motor_step_right = q_dynamixel_right * 2048 / 180
     position_motor_step_left = q_dynamixel_left * 2048 / 180
@@ -119,7 +119,7 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     servo.write_position(position_motor_step_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
-    return data,t_mod
+    return data,t_mod,its_opening
 
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
@@ -183,7 +183,7 @@ while True :
     State = data.get("State")
  '''
 
-    motor_command,t_mod,its_opening,was_closing = write_motor_position_triangle(t, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration,its_opening,was_closing)
+    motor_command,t_mod,its_opening = write_motor_position_triangle(t, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration,its_opening,was_closing)
      
     # check if a period T has expired:
     if its_opening: 
