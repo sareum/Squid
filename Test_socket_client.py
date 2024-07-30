@@ -133,10 +133,10 @@ camera_ready = False
 time_values = []
 
 #temp values:
-a_right = 75
+a_right = 90
 c_right = 180
 T = 2
-a_left = 75
+a_left = 25
 c_left = 180
 amplitude_timeline_vector_right = []
 amplitude_timeline_vector_right.append(a_right)
@@ -171,7 +171,7 @@ while True :
 
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T, 0.85, 0.15, a_left, c_left, T, 0.85, 0.15)
     # check if a period T has expired:
-    if t%T>0.90:
+    '''if t%T>0.90:
         message = 'ready'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
@@ -182,7 +182,7 @@ while True :
         data = json.loads(data.decode())  
         print("time after response: ", time.time() - timer)
         amplitude_timeline_vector_right.append(data.get("data1"))
-        amplitude_timeline_vector_left.append(data.get("data2"))
+        amplitude_timeline_vector_left.append(data.get("data2"))'''
 
     a_right = amplitude_timeline_vector_right[-1]
     a_left = amplitude_timeline_vector_left[-1]    
