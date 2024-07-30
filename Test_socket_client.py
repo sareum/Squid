@@ -45,7 +45,7 @@ def sin_position(time, a, c, T) :
 
 def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     period = T
-    peak_value = 200  # Valore massimo fisso
+    peak_value = 210  # Valore massimo fisso
     valley_value = peak_value - a  # Valore minimo variabile in base all'ampiezza
 
     rise_time = rise_time_ratio * period
@@ -164,7 +164,7 @@ while True :
     a_left = 50
     c_left = 180
     T_left = 1
-    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
+    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.8, 0.2, a_left, c_left, T_left, 0.8, 0.2)
     print("motor Command right",motor_command[0])
     print("t_mod: ",t_mod,"time: ", t)
     if t_mod >0.15 and t_mod< 0.25:
