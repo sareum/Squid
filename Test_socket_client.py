@@ -132,6 +132,14 @@ data_to_send = []
 camera_ready = False
 time_values = []
 
+#temp values:
+a_right = 75
+c_right = 180
+T = 1
+a_left = 75
+c_left = 180
+amplitude_timeline_vector = []
+
 while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
@@ -158,22 +166,23 @@ while True :
     
     State = data.get("State")
  '''
-    a_right = 75
-    c_right = 180
-    T_right = 1
-    a_left = 75
-    c_left = 180
-    T_left = 1
-    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.8, 0.2, a_left, c_left, T_left, 0.8, 0.2)
-    print("motor Command right",motor_command[0])
-    print("t_mod: ",t_mod,"time: ", t)
-    if t_mod >0.15 and t_mod< 0.25:
+
+    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T, 0.8, 0.2, a_left, c_left, T, 0.8, 0.2)
+    # check if a period T has expired:
+    if t%T>0.90:
         message = 'ready'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
         print('request sent. Time: ', t)
         time.sleep(0.1)
-        
+        #check if something has been sent:
+        data = client_socket.recv(1024)
+        data = json.loads(data.decode())  
+        amplitude_timeline_vector.append(data.get("data"))
+
+
+    a_right = amplitude_timeline_vector[-1]
+    a_left = amplitude_timeline_vector[-1]    
     motor_command_right = motor_command[0]
     motor_command_left = motor_command[1]
 
@@ -199,10 +208,7 @@ while True :
     if t >10:
         State=0
         break
-'''message = 'start'
-message_json = json.dumps(message)
-client_socket.send(message_json.encode())
-time.sleep(2)'''
+
 print('starting to send data...')
 for i in range(len(data_to_send)):
     print('sending the',i,' batch...')
