@@ -142,6 +142,10 @@ amplitude_timeline_vector_right = []
 amplitude_timeline_vector_right.append(a_right)
 amplitude_timeline_vector_left = []
 amplitude_timeline_vector_left.append(a_left)
+
+opening_ratio = 0.7
+closing_ration = 1-opening_ratio
+
 while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
@@ -169,7 +173,7 @@ while True :
     State = data.get("State")
  '''
 
-    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T, 0.8, 0.2, a_left, c_left, T, 0.8, 0.2)
+    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
     # check if a period T has expired:
     '''if t%T>0.90:
         message = 'ready'
