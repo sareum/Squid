@@ -184,7 +184,7 @@ while True :
         "Motor_position_right" : read_position_right, 
         "Motor_position_left" : read_position_left, 
         "Motor_command_right" : motor_command_right, 
-        "Motor_command_left" : motor_command_left
+        "Motor_command_left" : motor_command_left,
         "Time": time_values[-1]
     })
     
