@@ -149,7 +149,7 @@ amplitude_timeline_vector_right.append(a_right)
 amplitude_timeline_vector_left = []
 amplitude_timeline_vector_left.append(a_left)
 
-opening_ratio = 0.8
+opening_ratio = 0.9
 closing_ration = 1-opening_ratio
 
 #starting variable for closing and opening state:
