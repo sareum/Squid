@@ -133,17 +133,17 @@ camera_ready = False
 time_values = []
 
 #temp values:
-a_right = 90
+a_right = 75
 c_right = 180
 T = 1
-a_left = 35
+a_left = 75
 c_left = 180
 amplitude_timeline_vector_right = []
 amplitude_timeline_vector_right.append(a_right)
 amplitude_timeline_vector_left = []
 amplitude_timeline_vector_left.append(a_left)
 
-opening_ratio = 0.7
+opening_ratio = 0.8
 closing_ration = 1-opening_ratio
 
 while True :
