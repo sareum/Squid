@@ -101,17 +101,18 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     ID_left = [3,4]
 
     #a_dyna_right = a_right * 2048 / 180
-    c_dyna_right = c_right * 2048 / 180
+    #c_dyna_right = c_right * 2048 / 180
     #a_dyna_left = a_left * 2048 / 180
-    c_dyna_left = c_left * 2048 / 180
+    #c_dyna_left = c_left * 2048 / 180
 
     q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
+    #position in deg
     q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
     
-    a_dyna_right = a_right * 2048 / 180
-    a_dyna_left = a_left * 2048 / 180
-    servo.write_position(q_dynamixel_right, ID_right)
-    servo.write_position(q_dynamixel_left, ID_left)
+    position_motor_step_right = q_dynamixel_right * 2048 / 180
+    position_motor_step_left = q_dynamixel_left * 2048 / 180
+    servo.write_position(position_motor_step_right, ID_right)
+    servo.write_position(position_motor_step_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
     return data,t_mod
@@ -176,9 +177,7 @@ while True :
     motor_command_right = motor_command[0]
     motor_command_left = motor_command[1]
 
-    if(motor_command_right < (c_right - a_right + 3)):
-        pass
-
+    #read position in  deg
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
 
