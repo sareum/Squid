@@ -111,7 +111,7 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
 # Initialize motor position
-servo.write_position(2040, [1,2,3,4]) #200° è 2260 
+servo.write_position(2260, [1,2,3,4]) #200° è 2260 
 sleep(1)
 
 read_position_right = []
