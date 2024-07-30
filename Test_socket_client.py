@@ -141,7 +141,7 @@ time_values = []
 #temp values:
 a_right = 75
 c_right = 180
-T = 2
+T = 1
 a_left = 75
 c_left = 180
 amplitude_timeline_vector_right = []
@@ -207,20 +207,18 @@ while True :
 
     a_right = amplitude_timeline_vector_right[-1]
     a_left = amplitude_timeline_vector_left[-1]    
-    motor_command_right = motor_command[0]
+    '''
+     motor_command_right = motor_command[0]
     motor_command_left = motor_command[1]
 
     #read position in  deg
     read_position_right = 180*servo.read_position(1)/2048
     read_position_left = 180*servo.read_position(3)/2048
 
-    '''
     json_position = json.dumps({ "Motor_position_right" : read_position_right, "Motor_position_left" : read_position_left, "Motor_command_right" : motor_command_right, "Motor_command_left" : motor_command_left})
 
     # Sends answer to client
     client_socket.send(json_position.encode())
-    '''
-    
     data_to_send.append({ 
         "Motor_position_right" : read_position_right, 
         "Motor_position_left" : read_position_left, 
@@ -228,11 +226,12 @@ while True :
         "Motor_command_left" : motor_command_left,
         "Time": time_values[-1]
     })
+    '''
     
     if t >50:
         State=0
         break
-
+'''
 print('starting to send data...')
 for i in range(len(data_to_send)):
     print('sending the',i,' batch...')
@@ -246,7 +245,7 @@ for i in range(len(data_to_send)):
 message = 'end'
 message_json = json.dumps(message)
 client_socket.send(message_json.encode())
-print("sent the end")
+print("sent the end")'''
 
 #json_position = json.dumps(data_to_send)
 #client_socket.send(json_position.encode())
