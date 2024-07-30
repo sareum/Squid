@@ -100,7 +100,7 @@ def write_motor_position_sin(time, a_right, c_right, T_right, a_left, c_left, T_
     data = [q_dynamixel_right, q_dynamixel_left]
     return data 
 
-def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_right, fall_time_ratio_right, a_left, c_left, T_left, rise_time_ratio_left, fall_time_ratio_left):
+def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_right, fall_time_ratio_right, a_left, c_left, T_left, rise_time_ratio_left, fall_time_ratio_left,its_opening,was_closing):
     ID_right = [1,2]
     ID_left = [3,4]
 
@@ -109,9 +109,9 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     #a_dyna_left = a_left * 2048 / 180
     #c_dyna_left = c_left * 2048 / 180
 
-    q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
+    q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right,its_opening,was_closing)
     #position in deg
-    q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+    q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,its_opening,was_closing)
     
     position_motor_step_right = q_dynamixel_right * 2048 / 180
     position_motor_step_left = q_dynamixel_left * 2048 / 180
