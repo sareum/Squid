@@ -139,6 +139,7 @@ T = 1
 a_left = 75
 c_left = 180
 amplitude_timeline_vector = []
+amplitude_timeline_vector.append(a_right)
 
 while True :
     while camera_ready == False:
