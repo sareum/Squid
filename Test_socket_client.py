@@ -106,9 +106,12 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     c_dyna_left = c_left * 2048 / 180
 
     q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
-    #servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
-    #servo.write_position(q_dynamixel_left, ID_left)
+    
+    a_dyna_right = a_right * 2048 / 180
+    a_dyna_left = a_left * 2048 / 180
+    servo.write_position(q_dynamixel_right, ID_right)
+    servo.write_position(q_dynamixel_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
     return data,t_mod
@@ -117,7 +120,7 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
 # Initialize motor position
-servo.write_position(2260, [1,2,3,4]) #200° è 2260 
+servo.write_position(2276, [1,2,3,4]) #200° è 2276 
 sleep(1)
 
 read_position_right = []
@@ -154,10 +157,10 @@ while True :
     
     State = data.get("State")
  '''
-    a_right = 45
+    a_right = 90
     c_right = 180
     T_right = 1
-    a_left = 45
+    a_left = 90
     c_left = 180
     T_left = 1
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
