@@ -100,14 +100,14 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     ID_right = [1,2]
     ID_left = [3,4]
 
-    a_dyna_right = a_right * 2048 / 180
+    #a_dyna_right = a_right * 2048 / 180
     c_dyna_right = c_right * 2048 / 180
-    a_dyna_left = a_left * 2048 / 180
+    #a_dyna_left = a_left * 2048 / 180
     c_dyna_left = c_left * 2048 / 180
 
-    q_dynamixel_right,t_mod = triangle_wave_position(t, a_dyna_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
+    q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
     #servo.write_position(q_dynamixel_right, ID_right)
-    q_dynamixel_left,_ = triangle_wave_position(t, a_dyna_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+    q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
     #servo.write_position(q_dynamixel_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
