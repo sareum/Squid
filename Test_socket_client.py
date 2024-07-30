@@ -170,8 +170,8 @@ while True :
         print('request sent. Time: ', t)
         time.sleep(0.1)
         
-    motor_command_right = 180*motor_command[0]/2048
-    motor_command_left = 180*motor_command[1]/2048
+    motor_command_right = motor_command[0]
+    motor_command_left = motor_command[1]
 
     if(motor_command_right < (c_right - a_right + 3)):
         pass
