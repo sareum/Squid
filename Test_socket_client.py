@@ -200,6 +200,7 @@ while True :
         print("time after response: ", time.time() - timer)
         amplitude_timeline_vector_right.append(data.get("data1"))
         amplitude_timeline_vector_left.append(data.get("data2"))
+        its_opening = False
 
     a_right = amplitude_timeline_vector_right[-1]
     a_left = amplitude_timeline_vector_left[-1]    
