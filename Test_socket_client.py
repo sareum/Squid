@@ -176,7 +176,7 @@ while True :
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
     # check if a period T has expired:
     if t%T>0.90: 
-        message = 'ready'
+        message = 'r'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
         print('request sent. Time: ', t)
