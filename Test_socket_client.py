@@ -190,19 +190,16 @@ while True :
  '''
     second_scale_time = time.time()-relative_timer
     motor_command,t_mod = write_motor_position_triangle(second_scale_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
-    print(its_opening)
     # check if a period T has expired:
     if its_opening: 
         message = 'ready'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
-        print('request sent. Time: ', t)
         time.sleep(0.05)
         #check if something has been sent:
         data = client_socket.recv(1024)
         data = json.loads(data.decode())
         relative_timer = time.time()  
-        print("time after response: ", time.time() - timer)
         amplitude_timeline_vector_right.append(data.get("data1"))
         amplitude_timeline_vector_left.append(data.get("data2"))
         its_opening = False
