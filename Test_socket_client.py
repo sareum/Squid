@@ -43,22 +43,27 @@ def sin_position(time, a, c, T) :
 
 
 
-def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
+def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     period = T
+    peak_value = 200  # valore massimo fisso
+    valley_value = peak_value - a  # valore minimo variabile in base all'ampiezza
+    
     rise_time = rise_time_ratio * period
     fall_time = fall_time_ratio * period
-    
-    t_mod = t % period
-    
-    if t_mod < rise_time:
-        position = -2*a * (t_mod / rise_time) +200
-    elif t_mod < rise_time + fall_time:
-        position = -2*a * (1 - (t_mod - rise_time) / fall_time) +200
-    else:
-        position = -2*a * (t_mod - rise_time - fall_time) / rise_time +200
-    
-    return position, t_mod
 
+    t_mod = t % period  # tempo modulato per il periodo
+
+    if t_mod < rise_time:
+        # Fase di salita
+        position = peak_value - (peak_value - valley_value) * (t_mod / rise_time)
+    elif t_mod < rise_time + fall_time:
+        # Fase di discesa
+        position = valley_value + (peak_value - valley_value) * ((t_mod - rise_time) / fall_time)
+    else:
+        # Reset dell'onda, questo punto non è mai raggiunto in un'onda triangolare classica, ma aggiunto per sicurezza
+        position = peak_value
+
+    return position, t_mod
 
 
 
