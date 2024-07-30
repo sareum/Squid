@@ -56,7 +56,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     if t_mod < rise_time:
         # Fase di salita: da 200 a (200 - a)
         position = peak_value - (peak_value - valley_value) * (t_mod / rise_time)
-    elif t_mod < rise_time + fall_time:
+    elif rise_time< t_mod < rise_time + fall_time:
         # Fase di discesa: da (200 - a) a 200
         position = valley_value + (peak_value - valley_value) * ((t_mod - rise_time) / fall_time)
     else:
