@@ -158,10 +158,10 @@ while True :
     
     State = data.get("State")
  '''
-    a_right = 85
+    a_right = 75
     c_right = 180
     T_right = 1
-    a_left = 85
+    a_left = 75
     c_left = 180
     T_left = 1
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.8, 0.2, a_left, c_left, T_left, 0.8, 0.2)
