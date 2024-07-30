@@ -135,7 +135,7 @@ time_values = []
 #temp values:
 a_right = 75
 c_right = 180
-T = 1.5
+T = 1
 a_left = 75
 c_left = 180
 amplitude_timeline_vector_right = []
