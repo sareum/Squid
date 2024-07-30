@@ -43,7 +43,7 @@ def sin_position(time, a, c, T) :
 
 
 
-def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
+def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio,its_opening,was_closing):
     period = T
     peak_value = 220  # Valore massimo fisso
     valley_value = peak_value - a  # Valore minimo variabile in base all'ampiezza
@@ -53,17 +53,21 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
 
     t_mod = t % period  # Tempo modulato per il periodo
 
-    if t_mod < rise_time:
+    if t_mod < rise_time: #aprendo
         # Fase di salita: da 200 a (200 - a)
         position = peak_value - (peak_value - valley_value) * (t_mod / rise_time)
-    elif rise_time< t_mod < rise_time + fall_time:
+        if was_closing == True:
+            its_opening = True
+            was_closing = False
+    elif rise_time< t_mod < rise_time + fall_time: #chiudendo
         # Fase di discesa: da (200 - a) a 200
         position = valley_value + (peak_value - valley_value) * ((t_mod - rise_time) / fall_time)
+        was_closing = True
     else:
         # Gestione di eventuali errori: questa parte non dovrebbe essere raggiunta
         position = peak_value
 
-    return position, t_mod
+    return position, t_mod,its_opening,was_closing
 
 
 
@@ -146,6 +150,12 @@ amplitude_timeline_vector_left.append(a_left)
 opening_ratio = 0.8
 closing_ration = 1-opening_ratio
 
+#starting variable for closing and opening state:
+was_closing = False
+its_opening = False
+
+
+
 while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
@@ -173,21 +183,21 @@ while True :
     State = data.get("State")
  '''
 
-    motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
+    motor_command,t_mod,its_opening,was_closing = write_motor_position_triangle(t, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration,its_opening,was_closing)
+     
     # check if a period T has expired:
-    print(t%T)
-    if t%T>0.9*T: 
+    if its_opening: 
         message = 'r'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
         print('request sent. Time: ', t)
-        time.sleep(0.1)
-        '''#check if something has been sent:
+        time.sleep(0.5)
+        #check if something has been sent:
         data = client_socket.recv(1024)
         data = json.loads(data.decode())  
         print("time after response: ", time.time() - timer)
         amplitude_timeline_vector_right.append(data.get("data1"))
-        amplitude_timeline_vector_left.append(data.get("data2"))'''
+        amplitude_timeline_vector_left.append(data.get("data2"))
 
     a_right = amplitude_timeline_vector_right[-1]
     a_left = amplitude_timeline_vector_left[-1]    
