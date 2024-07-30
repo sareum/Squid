@@ -51,11 +51,11 @@ def triangle_wave_position(t, a, c, T, rise_time_ratio, fall_time_ratio):
     t_mod = t % period
     
     if t_mod < rise_time:
-        position = 2*a * (t_mod / rise_time) + c - a
+        position = -2*a * (t_mod / rise_time) +200
     elif t_mod < rise_time + fall_time:
-        position = 2*a * (1 - (t_mod - rise_time) / fall_time) + c - a
+        position = -2*a * (1 - (t_mod - rise_time) / fall_time) +200
     else:
-        position = 2*a * (t_mod - rise_time - fall_time) / rise_time + c - a
+        position = -2*a * (t_mod - rise_time - fall_time) / rise_time +200
     
     return position, t_mod
 
@@ -121,6 +121,7 @@ motor_command = []
 data_to_send = []
 camera_ready = False
 time_values = []
+
 while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
