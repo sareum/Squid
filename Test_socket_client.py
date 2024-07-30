@@ -238,7 +238,7 @@ for i in range(len(data_to_send)):
     if i == 0:
         time.sleep(5)
     else:
-        time.sleep(0.1)
+        time.sleep(0.15)
 
 message = 'end'
 message_json = json.dumps(message)
