@@ -157,7 +157,7 @@ while True :
     T_left = 1
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
     print("t_mod: ",t_mod,"time: ", t)
-    if t_mod >0.75 and t_mod< 0.85:
+    if t_mod >0.15 and t_mod< 0.25:
         message = 'ready'
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
