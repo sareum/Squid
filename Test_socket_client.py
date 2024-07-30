@@ -157,7 +157,8 @@ was_closing = False
 its_opening = False
 
 #second time scale, to mesure the elasping of the period
-realtive_time =0
+second_scale_time =0
+
 
 
 while True :
@@ -167,6 +168,7 @@ while True :
         if data.get("message") == "cameraok":
             camera_ready  = True
             timer = time.time()
+            relative_timer = time.time()
             print("cameraok recieved")
         time.sleep(0.1)
         
@@ -186,8 +188,8 @@ while True :
     
     State = data.get("State")
  '''
-    realtive_time = time.time()-relative_timer
-    motor_command,t_mod = write_motor_position_triangle(realtive_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
+    second_scale_time = time.time()-relative_timer
+    motor_command,t_mod = write_motor_position_triangle(second_scale_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
     print(its_opening)
     # check if a period T has expired:
     if its_opening: 
