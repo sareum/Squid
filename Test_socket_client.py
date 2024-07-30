@@ -105,9 +105,9 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     c_dyna_left = c_left * 2048 / 180
 
     q_dynamixel_right,t_mod = triangle_wave_position(t, a_dyna_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
-    servo.write_position(q_dynamixel_right, ID_right)
+    #servo.write_position(q_dynamixel_right, ID_right)
     q_dynamixel_left,_ = triangle_wave_position(t, a_dyna_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
-    servo.write_position(q_dynamixel_left, ID_left)
+    #servo.write_position(q_dynamixel_left, ID_left)
     
     data = [q_dynamixel_right, q_dynamixel_left]
     return data,t_mod
@@ -160,6 +160,7 @@ while True :
     c_left = 180
     T_left = 1
     motor_command,t_mod = write_motor_position_triangle(t, a_right, c_right, T_right, 0.2, 0.8, a_left, c_left, T_left, 0.2, 0.8)
+    print("motor Command right",motor_command[0])
     print("t_mod: ",t_mod,"time: ", t)
     if t_mod >0.15 and t_mod< 0.25:
         message = 'ready'
