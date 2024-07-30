@@ -180,6 +180,7 @@ while True :
         #check if something has been sent:
         data = client_socket.recv(1024)
         data = json.loads(data.decode())  
+        print("time after response: ", time.time() - timer)
         amplitude_timeline_vector_right.append(data.get("data1"))
         amplitude_timeline_vector_left.append(data.get("data2"))
 
