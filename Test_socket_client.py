@@ -180,7 +180,7 @@ while True :
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
         print('request sent. Time: ', t)
-        time.sleep(0.01)
+        time.sleep(0.05)
         '''#check if something has been sent:
         data = client_socket.recv(1024)
         data = json.loads(data.decode())  
