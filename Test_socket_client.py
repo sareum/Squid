@@ -47,7 +47,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     global its_opening
     global was_closing
     period = T
-    peak_value = 210  # Valore massimo fisso
+    peak_value = 200  # Valore massimo fisso
     valley_value = peak_value - a  # Valore minimo variabile in base all'ampiezza
 
     rise_time = rise_time_ratio * period
