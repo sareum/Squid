@@ -228,7 +228,7 @@ while True :
     })
     '''
     
-    if t >40:
+    if t >38:
         State=0
         break
 '''
