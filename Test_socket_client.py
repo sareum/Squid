@@ -160,7 +160,7 @@ its_opening = False
 second_scale_time =0
 
 
-
+state = 0
 while True :
     while camera_ready == False:
         data = client_socket.recv(1024)
@@ -203,6 +203,7 @@ while True :
         relative_timer = time.time()  
         amplitude_timeline_vector_right.append(data.get("data1"))
         amplitude_timeline_vector_left.append(data.get("data2"))
+        state = data.get("state")
         its_opening = False
         
 
@@ -228,11 +229,8 @@ while True :
         "Time": time_values[-1]
     })
     '''
-    data_to_recive = client_socket.recv(1024)
-    data_to_recive = json.loads(data_to_recive.decode())
-    if data_to_recive.get("message") == "stop":
+    if state == 1:
         break
-   
 '''
 print('starting to send data...')
 for i in range(len(data_to_send)):
