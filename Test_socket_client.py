@@ -228,9 +228,9 @@ while True :
         "Time": time_values[-1]
     })
     '''
-    
-    if t >38:
-        State=0
+    data = client_socket.recv(1024)
+    data = json.loads(data.decode())
+    if data == "stop":
         break
 '''
 print('starting to send data...')
