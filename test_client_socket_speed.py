@@ -113,7 +113,19 @@ was_closing = False
 its_opening = False
 
 # Creazione della socket
-if PROTOCOL == 'TCP':
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((IP, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        print(f"Connected by {addr}")
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            conn.sendall(data)
+
+'''if PROTOCOL == 'TCP':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # Bind the socket to the address and port
@@ -134,7 +146,7 @@ if PROTOCOL == 'TCP':
     # Connect the socket to the server's address and port
 else:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
+'''
 message = b'a' * BUFFER_SIZE  # Pacchetto di dati da inviare
 
 start_time = time.time()
