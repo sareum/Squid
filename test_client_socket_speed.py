@@ -122,7 +122,7 @@ ser = serial.Serial(serial_port, baud_rate, timeout=1)
 ser.reset_input_buffer()
 ser.reset_output_buffer()
 print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
-
+serial_reads = ""
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
     s.listen()
