@@ -39,7 +39,7 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 #set motor position as 180
 write_position(2048, [1])
-#time.sleep(5)
+time.sleep(5)
 #Read the data and set it as the base rotation matrix
 quat_base = []
 while sum(quat_base) == 0:
