@@ -115,7 +115,9 @@ its_opening = False
 # Creazione della socket
 if PROTOCOL == 'TCP':
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((IP, PORT))
+    # Connect the socket to the server's address and port
+    server_address = (IP, PORT)
+    client_socket.connect(server_address)
 else:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
