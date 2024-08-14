@@ -47,7 +47,7 @@ while sum(quat_base) == 0:
     quat_base = vector = [float(value) for value in quat_base]
     time.sleep(0.01)
 print(quat_base)
-quat_base = [quat_base[3], quat_base[2], quat_base[1], quat_base[0]]
+quat_base = [quat_base[1], quat_base[2], quat_base[3], quat_base[0]]
 
 R_base = np.array(R.from_quat(quat_base).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
@@ -63,7 +63,7 @@ while time.time()-t0 < 5:
     #print(variable)
     time.sleep(0.01)
 print(variable)
-variable = [variable[3], variable[2], variable[1], variable[0]]
+variable = [variable[1], variable[2], variable[3], variable[0]]
 
 new_matrix = np.array(R.from_quat(variable).as_matrix())
 norm_2 = np.linalg.norm(new_matrix, 2)
