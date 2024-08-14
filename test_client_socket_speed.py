@@ -114,10 +114,22 @@ its_opening = False
 
 # Creazione della socket
 if PROTOCOL == 'TCP':
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Bind the socket to the address and port
+    server_address = (IP, PORT)  # Use the Raspberry Pi's IP address
+    server_socket.bind(server_address)
+
+    # Listen for incoming connections
+    server_socket.listen(1)
+
+    # Wait for a connection
+    print("Waiting for a connection...")
+
+    client_socket, client_address = server_socket.accept()
+
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Connect the socket to the server's address and port
-    server_address = (IP, PORT)
-    client_socket.connect(server_address)
 else:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
