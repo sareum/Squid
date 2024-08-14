@@ -130,8 +130,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(motor_command)
 
             #byte_data = struct.pack('!' + 'f' * len(motor_command), *motor_command)
-            #print(byte_data)
-            conn.sendall(str(motor_command))
+            string_data = str(motor_command)
+            conn.sendall('b'+string_data)
             toc = time.time()-tic
             print(toc)
 
