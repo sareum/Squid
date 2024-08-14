@@ -129,6 +129,8 @@ if PROTOCOL == 'TCP':
     client_socket, client_address = server_socket.accept()
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    time.sleep(2)
     # Connect the socket to the server's address and port
 else:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
