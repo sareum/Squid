@@ -116,7 +116,7 @@ its_opening = False
 start_time = time.time()
 
 ###SERIAL COMUNICATION#####
-serial_port = '/dev/tty/USB0'  # Cambia questo con la tua porta
+serial_port = '/dev/ttyUSB0'  # Cambia questo con la tua porta
 baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
 ser = serial.Serial(serial_port, baud_rate, timeout=1)
 ser.reset_input_buffer()
@@ -140,7 +140,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if ser.in_waiting > 0:
             # Legge una riga di dati dalla seriale
                 serial_reads = ser.readline().decode('utf-8').rstrip()
-                print(f"Dati ricevuti: {line}")
+                print(f"Dati ricevuti: {serial_reads}")
             #byte_data = struct.pack('!' + 'f' * len(motor_command), *motor_command)
             data_to_encode = str(motor_command)+str(serial_reads)
             string_data = str(data_to_encode).encode("utf-8")
