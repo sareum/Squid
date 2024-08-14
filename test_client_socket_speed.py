@@ -137,6 +137,7 @@ message = b'a' * BUFFER_SIZE  # Pacchetto di dati da inviare
 
 start_time = time.time()
 
+
 for _ in range(NUM_PACKETS):
     if PROTOCOL == 'TCP':
         #message_json = json.dumps(message)
