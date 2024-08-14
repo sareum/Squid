@@ -38,7 +38,7 @@ if ser.is_open:
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 #set motor position as 180
-write_position(2048, [1])
+write_position(2048, [4])
 time.sleep(5)
 #Read the data and set it as the base rotation matrix
 quat_base = []
@@ -54,7 +54,7 @@ norm_2 = np.linalg.norm(R_base, 2)
 R_base = R_base / norm_2
 #print("got the first matrix: ")
 print(R_base)
-write_position(2560,1)
+write_position(2560,4)
 t0 = time.time()
 variable = []
 while time.time()-t0 < 5:
