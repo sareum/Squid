@@ -6,6 +6,7 @@ import numpy as np
 
 from dynamixel_controller import Dynamixel
 from time import sleep
+import struct
 
 # Configurazione
 PROTOCOL = 'TCP'  # Cambia a 'UDP' per usare UDP
@@ -126,7 +127,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             tic = time.time()
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
-            conn.sendall(b"data")
+            byte_data = struct.pack('!' + 'f' * len(motor_command), *motor_command)
+            conn.sendall(byte_data)
             toc = time.time()-tic
             print(toc)
 
