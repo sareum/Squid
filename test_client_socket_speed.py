@@ -148,13 +148,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             tic = time.time()
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
-            #print(motor_command)
+            #checks if something is in the serial
             if ser.in_waiting > 0:
-            # Legge una riga di dati dalla seriale
+                #read the serial data
                 serial_reads = ser.readline().decode('utf-8').rstrip()
-                print(f"Dati ricevuti: {serial_reads}")
-            #byte_data = struct.pack('!' + 'f' * len(motor_command), *motor_command)
+                #print(f"Dati ricevuti: {serial_reads}")
+            
+            #packs the data in one variable
             data_to_encode = str(motor_command)+str(serial_reads)
+            #encode the data in utf-8 for socket comunication
             string_data = str(data_to_encode).encode("utf-8")
             conn.sendall(string_data)
             toc = time.time()-tic

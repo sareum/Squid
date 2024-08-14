@@ -22,9 +22,10 @@ def go_forward(time) :
     write_position(q_dynamixel, IDs)
     return q_dynamixel
 #Create Dynamixel object
-servo = Dynamixel(ID=[1], descriptive_device_name="XW430-T200 test motor",
-                    series_name=["xm"], baudrate=1000000, port_name="/dev/tty.usbserial-FT78LS7E") #probably change it
+servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
+                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0") #probably change it
                     #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")"/dev/tty.usbserial-FT78LT9E"
+
 #create a comunication for the teensy:
 ser = serial.Serial(
     port='/dev/ttyACM0',        # Sostituisci con la tua porta seriale, ad esempio '/dev/ttyUSB0' su Linux
