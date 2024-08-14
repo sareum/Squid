@@ -133,7 +133,7 @@ if PROTOCOL == 'TCP':
 else:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-message = b'a' * BUFFER_SIZE  # Pacchetto di dati da inviare
+message = 'a' * BUFFER_SIZE  # Pacchetto di dati da inviare
 
 start_time = time.time()
 
@@ -141,7 +141,7 @@ for _ in range(NUM_PACKETS):
     if PROTOCOL == 'TCP':
         message_json = json.dumps(message)
         client_socket.send(message_json.encode())
-        
+
         motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
         # check if a period T has expired:
         if its_opening: 
