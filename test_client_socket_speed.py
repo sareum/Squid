@@ -96,9 +96,14 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 
-# Initialize motor position
-servo.write_position(2276, [1,2,3,4]) #200° è 2276 
-sleep(1)
+
+serial_port = '/dev/ttyACM0'  # Cambia questo con la tua porta
+baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
+ser = serial.Serial(serial_port, baud_rate, timeout=1)
+ser.reset_input_buffer()
+ser.reset_output_buffer()
+print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
+
 a_right = 75
 c_right = 180
 T = 1
@@ -114,15 +119,9 @@ amplitude_timeline_vector_left = []
 was_closing = False
 its_opening = False
 start_time = time.time()
-
+calibration_complete = False #set the motor at 200, then sends the quaternion for the first rotation matrix
 ###SERIAL COMUNICATION#####
-serial_port = '/dev/ttyACM0'  # Cambia questo con la tua porta
-baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
-ser = serial.Serial(serial_port, baud_rate, timeout=1)
-ser.reset_input_buffer()
-ser.reset_output_buffer()
-print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
-serial_reads = ""
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
     s.listen()
@@ -133,6 +132,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             '''data = conn.recv(1024)
             if not data:
                 break'''
+            if calibration_complete == False:
+                # Initialize motor position
+                servo.write_position(2276, [1,2,3,4]) #200° è 2276 
+                time.sleep(1)
+                print("sending the data fro the initial calibration...")
+                if ser.in_waiting > 0:
+                # Legge una riga di dati dalla seriale
+                    serial_reads = ser.readline().decode('utf-8').rstrip()
+                    data_to_encode = str(serial_reads)
+                    string_data = str(data_to_encode).encode("utf-8")
+                    conn.sendall(string_data)
+                    calibration_complete = True
+
             tic = time.time()
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
