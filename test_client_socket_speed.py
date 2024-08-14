@@ -111,7 +111,7 @@ amplitude_timeline_vector_left = []
 
 was_closing = False
 its_opening = False
-
+start_time = time.time()
 # Creazione della socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
@@ -123,7 +123,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             '''data = conn.recv(1024)
             if not data:
                 break'''
+            tic = time.time()
+            #control the motor:
+            motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
             conn.sendall(b"data")
+            toc = time.time()-tic
+            print(toc)
 
 '''if PROTOCOL == 'TCP':
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
