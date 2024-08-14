@@ -146,7 +146,7 @@ for _ in range(NUM_PACKETS):
 
         motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
         # check if a period T has expired:
-        if its_opening: 
+        '''        if its_opening: 
             #time.sleep(0.5)
             message = 'ready'
             message_json = json.dumps(message)
@@ -159,7 +159,7 @@ for _ in range(NUM_PACKETS):
             amplitude_timeline_vector_right.append(data.get("data1"))
             amplitude_timeline_vector_left.append(data.get("data2"))
             state = data.get("state")
-            its_opening = False
+            its_opening = False'''
     else:
         client_socket.sendto(message, (IP, PORT))
 
