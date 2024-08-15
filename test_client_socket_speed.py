@@ -153,7 +153,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 else: 
                     time.sleep(1)
 
-            if calibration_complete == False:
+            while calibration_complete == False:
                 # Initialize motor position
                 servo.write_position(2276, [1,2,3,4]) #200° è 2276 
                 time.sleep(1)
@@ -165,7 +165,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     string_data = str(data_to_encode).encode("utf-8")
                     conn.sendall(string_data)
                     calibration_complete = True
-                    print("Completed the calibration!")
+                    print(data_to_encode)
+            print("Completed the calibration!")
            
             tic = time.time()
             if ser.in_waiting > 0:
