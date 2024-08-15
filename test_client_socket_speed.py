@@ -167,7 +167,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     conn.sendall(string_data)
                     calibration_complete = True
                     print(data_to_encode)
-            print("Completed the calibration!")
+                    print("Completed the calibration!")
            
             tic = time.time()
             if ser.in_waiting > 0:
