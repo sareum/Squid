@@ -134,6 +134,7 @@ start_time = time.time()
 calibration_complete = False #set the motor at 200, then sends the quaternion for the first rotation matrix
 ###SERIAL COMUNICATION#####
 camera_calibration = False
+data = None
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
     s.listen()
@@ -144,7 +145,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             #wait for camera calibration on the pc
             while camera_calibration == False:
                 time.sleep(6)
-                data = s.recv(1024)
+                while not data:
+                    data = s.recv(1024)
                 if data.decode('utf-8') == "cameraok":
                     camera_calibration = True
                 else: 
