@@ -144,7 +144,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(f"Connected by {addr}")
         while True:
             #wait for camera calibration on the pc
-            data = conn.recv(1024)
+            if camera_calibration == False:
+                data = conn.recv(1024)
             while camera_calibration == False:
                 if data.decode('utf-8') == "cameraok":
                     camera_calibration = True
