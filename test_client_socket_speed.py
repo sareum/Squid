@@ -195,22 +195,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if its_opening: 
                 #time.sleep(0.5)
                 message = 'ready'
-                s.sendall(message.encode('utf-8'))
+                conn.sendall(message.encode('utf-8'))
                 #check if something has been sent:
-                data = s.recv(1024)
+                data = conn.recv(1024)
                 while not data.decode('utf-8'):
-                    data = s.recv(1024)
+                    data = conn.recv(1024)
                 
                 amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
                 relative_timer = time.time()  
                 amplitude_timeline_vector_right.append(amplitude_right)
                 amplitude_timeline_vector_left.append(amplitude_left)
                 if reached == 1:
-                    s.close()
+                    conn.close()
                     break
                 its_opening = False
             
-            if s.recv(1024).decode('utf-8') == "go_on" or prima_volta:
+            if conn.recv(1024).decode('utf-8') == "go_on" or prima_volta:
                 data_to_encode = str(motor_command)+str(serial_reads)
                 #encode the data in utf-8 for socket comunication
                 string_data = str(data_to_encode).encode("utf-8")
