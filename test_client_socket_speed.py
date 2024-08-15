@@ -174,10 +174,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #print(f"Dati ricevuti: {serial_reads}")
             
             #packs the data in one variable
-            data_to_encode = str(motor_command)+str(serial_reads)
-            #encode the data in utf-8 for socket comunication
-            string_data = str(data_to_encode).encode("utf-8")
-            conn.sendall(string_data)
+            
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
@@ -197,7 +194,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         s.close()
                         break
                 its_opening = False
-           
+            data_to_encode = str(motor_command)+str(serial_reads)
+            #encode the data in utf-8 for socket comunication
+            string_data = str(data_to_encode).encode("utf-8")
+            conn.sendall(string_data)
             toc = time.time()-tic
             print(toc)
 
