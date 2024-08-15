@@ -137,6 +137,7 @@ calibration_complete = False #set the motor at 200, then sends the quaternion fo
 camera_calibration = False
 data = None
 ricevuto = False
+prima_volta = True
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
     s.listen()
