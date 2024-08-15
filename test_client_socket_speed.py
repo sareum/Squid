@@ -161,14 +161,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 print("sending the data from the initial calibration...")
                 if ser.in_waiting > 0:
                 # Legge una riga di dati dalla seriale
-                    serial_reads = ser.readline().decode('utf-8').rstrip()
-                    data_to_encode = str(serial_reads)
-                    string_data = str(data_to_encode).encode("utf-8")
-                    conn.sendall(string_data)
+                    while conn.recv(1024).decode('utf-8') != "Received":
+                        serial_reads = ser.readline().decode('utf-8').rstrip()
+                        data_to_encode = str(serial_reads)
+                        string_data = str(data_to_encode).encode("utf-8")
+                        conn.sendall(string_data)
                     calibration_complete = True
                     print(data_to_encode)
                     print("Completed the calibration!")
-           
+        
             tic = time.time()
             if ser.in_waiting > 0:
                 #read the serial data
@@ -184,18 +185,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #time.sleep(0.5)
                 message = 'ready'
                 s.sendall(message.encode('utf-8'))
-                time.sleep(0.001)
                 #check if something has been sent:
                 data = s.recv(1024)
-                if data:
-                    amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
-                    relative_timer = time.time()  
-                    amplitude_timeline_vector_right.append(amplitude_right)
-                    amplitude_timeline_vector_left.append(amplitude_left)
-                    if reached == 1:
-                        s.close()
-                        break
+                while not data.decode('utf-8'):
+                    data = s.recv(1024)
+                
+                amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
+                relative_timer = time.time()  
+                amplitude_timeline_vector_right.append(amplitude_right)
+                amplitude_timeline_vector_left.append(amplitude_left)
+                if reached == 1:
+                    s.close()
+                    break
                 its_opening = False
+                
             data_to_encode = str(motor_command)+str(serial_reads)
             #encode the data in utf-8 for socket comunication
             string_data = str(data_to_encode).encode("utf-8")
