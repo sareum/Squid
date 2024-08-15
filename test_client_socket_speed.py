@@ -143,11 +143,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         while True:
             #wait for camera calibration on the pc
             while camera_calibration == False:
+                time.sleep(6)
                 data = s.recv(1024)
                 if data.decode('utf-8') == "cameraok":
                     camera_calibration = True
                 else: 
-                    data = s.recv(1024)
+                    time.sleep(1)
 
             if calibration_complete == False:
                 # Initialize motor position
