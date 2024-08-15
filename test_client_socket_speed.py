@@ -95,7 +95,19 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
 
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
+def decode_and_parse_data(data):
+    # Decodifica i dati ricevuti (assumendo che siano stati codificati in UTF-8)
+    decoded_data = data.decode('utf-8')
 
+    # Separazione dei dati basata sul separatore ','
+    parts = decoded_data.split(',')
+
+    # Conversione delle stringhe in interi
+    amplitude_right = int(parts[0])
+    amplitude_left = int(parts[1])
+    reached = int(parts[2])
+
+    return amplitude_right, amplitude_left, reached
 
 serial_port = '/dev/ttyACM0'  # Cambia questo con la tua porta
 baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
@@ -121,7 +133,7 @@ its_opening = False
 start_time = time.time()
 calibration_complete = False #set the motor at 200, then sends the quaternion for the first rotation matrix
 ###SERIAL COMUNICATION#####
-
+camera_calibration = False
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
     s.listen()
@@ -129,14 +141,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print(f"Connected by {addr}")
         while True:
-            '''data = conn.recv(1024)
-            if not data:
-                break'''
+            #wait for camera calibration on the pc
+            while camera_calibration == False:
+                data = s.recv(1024)
+                if data.decode('utf-8') == "cameraok":
+                    camera_calibration = True
+                else: 
+                    data = s.recv(1024)
+
             if calibration_complete == False:
                 # Initialize motor position
                 servo.write_position(2276, [1,2,3,4]) #200° è 2276 
                 time.sleep(1)
-                print("sending the data fro the initial calibration...")
+                print("sending the data from the initial calibration...")
                 if ser.in_waiting > 0:
                 # Legge una riga di dati dalla seriale
                     serial_reads = ser.readline().decode('utf-8').rstrip()
@@ -144,11 +161,28 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     string_data = str(data_to_encode).encode("utf-8")
                     conn.sendall(string_data)
                     calibration_complete = True
-
+           
             tic = time.time()
+
             #control the motor:
-            motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
+            motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
+            if its_opening: 
+                #time.sleep(0.5)
+                message = 'ready'
+                s.sendall(message.encode('utf-8'))
+                time.sleep(0.001)
+                #check if something has been sent:
+                data = s.recv(1024)
+                if data:
+                    amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
+                    relative_timer = time.time()  
+                    amplitude_timeline_vector_right.append(amplitude_right)
+                    amplitude_timeline_vector_left.append(amplitude_left)
+                    if reached == 1:
+                        s.close()
+                        break
+                its_opening = False
             if ser.in_waiting > 0:
                 #read the serial data
                 serial_reads = ser.readline().decode('utf-8').rstrip()
@@ -162,66 +196,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             toc = time.time()-tic
             print(toc)
 
-'''if PROTOCOL == 'TCP':
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Bind the socket to the address and port
-    server_address = (IP, PORT)  # Use the Raspberry Pi's IP address
-    server_socket.bind(server_address)
-
-    # Listen for incoming connections
-    server_socket.listen(1)
-
-    # Wait for a connection
-    print("Waiting for a connection...")
-
-    client_socket, client_address = server_socket.accept()
-
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    time.sleep(2)
-    # Connect the socket to the server's address and port
-else:
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-'''
-message = b'a' * BUFFER_SIZE  # Pacchetto di dati da inviare
-
-start_time = time.time()
-
-
-for _ in range(NUM_PACKETS):
-    if PROTOCOL == 'TCP':
-        #message_json = json.dumps(message)
-        #client_socket.send(message_json.encode())
-        client_socket.send(message)
-
-        motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, a_right, c_right, T, opening_ratio, closing_ration, a_left, c_left, T, opening_ratio, closing_ration)
-        # check if a period T has expired:
-        '''        if its_opening: 
-            #time.sleep(0.5)
-            message = 'ready'
-            message_json = json.dumps(message)
-            client_socket.send(message_json.encode())
-            time.sleep(0.01)
-            #check if something has been sent:
-            data = client_socket.recv(1024)
-            data = json.loads(data.decode())
-            relative_timer = time.time()  
-            amplitude_timeline_vector_right.append(data.get("data1"))
-            amplitude_timeline_vector_left.append(data.get("data2"))
-            state = data.get("state")
-            its_opening = False'''
-    else:
-        client_socket.sendto(message, (IP, PORT))
-
-if PROTOCOL == 'TCP':
-    client_socket.close()
-
-end_time = time.time()
-elapsed_time = end_time - start_time
-total_data_sent = BUFFER_SIZE * NUM_PACKETS
-speed = total_data_sent / elapsed_time / 1024  # Velocità in KB/s
+# Close motor communication
 servo.end_communication()  
-print(f"Dati inviati: {total_data_sent} byte")
-print(f"Tempo totale: {elapsed_time:.2f} secondi")
-print(f"Velocità: {speed:.2f} KB/s")
