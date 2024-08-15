@@ -126,7 +126,8 @@ closing_ration = 1-opening_ratio
 amplitude_timeline_vector_right = []
 amplitude_timeline_vector_left = []
 ############## END MOTOR COMMAND #################
-
+amplitude_right = 0
+amplitude_left = 0
 
 was_closing = False
 its_opening = False
@@ -164,9 +165,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     string_data = str(data_to_encode).encode("utf-8")
                     conn.sendall(string_data)
                     calibration_complete = True
+                    print("Completed the calibration!")
            
             tic = time.time()
-
+            if ser.in_waiting > 0:
+                #read the serial data
+                serial_reads = ser.readline().decode('utf-8').rstrip()
+                #print(f"Dati ricevuti: {serial_reads}")
+            
+            #packs the data in one variable
+            data_to_encode = str(motor_command)+str(serial_reads)
+            #encode the data in utf-8 for socket comunication
+            string_data = str(data_to_encode).encode("utf-8")
+            conn.sendall(string_data)
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
@@ -186,16 +197,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         s.close()
                         break
                 its_opening = False
-            if ser.in_waiting > 0:
-                #read the serial data
-                serial_reads = ser.readline().decode('utf-8').rstrip()
-                #print(f"Dati ricevuti: {serial_reads}")
-            
-            #packs the data in one variable
-            data_to_encode = str(motor_command)+str(serial_reads)
-            #encode the data in utf-8 for socket comunication
-            string_data = str(data_to_encode).encode("utf-8")
-            conn.sendall(string_data)
+           
             toc = time.time()-tic
             print(toc)
 
