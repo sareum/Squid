@@ -160,8 +160,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 time.sleep(1)
                 print("sending the data from the initial calibration...")
                 if ser.in_waiting > 0:
+                    print("sono nell'if")
                 # Legge una riga di dati dalla seriale
                     while conn.recv(1024).decode('utf-8') != "Received":
+                        print("nel while")
                         serial_reads = ser.readline().decode('utf-8').rstrip()
                         data_to_encode = str(serial_reads)
                         string_data = str(data_to_encode).encode("utf-8")
