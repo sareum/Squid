@@ -168,7 +168,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     string_data = str(data_to_encode).encode("utf-8")
                     conn.sendall(string_data)
                     while True:
-                        if conn.recv(1024).decode('utf-8') != "Received":
+                        if conn.recv(1024).decode('utf-8') == "Received":
                             break
                         print("nel while")
                         serial_reads = ser.readline().decode('utf-8').rstrip()
