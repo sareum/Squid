@@ -109,7 +109,7 @@ def decode_and_parse_data(data):
 
     return amplitude_right, amplitude_left, reached
 
-serial_port = '/dev/ttyACM1'  # Cambia questo con la tua porta
+serial_port = '/dev/ttyACM0'  # Cambia questo con la tua porta
 baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
 ser = serial.Serial(serial_port, baud_rate, timeout=1)
 ser.reset_input_buffer()
