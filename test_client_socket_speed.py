@@ -213,11 +213,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             motor_command[1] = float(f"{motor_command[1]:.4g}")
             
             data_to_encode = str(motor_command)+str(serial_reads)
+            
             #encode the data in utf-8 for socket comunication
-            string_data = str(data_to_encode).encode("utf-8")
+            lenght_data = len(data_to_encode)
+            string_data = data_to_encode.encode("utf-8")
             conn.sendall(string_data)
             print("Ho spedito comandi motore")
-            time.sleep(0.05)
+            time.sleep(0.1)
         
             toc = time.time()-tic
             print(toc)
