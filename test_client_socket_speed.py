@@ -20,7 +20,7 @@ NUM_PACKETS = 10000  # Numero di pacchetti da inviare
 
 
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
-                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB1") #probably change it
+                    series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0") #probably change it
                     #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")"/dev/tty.usbserial-FT78LT9E"
 
 def set_position(time, a, c, T) : 
