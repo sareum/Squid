@@ -209,8 +209,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     break
                 its_opening = False
             
-            motor_command[0] = f"{motor_command[0]:.4g}"
-            motor_command[1] = f"{motor_command[1]:.4g}"
+            motor_command[0] = float(f"{motor_command[0]:.4g}")
+            motor_command[1] = float(f"{motor_command[1]:.4g}")
             
             data_to_encode = str(motor_command)+str(serial_reads)
             #encode the data in utf-8 for socket comunication
