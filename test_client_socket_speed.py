@@ -215,6 +215,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 string_data = str(data_to_encode).encode("utf-8")
                 conn.sendall(string_data)
                 prima_volta = False
+                print("Ho spedito comandi motore")
             
             toc = time.time()-tic
             print(toc)
