@@ -209,14 +209,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     break
                 its_opening = False
             
-            if conn.recv(1024).decode('utf-8') == "go_on" or prima_volta:
-                data_to_encode = str(motor_command)+str(serial_reads)
-                #encode the data in utf-8 for socket comunication
-                string_data = str(data_to_encode).encode("utf-8")
-                conn.sendall(string_data)
-                prima_volta = False
-                print("Ho spedito comandi motore")
-            
+            data_to_encode = str(motor_command)+str(serial_reads)
+            #encode the data in utf-8 for socket comunication
+            string_data = str(data_to_encode).encode("utf-8")
+            conn.sendall(string_data)
+            prima_volta = False
+            print("Ho spedito comandi motore")
+        
             toc = time.time()-tic
             print(toc)
 
