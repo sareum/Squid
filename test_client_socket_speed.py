@@ -180,9 +180,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         print(serial_reads)
                     calibration_complete = True
                     print("Completed the calibration!")
-        
+            if 'tic' in locals():
+                print("elapsed :",time.time()-tic)
             tic = time.time()
             if ser.in_waiting > 0:
+                
                 #read the serial data
                 tic_ser = time.time()
                 serial_reads = ser.readline().decode('utf-8').rstrip()
