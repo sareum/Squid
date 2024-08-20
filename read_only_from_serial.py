@@ -5,8 +5,6 @@ serial_port = '/dev/ttyACM0'  # Cambia questo con la tua porta
 baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
 ser = serial.Serial(serial_port, baud_rate, timeout=1)
 ser.close()
-ser.reset_input_buffer()
-ser.reset_output_buffer()
 
 ser = serial.Serial(serial_port,baud_rate,timeout= 1)
 ser.open()
