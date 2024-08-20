@@ -15,7 +15,8 @@ print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
 while True:
     if ser.in_waiting > 0:
         # Legge una riga di dati dalla seriale
-        serial_reads = ser.readline().decode('utf-8').rstrip()
+        data = ser.read(ser.in_waiting)
+        serial_reads = data.decode('utf-8').rstrip()
         print("dati: ",serial_reads)
         ser.reset_input_buffer()
         ser.reset_output_buffer()
