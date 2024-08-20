@@ -219,7 +219,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             string_data = data_to_encode.encode("utf-8")
             conn.sendall(string_data)
             print("Ho spedito comandi motore")
-            time.sleep(0.1)
         
             toc = time.time()-tic
             print(toc)
