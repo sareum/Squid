@@ -164,7 +164,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if ser.in_waiting > 0:
                     print("sono nell'if")
                 # Legge una riga di dati dalla seriale
+                    tic_ser = time.time()
                     serial_reads = ser.readline().decode('utf-8').rstrip()
+                    print("serial Time: ",time.time()-tic_ser)
                     data_to_encode = str(serial_reads)
                     string_data = str(data_to_encode).encode("utf-8")
                     conn.sendall(string_data)
