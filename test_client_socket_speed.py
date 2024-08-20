@@ -182,15 +182,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     print("Completed the calibration!")
         
             tic = time.time()
-            if ser.in_waiting > 0:
-                #read the serial data
-                tic_ser = time.time()
-                serial_reads = ser.readline().decode('utf-8').rstrip()
-                print("Ser time: ",time.time()-tic_ser)
-                #print(f"Dati ricevuti: {serial_reads}")
-            else:
-                print("no data from serial...")
-                print("recorded data: ",ser.readline().decode('utf-8').rstrip())
+        #if ser.in_waiting > 0:
+            #read the serial data
+            tic_ser = time.time()
+            serial_reads = ser.readline().decode('utf-8').rstrip()
+            print("Ser time: ",time.time()-tic_ser)
+            #print(f"Dati ricevuti: {serial_reads}")
+        #else:
+            #print("no data from serial...")
+            #print("recorded data: ",ser.readline().decode('utf-8').rstrip())
             #packs the data in one variable
             
             #control the motor:
