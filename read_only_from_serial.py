@@ -1,5 +1,5 @@
 import serial
-
+import time
 
 serial_port = '/dev/ttyACM0'  # Cambia questo con la tua porta
 baud_rate = 115200  # Questo deve corrispondere al baud rate impostato nel Teensy
@@ -18,6 +18,7 @@ while True:
         
         serial_reads = ser.readline().decode('utf-8').rstrip()
         print("dati: ",serial_reads)
+        time.sleep(0.06)
         ser.reset_input_buffer()
         ser.reset_output_buffer()
 
