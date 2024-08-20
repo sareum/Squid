@@ -18,4 +18,4 @@ while True:
         data = ser.read(ser.in_waiting)
         serial_reads = data.decode('utf-8').rstrip()
         print("dati: ",serial_reads)
-        time.sleep(0.001)
+        time.sleep(0.01)
