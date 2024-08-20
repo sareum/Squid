@@ -190,6 +190,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #print(f"Dati ricevuti: {serial_reads}")
             else:
                 print("no data from serial...")
+                print("recorded data: ",ser.readline().decode('utf-8').rstrip())
             #packs the data in one variable
             
             #control the motor:
