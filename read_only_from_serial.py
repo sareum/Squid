@@ -13,4 +13,6 @@ while True:
         # Legge una riga di dati dalla seriale
         serial_reads = ser.readline().decode('utf-8').rstrip()
         print("dati: ",serial_reads)
+        ser.reset_input_buffer()
+        ser.reset_output_buffer()
 
