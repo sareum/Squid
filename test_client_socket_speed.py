@@ -188,7 +188,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 serial_reads = ser.readline().decode('utf-8').rstrip()
                 print("Ser time: ",time.time()-tic_ser)
                 #print(f"Dati ricevuti: {serial_reads}")
-            
+            else:
+                print("no data from serial...")
             #packs the data in one variable
             
             #control the motor:
