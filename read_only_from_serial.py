@@ -7,7 +7,7 @@ ser = serial.Serial(serial_port, baud_rate, timeout=1)
 ser.close()
 
 ser = serial.Serial(serial_port,baud_rate,timeout= 1)
-ser.open()
+#ser.open()
 ser.reset_input_buffer()
 ser.reset_output_buffer()
 print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
