@@ -230,8 +230,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         
             toc = time.time()-tic
             print(toc)
-            ser.reset_input_buffer()
-            ser.reset_output_buffer()
+            #ser.reset_input_buffer()
+            #ser.reset_output_buffer()
 
 # Close motor communication
 servo.end_communication()  
