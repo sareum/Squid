@@ -125,6 +125,7 @@ def thread_stupido(conn):
     global amplitude_right
     global amplitude_left
     global reached
+    its_opening = True
     while True:
         if its_opening:  
             message = 'ready'
