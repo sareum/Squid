@@ -181,10 +181,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     conn, addr = s.accept()
     s.setblocking(False)
     with conn:
-        if thread_start == False:
-            thread = Thread(target = thread_stupido, args = (conn, ))
-            thread.start()
-            thread_start = True
+        
         print(f"Connected by {addr}")
         while True:
             #wait for camera calibration on the pc
@@ -224,6 +221,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if 'tic' in locals():
                 print("elapsed :",time.time()-tic)
             tic = time.time()
+            if thread_start == False:
+                thread = Thread(target = thread_stupido, args = (conn, ))
+                thread.start()
+                thread_start = True
             if ser.in_waiting > 0:
                 
                 #read the serial data
