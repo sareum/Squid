@@ -162,8 +162,8 @@ closing_ration = 1-opening_ratio
 amplitude_timeline_vector_right = []
 amplitude_timeline_vector_left = []
 ############## END MOTOR COMMAND #################
-amplitude_right = 0
-amplitude_left = 0
+amplitude_right = 45
+amplitude_left = 45
 
 was_closing = False
 its_opening = False
@@ -238,6 +238,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #packs the data in one variable'''
             
             #control the motor:
+            print(amplitude_right,amplitude_left)
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
             '''
