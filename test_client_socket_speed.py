@@ -118,38 +118,6 @@ ser.reset_input_buffer()
 ser.reset_output_buffer()
 print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
 
-def thread_stupido(conn):
-    global message
-    global data
-    global its_opening 
-    global amplitude_right
-    global amplitude_left
-    global reached
-    its_opening = True
-    while True:
-        if its_opening:  
-            message = 'ready'
-            conn.sendall(message.encode('utf-8'))
-            #check if something has been sent:
-            try:
-                data = conn.recv(1024)
-            except socket.error as e:
-                err = e.args[0]
-                if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
-                    print("No data available")
-                    continue
-                else:
-                    print(e)
-            else:
-                amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
-                print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
-                relative_timer = time.time()  
-                #amplitude_timeline_vector_right.append(amplitude_right)
-                #amplitude_timeline_vector_left.append(amplitude_left)
-                if reached == 1:
-                    conn.close()
-                    break
-                its_opening = False
 
 
 a_right = 75
@@ -174,7 +142,7 @@ camera_calibration = False
 data = None
 ricevuto = False
 prima_volta = True
-thread_start = False
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((IP, PORT))
     s.listen()
@@ -221,10 +189,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if 'tic' in locals():
                 print("elapsed :",time.time()-tic)
             tic = time.time()
-            if thread_start == False:
-                thread = Thread(target = thread_stupido, args = (conn, ))
-                thread.start()
-                thread_start = True
+
             if ser.in_waiting > 0:
                 
                 #read the serial data
@@ -243,9 +208,30 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print(amplitude_right,amplitude_left)
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
-            '''
-
-                
+            if its_opening:  
+                message = 'ready'
+                conn.sendall(message.encode('utf-8'))
+                #check if something has been sent:
+                try:
+                    data = conn.recv(1024)
+                except socket.error as e:
+                    err = e.args[0]
+                    if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
+                        print("No data available")
+                        continue
+                    else:
+                        print(e)
+                else:
+                    amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
+                    print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
+                    relative_timer = time.time()  
+                    #amplitude_timeline_vector_right.append(amplitude_right)
+                    #amplitude_timeline_vector_left.append(amplitude_left)
+                    if reached == 1:
+                        conn.close()
+                        break
+                    its_opening = False
+            ''' 
                 data = conn.recv(1024)
                 while not data.decode('utf-8'):
                     data = conn.recv(1024)
