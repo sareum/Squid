@@ -3,6 +3,7 @@ import numpy as np
 import socket
 import json
 import numpy as np
+import errno
 
 from dynamixel_controller import Dynamixel
 from time import sleep
@@ -205,20 +206,34 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 message = 'ready'
                 conn.sendall(message.encode('utf-8'))
                 #check if something has been sent:
+                
+                try:
+                    data = conn.recv(1024)
+                except socket.error as e:
+                    err = e.args[0]
+                    if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
+                        print("No data available")
+                        continue
+                    else:
+                        print(e)
+                else:
+                    amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
+                    print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
+                    relative_timer = time.time()  
+                    #amplitude_timeline_vector_right.append(amplitude_right)
+                    #amplitude_timeline_vector_left.append(amplitude_left)
+                    if reached == 1:
+                        conn.close()
+                        break
+                    its_opening = False
+
+                '''
                 data = conn.recv(1024)
                 while not data.decode('utf-8'):
                     data = conn.recv(1024)
                     print("sono nel not data")
-                
-                amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
-                print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
-                relative_timer = time.time()  
-                #amplitude_timeline_vector_right.append(amplitude_right)
-                #amplitude_timeline_vector_left.append(amplitude_left)
-                if reached == 1:
-                    conn.close()
-                    break
-                its_opening = False
+                '''
+                    
             
             motor_command[0] = float(f"{motor_command[0]:.4g}")
             motor_command[1] = float(f"{motor_command[1]:.4g}")
