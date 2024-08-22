@@ -210,7 +210,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     data = conn.recv(1024)
                 
                 amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
-                print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
+                print("data recived input from P    ID: ",amplitude_left,amplitude_right,reached)
                 relative_timer = time.time()  
                 amplitude_timeline_vector_right.append(amplitude_right)
                 amplitude_timeline_vector_left.append(amplitude_left)
@@ -228,7 +228,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             
             string_data = data_to_encode.encode("utf-8")
             conn.sendall(string_data)
-            print("Ho spedito comandi motore")
+            print("serial reads: ", serial_reads)
         
             toc = time.time()-tic
             print(toc)
