@@ -206,7 +206,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             
             #control the motor:
             print(amplitude_right,amplitude_left)
-            motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
+            motor_command = [0,0]
+            #motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
             if its_opening:  
                 message = 'ready'
@@ -257,4 +258,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
 # Close motor communication
 servo.end_communication() 
-thread_stupido.join() 
