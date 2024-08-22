@@ -200,7 +200,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
-            ''' if its_opening: 
+            if its_opening: 
                 #time.sleep(0.5)
                 message = 'ready'
                 conn.sendall(message.encode('utf-8'))
@@ -208,17 +208,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data = conn.recv(1024)
                 while not data.decode('utf-8'):
                     data = conn.recv(1024)
+                    print("sono nel not data")
                 
                 amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
-                print("data recived input from P    ID: ",amplitude_left,amplitude_right,reached)
+                print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
                 relative_timer = time.time()  
-                amplitude_timeline_vector_right.append(amplitude_right)
-                amplitude_timeline_vector_left.append(amplitude_left)
+                #amplitude_timeline_vector_right.append(amplitude_right)
+                #amplitude_timeline_vector_left.append(amplitude_left)
                 if reached == 1:
                     conn.close()
                     break
                 its_opening = False
-            '''
+            
             motor_command[0] = float(f"{motor_command[0]:.4g}")
             motor_command[1] = float(f"{motor_command[1]:.4g}")
             
