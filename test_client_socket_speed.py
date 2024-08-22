@@ -11,7 +11,7 @@ import serial
 
 # Configurazione
 PROTOCOL = 'TCP'  # Cambia a 'UDP' per usare UDP
-IP = '10.20.30.10' # Network number
+IP = '192.168.137.119' # Network number
 PORT = 12345 # Same for client and server
 BUFFER_SIZE = 1024  # Dimensione del buffer in byte
 NUM_PACKETS = 10000  # Numero di pacchetti da inviare

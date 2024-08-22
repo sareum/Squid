@@ -13,6 +13,7 @@ ser.reset_output_buffer()
 print(f"Connessione aperta sulla porta {serial_port} con baud rate {baud_rate}")
 
 while True:
+    #initial_time = time.time()
     if ser.in_waiting > 0:
         # Legge una riga di dati dalla seriale
         
