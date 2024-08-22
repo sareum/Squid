@@ -193,15 +193,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #ser.reset_input_buffer()
                 #ser.reset_output_buffer()
                 #print(f"Dati ricevuti: {serial_reads}")
-            '''else:
-                #print("no data from serial...")
-                print("recorded data: ",ser.readline().decode('utf-8').rstrip())
+            else:
+                print("no data from serial...")
+                #print("recorded data: ",ser.readline().decode('utf-8').rstrip())
                 #packs the data in one variable'''
             
             #control the motor:
             motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
             #checks if something is in the serial
-            if its_opening: 
+            '''if its_opening: 
                 #time.sleep(0.5)
                 message = 'ready'
                 conn.sendall(message.encode('utf-8'))
@@ -227,7 +227,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                         break
                     its_opening = False
 
-                '''
+                
                 data = conn.recv(1024)
                 while not data.decode('utf-8'):
                     data = conn.recv(1024)
