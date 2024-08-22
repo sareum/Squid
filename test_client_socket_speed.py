@@ -183,6 +183,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         if thread_start == False:
             thread = Thread(target = thread_stupido, args = (conn, ))
+            thread.start()
             thread_start = True
         print(f"Connected by {addr}")
         while True:
