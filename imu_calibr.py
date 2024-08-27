@@ -74,17 +74,18 @@ def main():
         data2 = correction(data2)
         calibration_data1 = np.array(calibration_data1)
         calibration_data2 = np.array(calibration_data2)
-        acc_data1 = (calibration_data1[:,6:8])
-        gyr_data1 = (calibration_data1[:,3:5])
-        mag_data1 = (calibration_data1[:,0:2])
+        acc_data1 = (calibration_data1[:,6:9])
+        print(acc_data1)
+        gyr_data1 = (calibration_data1[:,3:6])
+        mag_data1 = (calibration_data1[:,0:3])
     
-        acc_data2 = (calibration_data2[:,6:8])
-        gyr_data2 = (calibration_data2[:,3:5])
-        mag_data2 = (calibration_data2[:,0:2])
+        acc_data2 = (calibration_data2[:,6:9])
+        gyr_data2 = (calibration_data2[:,3:6])
+        mag_data2 = (calibration_data2[:,0:3])
     
         #get the first readings
-        ekf1 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data1), acc=np.array(acc_data1), mag=np.array(mag_data1), frequency=10.0)
-        ekf2 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data2), acc=np.array(acc_data2), mag=np.array(mag_data2), frequency=10.0)
+        ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
+        ekf2 = ahrs.filters.ekf.EKF(gyr=gyr_data2, acc=acc_data2, mag=mag_data2, frequency=10.0)
 
         q0_1 = ekf1.Q/np.linalg.norm(ekf1.Q)
         q0_2 = ekf2.Q/np.linalg.norm(ekf2.Q)
