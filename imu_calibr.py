@@ -51,8 +51,8 @@ def main():
     # pylint: disable=too-many-locals, too-many-statements
     i2c = busio.I2C(board.SCL, board.SDA)
 
-    gyro_accel = LSM6DSOX(i2c)
-    magnetometer = LIS3MDL(i2c)
+    gyro_accel = LSM6DSOX(i2c, address=0x6A)
+    magnetometer = LIS3MDL(i2c, address=0x1E)
     key_listener = KeyListener()
     key_listener.start()
 
