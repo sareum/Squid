@@ -103,7 +103,7 @@ def main():
                 i +=1
             else:
                 quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-                quat2 = ekf2.update(quat2,agyr=gyr_data2, acc=acc_data2, mag=mag_data2, dt=dt)
+                quat2 = ekf2.update(quat2,gyr=gyr_data2, acc=acc_data2, mag=mag_data2, dt=dt)
 
             print("quat1: ", quat1)
             print("quat1: ", quat2)
