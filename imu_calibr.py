@@ -69,6 +69,7 @@ def main():
         gyr_data2 = [data2[3],data2[4],data2[5]]
         mag_data2 = [data2[0],data2[1],data2[2]]
         #get the first readings
+        print(type(np.array(gyr_data1)))
         ekf1 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data1), acc=np.array(acc_data1), mag=np.array(mag_data1), frequency=10.0)
         ekf2 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data2), acc=np.array(acc_data2), mag=np.array(mag_data2), frequency=10.0)
 
