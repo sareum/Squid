@@ -79,8 +79,8 @@ def main():
 
         q0_1 = ekf1.Q/np.linalg.norm(ekf1.Q)
         q0_2 = ekf2.Q/np.linalg.norm(ekf2.Q)
-        q0_1 = q0_1[0]
-        q0_2 = q0_2[0]
+        q0_1 = q0_1[0]/np.linalg.norm(q0_1[0])
+        q0_2 = q0_2[0]/np.linalg.norm(q0_2[0])
         i = 0
         dt = 0.1 #time beteween two consecutive readings in seconds
         while True:
