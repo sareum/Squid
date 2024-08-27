@@ -39,8 +39,8 @@ def read_sensors():
     gyro_2 = lsm6dsox_2.gyro
     print(type(acc_1))
     
-    data1 = [mag_1, gyro_1, acc_1]
-    data2 = [mag_2, gyro_2, acc_2]
+    data1 = [mag_1.tolist(), gyro_1.tolist(), acc_1.tolist()]
+    data2 = [mag_2.tolist(), gyro_2.tolist(), acc_2.tolist()]
     return data1, data2
 
 def correction(data):
