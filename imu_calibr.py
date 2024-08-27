@@ -61,16 +61,16 @@ def main():
         data1 = correction(data1)
         data2 = correction(data2)
 
-        '''        acc_data1 = [[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]]]
+        acc_data1 = [[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]]]
         gyr_data1 = [[data1[3],data1[4],data1[5]],[data1[3],data1[4],data1[5]],[data1[3],data1[4],data1[5]],[data1[3],data1[4],data1[5]]]
-        mag_data1 = [[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]]]'''
+        mag_data1 = [[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]]]
         acc_data1 = [[data1[6]],[data1[7]],[data1[8]]]
         gyr_data1 = [[data1[3]],[data1[4]],[data1[5]]]
         mag_data1 = [[data1[0]],[data1[1]],[data1[2]]]
         q01 = ahrs.common.orientation.acc2q(np.array(acc_data1))
-        acc_data2 = [[data2[6]],[data2[7]],[data2[8]]]
+        '''acc_data2 = [[data2[6]],[data2[7]],[data2[8]]]
         gyr_data2 = [[data2[3]],[data2[4]],[data2[5]]]
-        mag_data2 = [[data2[0]],[data2[1]],[data2[2]]]
+        mag_data2 = [[data2[0]],[data2[1]],[data2[2]]]'''
         q02 = ahrs.common.orientation.acc2q(np.array(acc_data2))
         #get the first readings
         ekf1 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data1), acc=np.array(acc_data1), mag=np.array(mag_data1), frequency=10.0,frame = 'NED',q0 =[0.7071, 0.0, -0.7071, 0.0])
