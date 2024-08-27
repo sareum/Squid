@@ -265,7 +265,7 @@ try:
                     else:
                         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
                         quat2 = ekf2.update(quat2,gyr=gyr_data2, acc=acc_data2, mag=mag_data2, dt=dt)
-                    data_to_encode = str(quat1)+','+str(quat1)
+                    data_to_encode = str(quat1.tolist())+','+str(quat2.tolist())
                     string_data = data_to_encode.encode("utf-8")
                     conn.sendall(string_data)
                     while True:
@@ -285,7 +285,7 @@ try:
 
                         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
                         quat2 = ekf2.update(quat2,gyr=gyr_data2, acc=acc_data2, mag=mag_data2, dt=dt)
-                        data_to_encode = str(quat1)+','+str(quat2)
+                        data_to_encode = str(quat1.tolist())+','+str(quat2.tolist())
                         string_data = data_to_encode.encode("utf-8")
                         conn.sendall(string_data)
                     calibration_complete = True
@@ -346,7 +346,7 @@ try:
                 motor_command[0] = float(f"{motor_command[0]:.4g}")
                 motor_command[1] = float(f"{motor_command[1]:.4g}")
                 
-                data_to_encode = str(motor_command)+','+str(quat1)+','+str(quat2)
+                data_to_encode = str(motor_command)+','+str(quat1.tolist())+','+str(quat2.tolist())
                 
                 #encode the data in utf-8 for socket comunication
                 
