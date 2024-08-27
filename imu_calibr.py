@@ -4,8 +4,8 @@ import busio
 from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
 import numpy as np 
-from ahrs.filters import EKF
-from ahrs.common.orientation import acc2q
+from AHRS.filters import EKF
+
 
 
 hard_calibr = [-3.35, -0.74, -40.79]
