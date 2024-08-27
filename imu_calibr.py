@@ -37,6 +37,7 @@ def read_sensors():
     acc_2 = lsm6dsox_2. acceleration
     mag_2 = lis3mdl_2. magnetic
     gyro_2 = lsm6dsox_2.gyro
+    print(type(acc_1))
     
     data1 = [mag_1, gyro_1, acc_1]
     data2 = [mag_2, gyro_2, acc_2]
