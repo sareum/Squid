@@ -58,21 +58,22 @@ def correction(data):
 def main():
     try:
         
-        calibration_data1 = np.array([])
-        calibration_data2 = np.array([])
+        calibration_data1 =[]
+        calibration_data2 = []
         i = 0
         while i<10:
             data1,data2 = read_sensors()
             data1 = correction(data1)
             data2 = correction(data2)
-            calibration_data1 = np.append(calibration_data1,data1)
-            calibration_data2 = np.append(calibration_data2,data2)
+            calibration_data1.append(data1)
+            calibration_data2.append(data2)
             i +=1
         print("completed calibration")
         data1, data2 = read_sensors()
         data1 = correction(data1)
         data2 = correction(data2)
-
+        calibration_data1 = np.array(calibration_data1)
+        calibration_data2 = np.array(calibration_data2)
         acc_data1 = (calibration_data1[:,6:8])
         gyr_data1 = (calibration_data1[:,3:5])
         mag_data1 = (calibration_data1[:,0:2])
