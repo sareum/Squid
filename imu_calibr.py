@@ -29,6 +29,8 @@ sample_period = 0.1 # Periodo di campionamento (in secondi)
 beta = 1 # Fattore di correzione dell'errore (può essere regolato)
 
 def read_sensors():
+    data1 = []
+    data2 = []
     # Leggi i dati dai sensori del primo set
     acc_1 = lsm6dsox_1.acceleration
     mag_1 = lis3mdl_1.magnetic
@@ -37,9 +39,8 @@ def read_sensors():
     acc_2 = lsm6dsox_2. acceleration
     mag_2 = lis3mdl_2. magnetic
     gyro_2 = lsm6dsox_2.gyro
-    
-    data1 = [list(mag_1), list(gyro_1), list(acc_1)]
-    data2 = [list(mag_2), list(gyro_2), list(acc_2)]
+    data1 = list(mag_1)+ list(gyro_1)+ list(acc_1)
+    data2 = list(mag_2)+ list(gyro_2)+ list(acc_2)
     return data1, data2
 
 def correction(data):
