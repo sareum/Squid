@@ -4,7 +4,7 @@ import busio
 from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
 import numpy as np 
-from AHRS.filters import EKF
+from ahrs.filters import EKF
 
 
 
