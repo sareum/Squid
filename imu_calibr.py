@@ -58,8 +58,8 @@ def correction(data):
 def main():
     try:
         
-        calibration_data1 = []
-        calibration_data2 = []
+        calibration_data1 = np.array([])
+        calibration_data2 = np.array([])
         i = 0
         while i<10:
             data1,data2 = read_sensors()
@@ -73,13 +73,13 @@ def main():
         data1 = correction(data1)
         data2 = correction(data2)
 
-        acc_data1 = np.array(calibration_data1[:,6:8])
-        gyr_data1 = np.array(calibration_data1[:,3:5])
-        mag_data1 = np.array(calibration_data1[:,0:2])
+        acc_data1 = (calibration_data1[:,6:8])
+        gyr_data1 = (calibration_data1[:,3:5])
+        mag_data1 = (calibration_data1[:,0:2])
     
-        acc_data2 = np.array(calibration_data2[:,6:8])
-        gyr_data2 = np.array(calibration_data2[:,3:5])
-        mag_data2 = np.array(calibration_data2[:,0:2])
+        acc_data2 = (calibration_data2[:,6:8])
+        gyr_data2 = (calibration_data2[:,3:5])
+        mag_data2 = (calibration_data2[:,0:2])
     
         #get the first readings
         ekf1 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data1), acc=np.array(acc_data1), mag=np.array(mag_data1), frequency=10.0)
