@@ -4,7 +4,8 @@ import busio
 from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
 import numpy as np 
-from ahrs.filters import EKF
+import ahrs
+#from ahrs.filters import EKF
 
 
 
@@ -67,8 +68,8 @@ def main():
         gyr_data2 = [data2[3],data2[4],data2[5]]
         mag_data2 = [data2[0],data2[1],data2[2]]
         #get the first readings
-        ekf1 = EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
-        ekf2 = EKF(gyr=gyr_data2, acc=acc_data2, mag=mag_data2, frequency=10.0)
+        ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
+        ekf2 = ahrs.filters.ekf.EKF(gyr=gyr_data2, acc=acc_data2, mag=mag_data2, frequency=10.0)
 
         q0_1 = ekf1.Q
         q0_2 = ekf2.Q
