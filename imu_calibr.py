@@ -65,8 +65,8 @@ def main():
             data1,data2 = read_sensors()
             data1 = correction(data1)
             data2 = correction(data2)
-            calibration_data1.append(data1)
-            calibration_data2.append(data2)
+            calibration_data1 = np.append(calibration_data1,data1)
+            calibration_data2 = np.append(calibration_data2,data2)
             i +=1
         print("completed calibration")
         data1, data2 = read_sensors()
