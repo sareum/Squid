@@ -9,6 +9,7 @@ import busio
 from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
 import ahrs
+import serial
 
 # Configurazione
 PROTOCOL = 'TCP'  # Cambia a 'UDP' per usare UDP
