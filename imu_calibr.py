@@ -4,8 +4,7 @@ import busio
 from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
 import numpy as np 
-import quaternion 
-import madgwickahrs
+
 
 # Configura I2C1
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -21,7 +20,6 @@ lis3mdl_2 = adafruit_lis3mdl. LISBMDL(i2c, address=0x1C)
 sample_period = 0.1 # Periodo di campionamento (in secondi)
 beta = 1 # Fattore di correzione dell'errore (può essere regolato)
 
-ahrs = madgwickahrs(sampleperiod=sample_period, beta=beta)
 def read_sensors():
     # Leggi i dati dai sensori del primo set
     acc_1 = lsm6dsox_1.acceleration
@@ -46,9 +44,7 @@ def main():
             acc_1 = lsm6dsox_1.acceleration
             mag_1 = lis3mdl_1.magnetic
             gyro_1 = lsm6dsox_1.gyro
-            ahrs.update(gyro_1, acc_1, mag_1)
-            quaternion = ahrs. quaternion
-            print("Quaternione:", quaternion)
+            print("Quaternione:", acc_1, mag_1, gyro_1)
             time.sleep (0.1)
     except KeyboardInterrupt:
         print("Programma terminato.")
