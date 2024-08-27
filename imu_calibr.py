@@ -57,27 +57,37 @@ def correction(data):
 
 def main():
     try:
+        
+        calibration_data1 = []
+        calibration_data2 = []
+        i = 0
+        while i<100:
+            data1,data2 = read_sensors
+            data1 = correction(data1)
+            data2 = correction(data2)
+            calibration_data1.append(data1)
+            calibration_data2.append(data2)
+            i +=1
         data1, data2 = read_sensors()
         data1 = correction(data1)
         data2 = correction(data2)
 
-        acc_data1 = [[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]],[data1[6],data1[7],data1[8]]]
-        gyr_data1 = [[data1[3],data1[4],data1[5]],[data1[3],data1[4],data1[5]],[data1[3],data1[4],data1[5]],[data1[3],data1[4],data1[5]]]
-        mag_data1 = [[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]]]
+        acc_data1 = np.array(calibration_data1[:,6:8])
+        gyr_data1 = np.array(calibration_data1[:,3:5])
+        mag_data1 = np.array(calibration_data1[:,0:2])
     
-        q01 = ahrs.common.orientation.acc2q(np.array(acc_data1))
-        acc_data2 = [[data2[6],data2[7],data2[8]],[data2[6],data2[7],data2[8]],[data2[6],data2[7],data2[8]]]
-        gyr_data2 = [[data2[3],data2[4],data2[5]],[data2[3],data2[4],data2[5]],[data2[3],data2[4],data2[5]]]
-        mag_data2 = [[data2[0],data2[1],data2[2]],[data2[0],data2[1],data2[2]],[data2[0],data2[1],data2[2]]]
-        q02 = ahrs.common.orientation.acc2q(np.array(acc_data2))
+        acc_data2 = np.array(calibration_data2[:,6:8])
+        gyr_data2 = np.array(calibration_data2[:,3:5])
+        mag_data2 = np.array(calibration_data2[:,0:2])
+    
         #get the first readings
         ekf1 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data1), acc=np.array(acc_data1), mag=np.array(mag_data1), frequency=10.0)
         ekf2 = ahrs.filters.ekf.EKF(gyr=np.array(gyr_data2), acc=np.array(acc_data2), mag=np.array(mag_data2), frequency=10.0)
 
         q0_1 = ekf1.Q/np.linalg.norm(ekf1.Q)
         q0_2 = ekf2.Q/np.linalg.norm(ekf2.Q)
-        q0_1 = q0_1[0]/np.linalg.norm(q0_1[0])
-        q0_2 = q0_2[0]/np.linalg.norm(q0_2[0])
+        q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
+        q0_2 = q0_2[-1]/np.linalg.norm(q0_2[-1])
         i = 0
         dt = 0.1 #time beteween two consecutive readings in seconds
         while True:
@@ -103,7 +113,7 @@ def main():
                 quat2 = ekf2.update(quat2,gyr=gyr_data2, acc=acc_data2, mag=mag_data2, dt=dt)
 
             print("quat1: ", quat1)
-            print("quat1: ", quat2)
+            print("quat2: ", quat2)
             time.sleep (0.1)
     except KeyboardInterrupt:
         print("Programma terminato.")
