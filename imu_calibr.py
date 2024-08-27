@@ -3,8 +3,9 @@ import board
 import busio
 from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
-import numpy as np 
 import ahrs
+import numpy as np 
+
 #from ahrs.filters import EKF
 
 
@@ -25,8 +26,6 @@ lis3mdl_1 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1E)
 lsm6dsox_2 = LSM6DSOX(i2c, address=0x6B)
 lis3mdl_2 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1C)
 
-sample_period = 0.1 # Periodo di campionamento (in secondi)
-beta = 1 # Fattore di correzione dell'errore (può essere regolato)
 
 def read_sensors():
     data1 = []
@@ -75,7 +74,6 @@ def main():
         calibration_data1 = np.array(calibration_data1)
         calibration_data2 = np.array(calibration_data2)
         acc_data1 = (calibration_data1[:,6:9])
-        print(acc_data1)
         gyr_data1 = (calibration_data1[:,3:6])
         mag_data1 = (calibration_data1[:,0:3])
     
