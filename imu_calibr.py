@@ -78,6 +78,7 @@ def main():
         ekf2 = ahrs.filters.ekf.EKF(q0 = q0,gyr=np.array(gyr_data2), acc=np.array(acc_data2), mag=np.array(mag_data2), frequency=10.0)
 
         q0_1 = ekf1.Q
+        print(q0_1)
         q0_2 = ekf2.Q
         
         i = 0
