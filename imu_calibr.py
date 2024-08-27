@@ -15,7 +15,7 @@ lis3mdl_1 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1E)
 
 # Inizializza il secondo set di sensori con indirizzo modificato
 lsm6dsox_2 = LSM6DSOX(i2c, address=0x6B)
-lis3mdl_2 = adafruit_lis3mdl. LISBMDL(i2c, address=0x1C)
+lis3mdl_2 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1C)
 
 sample_period = 0.1 # Periodo di campionamento (in secondi)
 beta = 1 # Fattore di correzione dell'errore (può essere regolato)
