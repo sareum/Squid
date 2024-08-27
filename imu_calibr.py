@@ -79,6 +79,7 @@ def main():
 
         q0_1 = ekf1.Q
         print(q0_1)
+        print(np.linalg.norm(q0_1))
         q0_2 = ekf2.Q
         
         i = 0
