@@ -62,7 +62,7 @@ def main():
         calibration_data2 = []
         i = 0
         while i<10:
-            data1,data2 = read_sensors
+            data1,data2 = read_sensors()
             data1 = correction(data1)
             data2 = correction(data2)
             calibration_data1.append(data1)
