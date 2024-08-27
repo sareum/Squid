@@ -57,7 +57,7 @@ def correction(data):
 
 def main():
     try:
-        q0 = np.zeros((4))
+        q0 = np.ones((4))/np.linalg.norm(np.ones((4)))
         print(q0)
         data1, data2 = read_sensors()
         data1 = correction(data1)
