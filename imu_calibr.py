@@ -37,13 +37,14 @@ def read_sensors():
     acc_2 = lsm6dsox_2. acceleration
     mag_2 = lis3mdl_2. magnetic
     gyro_2 = lsm6dsox_2.gyro
-    print(type(acc_1))
     
     data1 = [list(mag_1), list(gyro_1), list(acc_1)]
     data2 = [list(mag_2), list(gyro_2), list(acc_2)]
     return data1, data2
 
 def correction(data):
+    print(data)
+    print(data[0])
     mx = data[0]-hard_calibr[0]
     my = data[1]-hard_calibr[1]
     mz = data[2]-hard_calibr[2]
