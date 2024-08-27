@@ -68,9 +68,9 @@ def main():
         mag_data1 = [[data1[0],data1[1],data1[2]],[data1[0],data1[1],data1[2]]]
         print(type(np.array(acc_data1)))
         q01 = ahrs.common.orientation.acc2q(np.array(acc_data1))
-        acc_data2 = [data2[6],data2[7],data2[8]]
-        gyr_data2 = [data2[3],data2[4],data2[5]]
-        mag_data2 = [data2[0],data2[1],data2[2]]
+        acc_data2 = [[data2[6],data2[7],data2[8]], [data2[6],data2[7],data2[8]]]
+        gyr_data2 = [[data2[3],data2[4],data2[5]],[data2[3],data2[4],data2[5]]]
+        mag_data2 = [[data2[0],data2[1],data2[2]],[data2[0],data2[1],data2[2]]]
         #get the first readings
         print(type(gyr_data1))
         print(type(np.array(gyr_data1)))
