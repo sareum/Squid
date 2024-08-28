@@ -151,6 +151,7 @@ while time.time()-tic <5:
        
     time.sleep(0.01)
 print(quat1)
+quat1 = quat1/np.linalg.norm(quat1)
 #quat1_scalar_last = quat1
 quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
 print(quat1_scalar_last)
@@ -177,6 +178,7 @@ while time.time()-t0 < 5:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     time.sleep(0.01)
 print(quat1)
+quat1 = quat1/np.linalg.norm(quat1)
 quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
 print(quat1)
 new_matrix = np.array(R.from_quat(quat1).as_matrix())
