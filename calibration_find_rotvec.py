@@ -82,6 +82,7 @@ def read_sensors():
 
 
     return data1
+
 def correction(data):
     mx = data[0]-hard_calibr[0]
     my = data[1]-hard_calibr[1]
@@ -105,7 +106,7 @@ calibration_data2 = []
 iData = 0
 while iData<10:
     data1 =  read_sensors()
-    data1 = correction(data1)
+    #data1 = correction(data1)
 
     calibration_data1.append(data1)
     
@@ -135,7 +136,7 @@ iQ0 = 0
 tic = time.time()
 while time.time()-tic <5:
     data1 = read_sensors()
-    data1 = correction(data1)
+    #data1 = correction(data1)
     
     acc_data1 = [data1[6],data1[7],data1[8]]
     gyr_data1 = [data1[3],data1[4],data1[5]]
@@ -150,8 +151,8 @@ while time.time()-tic <5:
        
     time.sleep(0.01)
 print(quat1)
-quat1_scalar_last = quat1
-#quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
+#quat1_scalar_last = quat1
+quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
 print(quat1_scalar_last)
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
@@ -163,7 +164,7 @@ t0 = time.time()
 variable = []
 while time.time()-t0 < 5:
     data1 = read_sensors()
-    data1 = correction(data1)
+    #data1 = correction(data1)
     
     acc_data1 = [data1[6],data1[7],data1[8]]
     gyr_data1 = [data1[3],data1[4],data1[5]]
@@ -176,9 +177,10 @@ while time.time()-t0 < 5:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     time.sleep(0.01)
 print(quat1)
-#quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
-#print(quat1)
+quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
+print(quat1)
 new_matrix = np.array(R.from_quat(quat1).as_matrix())
+
 norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2
 print("got the second matrix: ")
