@@ -149,10 +149,10 @@ def read_sensors():
     # Leggi i dati dai sensori del primo set
     acc_1 = lsm6dsox_1.acceleration
     mag_1 = lis3mdl_1.magnetic
-    gyro_1 = lsm6dsox_1. gyro
+    gyro_1 = lsm6dsox_1.gyro
     # Leggi i dati dai sensori del secondo set
-    acc_2 = lsm6dsox_2. acceleration
-    mag_2 = lis3mdl_2. magnetic
+    acc_2 = lsm6dsox_2.acceleration
+    mag_2 = lis3mdl_2.magnetic
     gyro_2 = lsm6dsox_2.gyro
     data1 = list(mag_1)+ list(gyro_1)+ list(acc_1)
     data2 = list(mag_2)+ list(gyro_2)+ list(acc_2)
