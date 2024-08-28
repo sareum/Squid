@@ -148,13 +148,13 @@ while time.time()-tic <5:
         iQ0 +=1
     else:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-    quat_base.append(quat1)
-    time.sleep(0.01)
+    print(quat1)
+    time.sleep(0.001)
 print(quat1)
 quat1 = quat1/np.linalg.norm(quat1)
 #quat1_scalar_last = quat1
 quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
-quat_base.append(quat1_scalar_last)
+
 print(quat1_scalar_last)
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
@@ -177,12 +177,12 @@ while time.time()-t0 < 5:
         iQ0 +=1
     else:
         quat2 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-    variable.append(quat2)
-    time.sleep(0.01)
+    print(quat2)
+    time.sleep(0.001)
 print(quat2)
 quat2 = quat2/np.linalg.norm(quat2)
 quat2 = [quat2[1], quat2[2], quat2[3], quat2[0]]
-variable.append(quat2)
+
 print(quat2)
 new_matrix = np.array(R.from_quat(quat1).as_matrix())
 
@@ -210,6 +210,6 @@ def scrivi_csv(dati, nome_file):
     with open(nome_file, mode='w', newline='') as file_csv:
         writer = csv.writer(file_csv)
         writer.writerows(appiattisci(dati))
-scrivi_csv(quat_base,"180.csv")
-scrivi_csv(variable,"non180.csv")
+'''scrivi_csv(quat_base,"180.csv")
+scrivi_csv(variable,"non180.csv")'''
 servo.end_communication()
