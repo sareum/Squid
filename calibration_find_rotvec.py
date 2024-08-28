@@ -177,7 +177,7 @@ while time.time()-t0 < 5:
     time.sleep(0.01)
 print(quat1)
 quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
-
+print(quat1)
 new_matrix = np.array(R.from_quat(quat1).as_matrix())
 norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2
