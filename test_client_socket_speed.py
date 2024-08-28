@@ -167,6 +167,11 @@ def read_sensors():
             # Gestione dell'errore I/O remoto, restituisci valori di default o liste vuote
             data1 = [0] * 9  # Lista di zeri come default
             data2 = [0] * 9  # Lista di zeri come default
+        elif e.errno == 5:
+            print("Errore di I/O: Problema di input/output durante la comunicazione con i sensori.")
+            # Gestione dell'errore I/O, restituisci valori di default o liste vuote
+            data1 = [0] * 9  # Lista di zeri come default
+            data2 = [0] * 9  # Lista di zeri come default
         else:
             # Rilancia l'eccezione se è un altro tipo di errore OSError
             raise
