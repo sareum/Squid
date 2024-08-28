@@ -132,7 +132,7 @@ time.sleep(5)
 #Read the data and set it as the base rotation matrix
 quat_base = []
 iQ0 = 0
-while sum(quat_base) == 0:
+while sum(quat1) == 0:
     data1 = read_sensors()
     data1 = correction(data1)
     
