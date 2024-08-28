@@ -42,7 +42,7 @@ mag_field_magnitude = 45.00
 i2c = busio.I2C(board.SCL, board.SDA)
 
 # Inizializza il primo set di sensori
-lsm6dsox_1 = LSM6DSOX(i2c, address=0x6A)
+lsm6dsox_1 = LSM6DSOX(i2c, address=0x6B)
 lis3mdl_1 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1E)
 
 
@@ -127,8 +127,8 @@ q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 print("completed  EKF calibration")
 
 #set motor position as 180
-write_position(2048, [4])
-time.sleep(5)
+write_position(2048, [1])
+
 #Read the data and set it as the base rotation matrix
 quat_base = []
 iQ0 = 0
@@ -158,7 +158,7 @@ norm_2 = np.linalg.norm(R_base, 2)
 R_base = R_base / norm_2
 #print("got the first matrix: ")
 print(R_base)
-write_position(2560,4)
+write_position(2560,1)
 t0 = time.time()
 variable = []
 while time.time()-t0 < 5:
