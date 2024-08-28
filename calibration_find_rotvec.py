@@ -118,7 +118,7 @@ mag_data1 = (calibration_data1[:,0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
+ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1)
 
 q0_1 = ekf1.Q
 
@@ -133,7 +133,7 @@ time.sleep(5)
 quat_base = []
 iQ0 = 0
 tic = time.time()
-while time.time()-tic <1.5:
+while time.time()-tic <5:
     data1 = read_sensors()
     data1 = correction(data1)
     
@@ -150,8 +150,8 @@ while time.time()-tic <1.5:
        
     time.sleep(0.01)
 print(quat1)
-
-quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
+quat1_scalar_last = quat1
+#quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
 print(quat1_scalar_last)
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
@@ -176,8 +176,8 @@ while time.time()-t0 < 5:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     time.sleep(0.01)
 print(quat1)
-quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
-print(quat1)
+#quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
+#print(quat1)
 new_matrix = np.array(R.from_quat(quat1).as_matrix())
 norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2
