@@ -160,6 +160,7 @@ R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
 R_base = R_base / norm_2
 print("got the first matrix: ")
+print(R_base)
 write_position(2560,1)
 t0 = time.time()
 variable = []
@@ -188,7 +189,7 @@ new_matrix = np.array(R.from_quat(quat1).as_matrix())
 norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2
 print("got the second matrix: ")
-
+print(new_matrix)
 realtive = np.dot(R_base.T,new_matrix)
 print(realtive)
 rotation_vector = R.from_matrix(realtive).as_rotvec()
