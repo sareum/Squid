@@ -210,8 +210,9 @@ iQuat = 0
 iQ0 =0
 data = None
 start_time = time.time()
-try:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    try:
         s.bind((IP, PORT))
         s.listen()
         conn, addr = s.accept()
@@ -313,7 +314,7 @@ try:
                         conn.sendall(string_data)
                     frame_calibration = True
                     print("Completed the frame calibration!")
-               
+                
                 
                 #READ QUATERNIONS AND STORE 
                 data1, data2 = read_sensors()
@@ -378,6 +379,7 @@ try:
             
                 print(time.time()-tic)
 
-except KeyboardInterrupt:
-        print("Programma terminato.")
-        servo.end_communication() 
+    except KeyboardInterrupt:
+            print("Programma terminato.")
+            servo.end_communication() 
+            s.close()
