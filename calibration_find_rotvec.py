@@ -97,6 +97,7 @@ def correction(data):
 dt = 0.1# time intervall between two data
 #begin comunication with motor
 servo.begin_communication()
+print("setting up motors... ")
 servo.set_operating_mode("position", ID = "all")
 
 calibration_data1 =[]
