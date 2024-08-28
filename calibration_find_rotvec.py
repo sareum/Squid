@@ -132,7 +132,8 @@ time.sleep(5)
 #Read the data and set it as the base rotation matrix
 quat_base = []
 iQ0 = 0
-while sum(quat1) == 0:
+tic = time.time()
+while time.time()-tic <1.5:
     data1 = read_sensors()
     data1 = correction(data1)
     
@@ -151,7 +152,7 @@ while sum(quat1) == 0:
 print(quat1)
 
 quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
-
+print(quat1)
 R_base = np.array(R.from_quat(quat1).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
 R_base = R_base / norm_2
