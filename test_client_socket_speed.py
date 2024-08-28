@@ -317,7 +317,6 @@ try:
                 
                 #READ QUATERNIONS AND STORE 
                 data1, data2 = read_sensors()
-                time.sleep(0.1)
                 
                 data1 = correction(data1)#sensor 1
                 data2 = correction(data2)#sensor 2
