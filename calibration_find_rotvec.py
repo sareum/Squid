@@ -148,12 +148,13 @@ while time.time()-tic <5:
         iQ0 +=1
     else:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-       
+    quat_base.append(quat1)
     time.sleep(0.01)
 print(quat1)
 quat1 = quat1/np.linalg.norm(quat1)
 #quat1_scalar_last = quat1
 quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
+quat_base.append(quat1_scalar_last)
 print(quat1_scalar_last)
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
@@ -172,15 +173,17 @@ while time.time()-t0 < 5:
     mag_data1 = [data1[0],data1[1],data1[2]]
 
     if iQ0 == 0:
-        quat1 = ekf1.update(q0_1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+        quat2 = ekf1.update(q0_1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
         iQ0 +=1
     else:
-        quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+        quat2 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+    variable.append(quat2)
     time.sleep(0.01)
-print(quat1)
-quat1 = quat1/np.linalg.norm(quat1)
-quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]]
-print(quat1)
+print(quat2)
+quat2 = quat2/np.linalg.norm(quat2)
+quat2 = [quat2[1], quat2[2], quat2[3], quat2[0]]
+variable.append(quat2)
+print(quat2)
 new_matrix = np.array(R.from_quat(quat1).as_matrix())
 
 norm_2 = np.linalg.norm(new_matrix, 2)
@@ -193,4 +196,20 @@ rotation_vector = R.from_matrix(realtive).as_rotvec()
 rotation_vector = rotation_vector/np.linalg.norm(rotation_vector)
 print("rotation_Vector: ")
 print(rotation_vector)
+
+
+def appiattisci(lista):
+    for elemento in lista:
+        if isinstance(elemento[0], list):
+            for sub_elemento in elemento:
+                yield sub_elemento
+        else:
+            yield elemento
+
+def scrivi_csv(dati, nome_file):
+    with open(nome_file, mode='w', newline='') as file_csv:
+        writer = csv.writer(file_csv)
+        writer.writerows(appiattisci(dati))
+scrivi_csv(quat_base,"180.csv")
+scrivi_csv(variable,"non180.csv")
 servo.end_communication()
