@@ -110,21 +110,21 @@ while iData<10:
     calibration_data1.append(data1)
     
     iData +=1
-    calibration_data1 = np.array(calibration_data1)
-    calibration_data2 = np.array(calibration_data2)
-    acc_data1 = (calibration_data1[:,6:9])
-    gyr_data1 = (calibration_data1[:,3:6])
-    mag_data1 = (calibration_data1[:,0:3])
+calibration_data1 = np.array(calibration_data1)
+calibration_data2 = np.array(calibration_data2)
+acc_data1 = (calibration_data1[:,6:9])
+gyr_data1 = (calibration_data1[:,3:6])
+mag_data1 = (calibration_data1[:,0:3])
 
 
-    #get the first readings
-    ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
+#get the first readings
+ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
 
-    q0_1 = ekf1.Q
-   
-    q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
-    
-    print("completed  EKF calibration")
+q0_1 = ekf1.Q
+
+q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
+
+print("completed  EKF calibration")
 
 #set motor position as 180
 write_position(2048, [4])
