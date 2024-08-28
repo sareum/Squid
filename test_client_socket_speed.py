@@ -142,20 +142,40 @@ lis3mdl_1 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1E)
 # Inizializza il secondo set di sensori con indirizzo modificato
 lsm6dsox_2 = LSM6DSOX(i2c, address=0x6B)
 lis3mdl_2 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1C)
-
 def read_sensors():
     data1 = []
     data2 = []
-    # Leggi i dati dai sensori del primo set
-    acc_1 = lsm6dsox_1.acceleration
-    mag_1 = lis3mdl_1.magnetic
-    gyro_1 = lsm6dsox_1.gyro
-    # Leggi i dati dai sensori del secondo set
-    acc_2 = lsm6dsox_2.acceleration
-    mag_2 = lis3mdl_2.magnetic
-    gyro_2 = lsm6dsox_2.gyro
-    data1 = list(mag_1)+ list(gyro_1)+ list(acc_1)
-    data2 = list(mag_2)+ list(gyro_2)+ list(acc_2)
+    
+    try:
+        # Leggi i dati dai sensori del primo set
+        acc_1 = lsm6dsox_1.acceleration
+        mag_1 = lis3mdl_1.magnetic
+        gyro_1 = lsm6dsox_1.gyro
+        
+        # Leggi i dati dai sensori del secondo set
+        acc_2 = lsm6dsox_2.acceleration
+        mag_2 = lis3mdl_2.magnetic
+        gyro_2 = lsm6dsox_2.gyro
+
+        # Combina i dati in una lista
+        data1 = list(mag_1) + list(gyro_1) + list(acc_1)
+        data2 = list(mag_2) + list(gyro_2) + list(acc_2)
+
+    except OSError as e:
+        if e.errno == 121:
+            print("Errore di I/O remoto: Impossibile comunicare con uno o più sensori.")
+            # Gestione dell'errore I/O remoto, restituisci valori di default o liste vuote
+            data1 = [0] * 9  # Lista di zeri come default
+            data2 = [0] * 9  # Lista di zeri come default
+        else:
+            # Rilancia l'eccezione se è un altro tipo di errore OSError
+            raise
+    except Exception as e:
+        print(f"Errore imprevisto durante la lettura dei sensori: {e}")
+        # Gestione di errori generici, restituisci valori di default o liste vuote
+        data1 = [0] * 9  # Lista di zeri come default
+        data2 = [0] * 9  # Lista di zeri come default
+
     return data1, data2
 
 def correction(data):
