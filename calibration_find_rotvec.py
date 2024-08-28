@@ -184,7 +184,7 @@ quat2 = quat2/np.linalg.norm(quat2)
 #quat2 = [quat2[1], quat2[2], quat2[3], quat2[0]]
 
 print(quat2)
-new_matrix = np.array(R.from_quat(quat1).as_matrix())
+new_matrix = np.array(R.from_quat(quat2).as_matrix())
 
 norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2
