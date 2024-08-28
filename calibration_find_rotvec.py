@@ -151,9 +151,9 @@ while time.time()-tic <1.5:
     time.sleep(0.01)
 print(quat1)
 
-quat1 = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
-print(quat1)
-R_base = np.array(R.from_quat(quat1).as_matrix())
+quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
+print(quat1_scalar_last)
+R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 norm_2 = np.linalg.norm(R_base, 2)
 R_base = R_base / norm_2
 #print("got the first matrix: ")
