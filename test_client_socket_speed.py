@@ -292,6 +292,7 @@ try:
                 
                 #READ QUATERNIONS AND STORE 
                 data1, data2 = read_sensors()
+                time.sleep(0.1)
                 
                 data1 = correction(data1)#sensor 1
                 data2 = correction(data2)#sensor 2
@@ -352,6 +353,7 @@ try:
                 conn.sendall(string_data)
             
                 print(time.time()-tic)
+
 except KeyboardInterrupt:
         print("Programma terminato.")
         servo.end_communication() 
