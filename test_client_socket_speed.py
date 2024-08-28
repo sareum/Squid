@@ -12,22 +12,20 @@ import ahrs
 import serial
 
 # Configurazione
-PROTOCOL = 'TCP'  # Cambia a 'UDP' per usare UDP
+PROTOCOL = 'TCP'
 IP = '192.168.137.246' # Network number
 PORT = 12345 # Same for client and server
 BUFFER_SIZE = 1024  # Dimensione del buffer in byte
 NUM_PACKETS = 10000  # Numero di pacchetti da inviare
 
-########## MOTOR CONTROL ##########
 
-
+####################### MOTOR COMMAND ###################
 def set_position(time, a, c, T) : 
     position = a*np.sin(2*np.pi/T*time) + c 
     return position
 
 def write_position(q_dynamixel, IDs) :
     servo.write_position(q_dynamixel, ID=IDs)
-
 
 def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     global its_opening
@@ -56,8 +54,6 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
         position = peak_value
 
     return position, t_mod
-
-
 
 def go_forward(time) :
     IDs = [1,2,3,4]
@@ -90,6 +86,7 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     
     data = [q_dynamixel_right, q_dynamixel_left]
     return data,t_mod
+################### END MOTOR COMMAND  ############################
 
 
 def decode_and_parse_data(data):
@@ -106,13 +103,12 @@ def decode_and_parse_data(data):
 
     return amplitude_right, amplitude_left, reached
 
-############### motor setup ########
 
+
+############### MOTOR SETUP ########################
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
                     series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0") #probably change it
                     #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")"/dev/tty.usbserial-FT78LT9E"
-
-
 servo.begin_communication()
 servo.set_operating_mode("position", ID = "all")
 a_right = 75
@@ -126,8 +122,11 @@ amplitude_timeline_vector_right = []
 amplitude_timeline_vector_left = []
 amplitude_right = 45
 amplitude_left = 45
-############## END MOTOR COMMAND #################
+############## END MOTOR SETUP #################
+
+
 ############## I2C setup###################
+#IMU calibration data:
 hard_calibr = [-3.35, -0.74, -40.79]
 soft_calib = [0.96, 0.02, 0.01, 0.02, 0.96, 0.00, 0.01, 0.00, 1.08]
 gyro_calib = [0.05, -0.01, -0.01]
@@ -171,22 +170,21 @@ def correction(data):
     gyZ = data[5] - gyro_calib[2]
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
 
-
-dt = 0.1
+dt = 0.1# time intervall between two data
 ##############  END I2C SETUP################
 
+#flags:
 was_closing = False
 its_opening = False
-start_time = time.time()
-calibration_complete = False #set the motor at 200, then sends the quaternion for the first rotation matrix
+frame_calibration = False #set the motor at 200, then sends the quaternion for the first rotation matrix
 calibration_quaternion = False #calibrate the EKF
-###SERIAL COMUNICATION#####
 camera_calibration = False
-data = None
 ricevuto = False
 prima_volta = True
 iQuat = 0
 iQ0 =0
+data = None
+start_time = time.time()
 try:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((IP, PORT))
@@ -212,14 +210,14 @@ try:
                     print("beginning EKF calibration...")
                     calibration_data1 =[]
                     calibration_data2 = []
-                    i = 0
-                    while i<10:
+                    iData = 0
+                    while iData<10:
                         data1,data2 = read_sensors()
                         data1 = correction(data1)
                         data2 = correction(data2)
                         calibration_data1.append(data1)
                         calibration_data2.append(data2)
-                        i +=1
+                        iData +=1
                     calibration_data1 = np.array(calibration_data1)
                     calibration_data2 = np.array(calibration_data2)
                     acc_data1 = (calibration_data1[:,6:9])
@@ -243,7 +241,7 @@ try:
                     print("sent confermation of the EFK calibration.")
                     calibration_quaternion = True
 
-                while calibration_complete == False:
+                while frame_calibration == False:
                 #MOTOR FRAME 
                     # Initialize motor position
                     servo.write_position(2276, [1,2,3,4]) #200° è 2276 
@@ -288,7 +286,7 @@ try:
                         data_to_encode = str(quat1.tolist())+','+str(quat2.tolist())
                         string_data = data_to_encode.encode("utf-8")
                         conn.sendall(string_data)
-                    calibration_complete = True
+                    frame_calibration = True
                     print("Completed the frame calibration!")
                
                 
@@ -353,8 +351,7 @@ try:
                 string_data = data_to_encode.encode("utf-8")
                 conn.sendall(string_data)
             
-                toc = time.time()-tic
-                print(toc)
+                print(time.time()-tic)
 except KeyboardInterrupt:
         print("Programma terminato.")
         servo.end_communication() 
