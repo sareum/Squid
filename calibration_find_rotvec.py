@@ -110,6 +110,7 @@ while iData < 5000:
     #data1 = correction(data1)
     calibration_data1.append(data1)
     iData +=1
+    print(iData)
     time.sleep(0.001)
 
 calibration_data1 = np.array(calibration_data1)
