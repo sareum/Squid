@@ -163,7 +163,8 @@ norm_2 = np.linalg.norm(R_base, 2)
 R_base = R_base / norm_2
 print("got the first matrix: ")
 print(R_base)
-write_position(2560,1)
+
+#write_position(2560,1)
 
 time.sleep(2)
 
