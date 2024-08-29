@@ -121,7 +121,7 @@ mag_data1 = (calibration_data1[:, 0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.madgwick.Mmadgwick(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=1000.0)
+ekf1 = ahrs.filters.madgwick.Madgwick(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=1000.0)
 q0_1 = ekf1.Q
 q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 
