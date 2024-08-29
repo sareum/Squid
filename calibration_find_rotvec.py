@@ -165,6 +165,7 @@ variable = []
 quat2 = quat_base
 
 while time.time()-t0 < 10:
+    tic = time.time()
     data1 = read_sensors()
     data1 = correction(data1)
     
@@ -177,6 +178,8 @@ while time.time()-t0 < 10:
     variable.append(list(quat2))
 
     time.sleep(0.05)
+    toc = time.time()-tic
+    print(toc)
 
 
 realtive = []
