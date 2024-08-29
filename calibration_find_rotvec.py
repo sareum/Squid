@@ -132,7 +132,6 @@ write_position(2048, 1)
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
-quat_base = []
 iQ0 = 0
 tic = time.time()
 
@@ -150,10 +149,10 @@ while time.time()-tic < 2:
     else:
         quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     
-    quat_base.append(list(quat1))
+    quat_base = quat1
     time.sleep(0.01)
 
-quat1_scalar_last = [quat_base[-1][1], quat_base[-1][2], quat_base[-1][3], quat_base[-1][0]]
+quat1_scalar_last = [quat_base[1], quat_base[2], quat_base[3], quat_base[0]]
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
 R_base = R_base/np.linalg.norm(R_base, 2)
 
@@ -162,7 +161,7 @@ print("got the first matrix, START MOVING ")
 
 t0 = time.time()
 variable = []
-quat2 = quat_base[-1]
+quat2 = quat_base
 
 while time.time()-t0 < 10:
     data1 = read_sensors()
@@ -173,6 +172,7 @@ while time.time()-t0 < 10:
     mag_data1 = [data1[0],data1[1],data1[2]]
 
     quat2 = ekf1.updateMARG(quat2, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+    
     variable.append(list(quat2))
 
     time.sleep(0.01)
