@@ -97,6 +97,9 @@ while True:
     tic = time.time()
     data = read_sensors()
     data = correction(data)
+    acc_data1 = [data1[6],data1[7],data1[8]]
+    gyr_data1 = [data1[3],data1[4],data1[5]]
+    mag_data1 = [data1[0],data1[1],data1[2]]
     
     if iQ0 == 0:
         quat1 = ekf1.updateMARG(q0_1, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
