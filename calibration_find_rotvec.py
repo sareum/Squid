@@ -137,7 +137,7 @@ quat_base = []
 iQ0 = 0
 tic = time.time()
 
-while time.time()-tic <5:
+while time.time()-tic <10:
     data1 = read_sensors()
     data1 = correction(data1)
     
@@ -171,7 +171,7 @@ t0 = time.time()
 variable = []
 
 quat2 = quat1
-while time.time()-t0 < 5:
+while time.time()-t0 < 10:
     data1 = read_sensors()
     data1 = correction(data1)
     
