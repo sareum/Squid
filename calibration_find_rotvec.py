@@ -150,19 +150,17 @@ while time.time()-tic <10:
         iQ0 +=1
     else:
         quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-    print(quat1)
+    quat_base.append(quat1)
     time.sleep(0.01)
+R_base = []
+for iElement in range(0, len(quat_base)):
+    quat_base[iElement]  = quat_base[iElement]/np.linalg.norm(quat_base[iElement])
+    quat1_scalar_last = [quat_base[iElement][1], quat_base[iElement][2], quat_base[iElement][3], quat_base[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
+    R_base[iElement] = np.array(R.from_quat(quat1_scalar_last[iElement]).as_matrix())
+    norm_2 = np.linalg.norm(R_base[iElement], 2)
+    R_base[iElement] = R_base[iElement] / norm_2
 
-quat1 = quat1/np.linalg.norm(quat1)
-
-quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
-
-print(quat1_scalar_last)
-R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
-norm_2 = np.linalg.norm(R_base, 2)
-R_base = R_base / norm_2
 print("got the first matrix: ")
-print(R_base)
 write_position(2560, 4)
 
 time.sleep(2)
@@ -170,7 +168,7 @@ time.sleep(2)
 t0 = time.time()
 variable = []
 
-quat2 = quat1
+quat2 = quat1[-1]
 while time.time()-t0 < 10:
     data1 = read_sensors()
     data1 = correction(data1)
@@ -180,28 +178,26 @@ while time.time()-t0 < 10:
     mag_data1 = [data1[0],data1[1],data1[2]]
 
     quat2 = ekf1.updateMARG(quat2, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-    print(quat2)
+    variable.append(quat2)
 
     time.sleep(0.01)
 
-quat2 = quat2/np.linalg.norm(quat2)
-quat2_scalar_last = [quat2[1], quat2[2], quat2[3], quat2[0]]
+new_matrix = []
+realtive = []
+rotation_vector = []
+quat1 = quat1/np.linalg.norm(quat1)
+for iElement in range(0, len(variable)):
+    variable[iElement]  = variable[iElement]/np.linalg.norm(variable[iElement])
+    quat2_scalar_last = [variable[iElement][1], variable[iElement][2], variable[iElement][3], variable[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
+    new_matrix[iElement] = np.array(R.from_quat(quat2_scalar_last[iElement]).as_matrix())
+    norm_2 = np.linalg.norm(new_matrix[iElement], 2)
+    new_matrix[iElement] = new_matrix[iElement] / norm_2    
+    realtive[iElement] = np.dot(R_base[iElement].T,new_matrix[iElement])
+    rotation_vector[iElement] = R.from_matrix(realtive[iElement]).as_rotvec()
+    rotation_vector[iElement] = rotation_vector[iElement]/np.linalg.norm(rotation_vector[iElement])
 
-print(quat2_scalar_last)
-new_matrix = np.array(R.from_quat(quat2_scalar_last).as_matrix())
 
-norm_2 = np.linalg.norm(new_matrix, 2)
-new_matrix = new_matrix / norm_2
 print("got the second matrix: ")
-print(new_matrix)
-
-realtive = np.dot(R_base.T,new_matrix)
-print(realtive)
-rotation_vector = R.from_matrix(realtive).as_rotvec()
-rotation_vector = rotation_vector/np.linalg.norm(rotation_vector)
-
-print("rotation_Vector: ")
-print(rotation_vector)
 
 
 def appiattisci(lista):
@@ -216,6 +212,6 @@ def scrivi_csv(dati, nome_file):
     with open(nome_file, mode='w', newline='') as file_csv:
         writer = csv.writer(file_csv)
         writer.writerows(appiattisci(dati))
-'''scrivi_csv(quat_base,"180.csv")
-scrivi_csv(variable,"non180.csv")'''
+scrivi_csv(R_base,"180.csv")
+scrivi_csv(new_matrix,"non180.csv")
 servo.end_communication()
