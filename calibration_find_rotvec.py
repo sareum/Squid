@@ -120,7 +120,7 @@ mag_data1 = (calibration_data1[:,0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
+ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
 
 q0_1 = ekf1.Q
 
@@ -146,10 +146,10 @@ while time.time()-tic <10:
     mag_data1 = [data1[0],data1[1],data1[2]]
 
     if iQ0 == 0:
-        quat1 = ekf1.update(q0_1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+        quat1 = ekf1.updateMARG(q0_1, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
         iQ0 +=1
     else:
-        quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+        quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     print(quat1)
     time.sleep(0.01)
 
@@ -180,7 +180,7 @@ while time.time()-t0 < 10:
     gyr_data1 = [data1[3],data1[4],data1[5]]
     mag_data1 = [data1[0],data1[1],data1[2]]
 
-    quat2 = ekf1.update(quat2,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+    quat2 = ekf1.updateMARG(quat2, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     print(quat2)
 
     time.sleep(0.01)
