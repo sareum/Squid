@@ -129,7 +129,7 @@ q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 print("completed  EKF calibration")
 
 #set motor position as 180
-write_position(2048, [4])
+write_position(2048, [1])
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
@@ -161,7 +161,7 @@ for iElement in range(0, len(quat_base)):
     R_base[iElement] = R_base[iElement] / norm_2
 
 print("got the first matrix: ")
-write_position(2560, 4)
+write_position(2560, 1)
 
 time.sleep(2)
 
