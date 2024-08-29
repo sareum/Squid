@@ -78,5 +78,4 @@ while True:
     data = read_sensors()
     data = correction(data)
     print(data)
-    time.sleep(0.1)
     print("elapsed: ", time.time()-tic)

@@ -111,7 +111,6 @@ while iData <30:
     calibration_data1.append(data1)
     iData +=1
     print(iData)
-    time.sleep(0.05)
 
 calibration_data1 = np.array(calibration_data1)
 #calibration_data2 = np.array(calibration_data2)
@@ -151,7 +150,6 @@ while time.time()-tic < 2:
         quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     
     quat_base = quat1
-    time.sleep(0.05)
 
 quat1_scalar_last = [quat_base[1], quat_base[2], quat_base[3], quat_base[0]]
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
@@ -176,8 +174,6 @@ while time.time()-t0 < 10:
     quat2 = ekf1.updateMARG(quat2, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     
     variable.append(list(quat2))
-
-    time.sleep(0.05)
     toc = time.time()-tic
     print(toc)
 
