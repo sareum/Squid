@@ -96,7 +96,7 @@ def correction(data):
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
 
 dt = 0.01# time intervall between two data
-begin comunication with motor
+#begin comunication with motor
 servo.begin_communication()
 #print("setting up motors... ")
 servo.set_operating_mode("position", ID = "all")
