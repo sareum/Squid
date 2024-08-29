@@ -157,6 +157,7 @@ quat1_scalar_last =[]
 for iElement in range(0, len(quat_base)):
     print(iElement)
     print(quat_base[iElement])
+    print(quat_base[iElement][1])
     quat_base[iElement]  = quat_base[iElement]/np.linalg.norm(quat_base[iElement])
     quat1_scalar_last[iElement] = [quat_base[iElement][1], quat_base[iElement][2], quat_base[iElement][3], quat_base[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
     print(quat1_scalar_last)
