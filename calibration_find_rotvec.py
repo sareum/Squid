@@ -121,7 +121,7 @@ mag_data1 = (calibration_data1[:, 0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=16.0)
+ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=16.6)
 q0_1 = ekf1.Q
 q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 
