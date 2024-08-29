@@ -66,7 +66,7 @@ def correction(data):
     gyY = data[4] - gyro_calib[1]
     gyZ = data[5] - gyro_calib[2]
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
-
+dt = 0.0115
 #IMU calibration data:
 hard_calibr = [-3.35, -0.74, -40.79]
 soft_calib = [0.96, 0.02, 0.01, 0.02, 0.96, 0.00, 0.01, 0.00, 1.08]
