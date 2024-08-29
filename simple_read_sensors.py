@@ -78,3 +78,4 @@ while True:
     data = read_sensors()
     print(data)
     print("elapsed: ", time.time()-tic)
+    time.sleep(0.1)
