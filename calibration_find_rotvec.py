@@ -97,9 +97,9 @@ def correction(data):
 
 dt = 0.01# time intervall between two data
 #begin comunication with motor
-servo.begin_communication()
-print("setting up motors... ")
-servo.set_operating_mode("position", ID = "all")
+#servo.begin_communication()
+#print("setting up motors... ")
+#servo.set_operating_mode("position", ID = "all")
 
 calibration_data1 =[]
 calibration_data2 = []
@@ -129,7 +129,7 @@ q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 print("completed  EKF calibration")
 
 #set motor position as 180
-write_position(2048, [1])
+#write_position(2048, [1])
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
@@ -155,25 +155,22 @@ while time.time()-tic <10:
 R_base = []
 quat1_scalar_last =[]
 for iElement in range(0, len(quat_base)):
-    print(iElement)
-    print(quat_base[iElement])
-    print(quat_base[iElement][1])
     quat_base[iElement]  = quat_base[iElement]/np.linalg.norm(quat_base[iElement])
     quat1_scalar_last.append([quat_base[iElement][1], quat_base[iElement][2], quat_base[iElement][3], quat_base[iElement][0]]) #SCALAR LAST AS DEFAULT!!!!
-    print(quat1_scalar_last)
     R_base.append(np.array(R.from_quat(quat1_scalar_last[iElement]).as_matrix()))
     norm_2 = np.linalg.norm(R_base[iElement], 2)
     R_base[iElement] = R_base[iElement] / norm_2
     
 print("got the first matrix: ")
-write_position(2560, 1)
-
+#write_position(2560, 1)
+print("sleep for 2 seconds...")
 time.sleep(2)
 
 t0 = time.time()
 variable = []
 
 quat2 = quat1
+print("start the new data acquisition...")
 while time.time()-t0 < 10:
     data1 = read_sensors()
     data1 = correction(data1)
@@ -204,7 +201,7 @@ for iElement in range(0, len(variable)):
 
 
 print("got the second matrix: ")
-
+print("logging...")
 
 def appiattisci(lista):
     for elemento in lista:
@@ -220,4 +217,5 @@ def scrivi_csv(dati, nome_file):
         writer.writerows(appiattisci(dati))
 scrivi_csv(realtive,"180.csv")
 scrivi_csv(new_matrix,"non180.csv")
+print("done!")
 servo.end_communication()
