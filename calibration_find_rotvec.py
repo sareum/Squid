@@ -104,13 +104,14 @@ servo.set_operating_mode("position", ID = "all")
 calibration_data1 =[]
 calibration_data2 = []
 iData = 0
-while iData<10:
+
+while iData<30:
     data1 =  read_sensors()
     #data1 = correction(data1)
-
     calibration_data1.append(data1)
-    
     iData +=1
+    time.sleep(0.1)
+
 calibration_data1 = np.array(calibration_data1)
 calibration_data2 = np.array(calibration_data2)
 acc_data1 = (calibration_data1[:,6:9])
@@ -119,7 +120,7 @@ mag_data1 = (calibration_data1[:,0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1)
+ekf1 = ahrs.filters.ekf.EKF(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
 
 q0_1 = ekf1.Q
 
@@ -130,13 +131,15 @@ print("completed  EKF calibration")
 #set motor position as 180
 write_position(2048, [1])
 
+time.sleep(2)
 #Read the data and set it as the base rotation matrix
 quat_base = []
 iQ0 = 0
 tic = time.time()
+
 while time.time()-tic <5:
     data1 = read_sensors()
-    #data1 = correction(data1)
+    data1 = correction(data1)
     
     acc_data1 = [data1[6],data1[7],data1[8]]
     gyr_data1 = [data1[3],data1[4],data1[5]]
@@ -144,16 +147,15 @@ while time.time()-tic <5:
 
     if iQ0 == 0:
         quat1 = ekf1.update(q0_1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-        
         iQ0 +=1
     else:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     print(quat1)
-    time.sleep(0.001)
-print(quat1)
+    time.sleep(0.1)
+
 quat1 = quat1/np.linalg.norm(quat1)
-quat1_scalar_last = quat1
-#quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
+
+quat1_scalar_last = [quat1[1], quat1[2], quat1[3], quat1[0]] #SCALAR LAST AS DEFAULT!!!!
 
 print(quat1_scalar_last)
 R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
@@ -162,38 +164,42 @@ R_base = R_base / norm_2
 print("got the first matrix: ")
 print(R_base)
 write_position(2560,1)
+
+time.sleep(2)
+
 t0 = time.time()
 variable = []
+
+quat2 = quat1
 while time.time()-t0 < 5:
     data1 = read_sensors()
-    #data1 = correction(data1)
+    data1 = correction(data1)
     
     acc_data1 = [data1[6],data1[7],data1[8]]
     gyr_data1 = [data1[3],data1[4],data1[5]]
     mag_data1 = [data1[0],data1[1],data1[2]]
 
-    if iQ0 == 0:
-        quat2 = ekf1.update(q0_1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-        iQ0 +=1
-    else:
-        quat2 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+    quat2 = ekf1.update(quat2,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     print(quat2)
-    time.sleep(0.001)
-print(quat2)
-quat2 = quat2/np.linalg.norm(quat2)
-#quat2 = [quat2[1], quat2[2], quat2[3], quat2[0]]
 
-print(quat2)
-new_matrix = np.array(R.from_quat(quat2).as_matrix())
+    time.sleep(0.1)
+
+quat2 = quat2/np.linalg.norm(quat2)
+quat2_scalar_last = [quat2[1], quat2[2], quat2[3], quat2[0]]
+
+print(quat2_scalar_last)
+new_matrix = np.array(R.from_quat(quat2_scalar_last).as_matrix())
 
 norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2
 print("got the second matrix: ")
 print(new_matrix)
+
 realtive = np.dot(R_base.T,new_matrix)
 print(realtive)
 rotation_vector = R.from_matrix(realtive).as_rotvec()
 rotation_vector = rotation_vector/np.linalg.norm(rotation_vector)
+
 print("rotation_Vector: ")
 print(rotation_vector)
 
