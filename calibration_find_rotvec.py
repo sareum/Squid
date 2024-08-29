@@ -176,7 +176,7 @@ while time.time()-t0 < 10:
     
     variable.append(list(quat2))
 
-    time.sleep(0.001)
+    time.sleep(0.05)
 
 
 realtive = []
