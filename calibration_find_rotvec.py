@@ -173,7 +173,7 @@ time.sleep(2)
 t0 = time.time()
 variable = []
 
-quat2 = quat1[-1]
+quat2 = quat1
 while time.time()-t0 < 10:
     data1 = read_sensors()
     data1 = correction(data1)
@@ -183,7 +183,7 @@ while time.time()-t0 < 10:
     mag_data1 = [data1[0],data1[1],data1[2]]
 
     quat2 = ekf1.updateMARG(quat2, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-    variable.append(quat2)
+    variable.append(list(quat2))
 
     time.sleep(0.01)
 
