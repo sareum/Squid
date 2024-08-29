@@ -95,7 +95,7 @@ def correction(data):
     gyZ = data[5] - gyro_calib[2]
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
 
-dt = 0.05# time intervall between two data
+dt = 0.06# time intervall between two data
 #begin comunication with motor
 servo.begin_communication()
 #print("setting up motors... ")
