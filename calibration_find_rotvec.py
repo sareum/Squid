@@ -150,7 +150,7 @@ while time.time()-tic <10:
         iQ0 +=1
     else:
         quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
-    quat_base.append(quat1)
+    quat_base.append(list(quat1))
     time.sleep(0.01)
 R_base = []
 quat1_scalar_last =[]
