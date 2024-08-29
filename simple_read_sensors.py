@@ -76,6 +76,7 @@ mag_field_magnitude = 45.00
 while True:
     tic = time.time()
     data = read_sensors()
+    data = correction(data)
     print(data)
-    print("elapsed: ", time.time()-tic)
     time.sleep(0.1)
+    print("elapsed: ", time.time()-tic)
