@@ -55,8 +55,6 @@ def read_sensors():
         acc_1 = lsm6dsox_1.acceleration
         mag_1 = lis3mdl_1.magnetic
         gyro_1 = lsm6dsox_1.gyro
-        
- 
 
         # Combina i dati in una lista
         data1 = list(mag_1) + list(gyro_1) + list(acc_1)
@@ -105,7 +103,7 @@ calibration_data1 =[]
 calibration_data2 = []
 iData = 0
 
-while iData<500:
+while iData < 500:
     data1 =  read_sensors()
     #data1 = correction(data1)
     calibration_data1.append(data1)
@@ -113,23 +111,22 @@ while iData<500:
     time.sleep(0.01)
 
 calibration_data1 = np.array(calibration_data1)
-calibration_data2 = np.array(calibration_data2)
-acc_data1 = (calibration_data1[:,6:9])
-gyr_data1 = (calibration_data1[:,3:6])
-mag_data1 = (calibration_data1[:,0:3])
+#calibration_data2 = np.array(calibration_data2)
+acc_data1 = (calibration_data1[:, 6:9])
+gyr_data1 = (calibration_data1[:, 3:6])
+mag_data1 = (calibration_data1[:, 0:3])
 
 
 #get the first readings
 ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=100.0)
-
 q0_1 = ekf1.Q
-
 q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 
 print("completed  EKF calibration")
 
-#set motor position as 180
-#write_position(2048, [1])
+#set motor position as 180 and fix it
+
+write_position(2048, [1])
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
@@ -137,7 +134,7 @@ quat_base = []
 iQ0 = 0
 tic = time.time()
 
-while time.time()-tic <10:
+while time.time()-tic < 2:
     data1 = read_sensors()
     data1 = correction(data1)
     
@@ -150,27 +147,21 @@ while time.time()-tic <10:
         iQ0 +=1
     else:
         quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+    
     quat_base.append(list(quat1))
     time.sleep(0.01)
-R_base = []
-quat1_scalar_last =[]
-for iElement in range(0, len(quat_base)):
-    quat_base[iElement]  = quat_base[iElement]/np.linalg.norm(quat_base[iElement])
-    quat1_scalar_last.append([quat_base[iElement][1], quat_base[iElement][2], quat_base[iElement][3], quat_base[iElement][0]]) #SCALAR LAST AS DEFAULT!!!!
-    R_base.append(np.array(R.from_quat(quat1_scalar_last[iElement]).as_matrix()))
-    norm_2 = np.linalg.norm(R_base[iElement], 2)
-    R_base[iElement] = R_base[iElement] / norm_2
-    
-print("got the first matrix: ")
-#write_position(2560, 1)
-print("sleep for 2 seconds...")
-time.sleep(2)
+
+quat1_scalar_last = [quat_base[-1][1], quat_base[-1][2], quat_base[-1][3], quat_base[-1][0]]
+R_base = np.array(R.from_quat(quat1_scalar_last).as_matrix())
+R_base = R_base/np.linalg.norm(R_base, 2)
+
+print("got the first matrix, START MOVING ")
+
 
 t0 = time.time()
 variable = []
+quat2 = quat_base[-1]
 
-quat2 = quat1
-print("start the new data acquisition...")
 while time.time()-t0 < 10:
     data1 = read_sensors()
     data1 = correction(data1)
@@ -184,24 +175,17 @@ while time.time()-t0 < 10:
 
     time.sleep(0.01)
 
-new_matrix = []
+
 realtive = []
 rotation_vector = []
-quat2_scalar_last = []
-quat1 = quat1/np.linalg.norm(quat1)
+
 for iElement in range(0, len(variable)):
-    variable[iElement]  = variable[iElement]/np.linalg.norm(variable[iElement])
-    quat2_scalar_last.append([variable[iElement][1], variable[iElement][2], variable[iElement][3], variable[iElement][0]]) #SCALAR LAST AS DEFAULT!!!!
-    new_matrix.append( np.array(R.from_quat(quat2_scalar_last[iElement]).as_matrix()))
-    norm_2 = np.linalg.norm(new_matrix[iElement], 2)
-    new_matrix[iElement] = new_matrix[iElement] / norm_2    
-    realtive.append( np.dot(R_base[iElement].T,new_matrix[iElement]))
-    rotation_vector.append(R.from_matrix(realtive[iElement]).as_rotvec())
-    rotation_vector[iElement] = rotation_vector[iElement]/np.linalg.norm(rotation_vector[iElement])
+    quat2_scalar_last = [variable[iElement][1], variable[iElement][2], variable[iElement][3], variable[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
+    new_matrix = np.array(R.from_quat(quat2_scalar_last).as_matrix())
+    norm_2 = np.linalg.norm(new_matrix, 2)
+    new_matrix = new_matrix / norm_2    
+    realtive.append( np.dot(R_base.T,new_matrix))
 
-
-print("got the second matrix: ")
-print("logging...")
 
 def appiattisci(lista):
     for elemento in lista:
@@ -215,7 +199,8 @@ def scrivi_csv(dati, nome_file):
     with open(nome_file, mode='w', newline='') as file_csv:
         writer = csv.writer(file_csv)
         writer.writerows(appiattisci(dati))
-scrivi_csv(realtive,"180.csv")
-scrivi_csv(new_matrix,"non180.csv")
+
+scrivi_csv(realtive,"relative.csv")
+
 print("done!")
 servo.end_communication()
