@@ -72,10 +72,36 @@ hard_calibr = [-3.35, -0.74, -40.79]
 soft_calib = [0.96, 0.02, 0.01, 0.02, 0.96, 0.00, 0.01, 0.00, 1.08]
 gyro_calib = [0.05, -0.01, -0.01]
 mag_field_magnitude = 45.00
+calibration_data1 = []
+iData  = 0
+while iData <30:
+    data1 =  read_sensors()
+    #data1 = correction(data1)
+    calibration_data1.append(data1)
+    iData +=1
+    print(iData)
 
+calibration_data1 = np.array(calibration_data1)
+#calibration_data2 = np.array(calibration_data2)
+acc_data1 = (calibration_data1[:, 6:9])
+gyr_data1 = (calibration_data1[:, 3:6])
+mag_data1 = (calibration_data1[:, 0:3])
+
+
+#get the first readings
+ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=87)
+q0_1 = ekf1.Q
+q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
+iQ0 = 0
 while True:
     tic = time.time()
     data = read_sensors()
     data = correction(data)
-    print(data)
+    
+    if iQ0 == 0:
+        quat1 = ekf1.updateMARG(q0_1, gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+        iQ0 +=1
+    else:
+        quat1 = ekf1.updateMARG(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
+    print(quat1)
     print("elapsed: ", time.time()-tic)
