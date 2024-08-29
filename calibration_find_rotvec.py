@@ -95,7 +95,7 @@ def correction(data):
     gyZ = data[5] - gyro_calib[2]
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
 
-dt = 0.06# time intervall between two data
+dt = 0.0115# time intervall between two data
 #begin comunication with motor
 servo.begin_communication()
 #print("setting up motors... ")
@@ -120,7 +120,7 @@ mag_data1 = (calibration_data1[:, 0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=16.6)
+ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=87)
 q0_1 = ekf1.Q
 q0_1 = q0_1[-1]/np.linalg.norm(q0_1[-1])
 
