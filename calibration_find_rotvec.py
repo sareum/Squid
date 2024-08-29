@@ -218,6 +218,6 @@ def scrivi_csv(dati, nome_file):
     with open(nome_file, mode='w', newline='') as file_csv:
         writer = csv.writer(file_csv)
         writer.writerows(appiattisci(dati))
-scrivi_csv(R_base,"180.csv")
+scrivi_csv(realtive,"180.csv")
 scrivi_csv(new_matrix,"non180.csv")
 servo.end_communication()
