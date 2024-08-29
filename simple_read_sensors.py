@@ -16,8 +16,8 @@ import csv
 i2c = busio.I2C(board.SCL, board.SDA)
 
 # Inizializza il primo set di sensori
-lsm6dsox_1 = LSM6DSOX(i2c, address=0x6B)
-lis3mdl_1 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1E)
+lsm6dsox_1 = LSM6DSOX(i2c, address=0x6A)
+lis3mdl_1 = adafruit_lis3mdl.LIS3MDL(i2c, address=0x1C)
 
 
 def read_sensors():
