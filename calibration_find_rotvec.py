@@ -105,7 +105,7 @@ calibration_data1 =[]
 calibration_data2 = []
 iData = 0
 
-while iData <1000:
+while iData <300:
     data1 =  read_sensors()
     #data1 = correction(data1)
     calibration_data1.append(data1)
