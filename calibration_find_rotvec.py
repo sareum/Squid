@@ -159,9 +159,9 @@ for iElement in range(0, len(quat_base)):
     print(quat_base[iElement])
     print(quat_base[iElement][1])
     quat_base[iElement]  = quat_base[iElement]/np.linalg.norm(quat_base[iElement])
-    quat1_scalar_last[iElement] = [quat_base[iElement][1], quat_base[iElement][2], quat_base[iElement][3], quat_base[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
+    quat1_scalar_last.append([quat_base[iElement][1], quat_base[iElement][2], quat_base[iElement][3], quat_base[iElement][0]]) #SCALAR LAST AS DEFAULT!!!!
     print(quat1_scalar_last)
-    R_base[iElement] = np.array(R.from_quat(quat1_scalar_last[iElement]).as_matrix())
+    R_base.append(np.array(R.from_quat(quat1_scalar_last[iElement]).as_matrix()))
     norm_2 = np.linalg.norm(R_base[iElement], 2)
     R_base[iElement] = R_base[iElement] / norm_2
     
@@ -194,12 +194,12 @@ quat2_scalar_last = []
 quat1 = quat1/np.linalg.norm(quat1)
 for iElement in range(0, len(variable)):
     variable[iElement]  = variable[iElement]/np.linalg.norm(variable[iElement])
-    quat2_scalar_last[iElement] = [variable[iElement][1], variable[iElement][2], variable[iElement][3], variable[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
-    new_matrix[iElement] = np.array(R.from_quat(quat2_scalar_last[iElement]).as_matrix())
+    quat2_scalar_last.append([variable[iElement][1], variable[iElement][2], variable[iElement][3], variable[iElement][0]]) #SCALAR LAST AS DEFAULT!!!!
+    new_matrix.append( np.array(R.from_quat(quat2_scalar_last[iElement]).as_matrix()))
     norm_2 = np.linalg.norm(new_matrix[iElement], 2)
     new_matrix[iElement] = new_matrix[iElement] / norm_2    
-    realtive[iElement] = np.dot(R_base[iElement].T,new_matrix[iElement])
-    rotation_vector[iElement] = R.from_matrix(realtive[iElement]).as_rotvec()
+    realtive.append( np.dot(R_base[iElement].T,new_matrix[iElement]))
+    rotation_vector.append(R.from_matrix(realtive[iElement]).as_rotvec())
     rotation_vector[iElement] = rotation_vector[iElement]/np.linalg.norm(rotation_vector[iElement])
 
 
