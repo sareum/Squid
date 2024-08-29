@@ -14,7 +14,9 @@ def read_data():
         print(f"Errore durante la lettura: {e}")
         return None
 while True:
+    tic = time.time()
     received_data = read_data()
     if received_data:
         print(f"Ricevuto: {received_data}")
-    time.sleep(1) # Aspetta un secondo prima di leggere di nuovo
+    print(time.time()-tic)
+    #time.sleep(1) # Aspetta un secondo prima di leggere di nuovo
