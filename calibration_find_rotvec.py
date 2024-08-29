@@ -105,12 +105,12 @@ calibration_data1 =[]
 calibration_data2 = []
 iData = 0
 
-while iData<30:
+while iData<500:
     data1 =  read_sensors()
     #data1 = correction(data1)
     calibration_data1.append(data1)
     iData +=1
-    time.sleep(0.1)
+    time.sleep(0.01)
 
 calibration_data1 = np.array(calibration_data1)
 calibration_data2 = np.array(calibration_data2)
@@ -120,7 +120,7 @@ mag_data1 = (calibration_data1[:,0:3])
 
 
 #get the first readings
-ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=10.0)
+ekf1 = ahrs.filters.mahony.Mahony(gyr=gyr_data1, acc=acc_data1, mag=mag_data1, frequency=100.0)
 
 q0_1 = ekf1.Q
 
