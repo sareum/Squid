@@ -11,6 +11,7 @@ from adafruit_lsm6ds import LSM6DSOX
 import adafruit_lis3mdl
 import ahrs
 import csv
+
 def set_position(time, a, c, T) :
     position = a*np.sin(2*np.pi/T*time) + c
     return position
@@ -27,6 +28,7 @@ def go_forward(time) :
     write_position(q_dynamixel, IDs)
     return q_dynamixel
 #Create Dynamixel object
+
 servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor", 
                     series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0") #probably change it
                     #series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")"/dev/tty.usbserial-FT78LT9E"
@@ -94,10 +96,10 @@ def correction(data):
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
 
 dt = 0.01# time intervall between two data
-#begin comunication with motor
-#servo.begin_communication()
+begin comunication with motor
+servo.begin_communication()
 #print("setting up motors... ")
-#servo.set_operating_mode("position", ID = "all")
+servo.set_operating_mode("position", ID = "all")
 
 calibration_data1 =[]
 calibration_data2 = []
@@ -126,7 +128,7 @@ print("completed  EKF calibration")
 
 #set motor position as 180 and fix it
 
-write_position(2048, [1])
+write_position(2048, 1)
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
