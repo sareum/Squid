@@ -1,4 +1,5 @@
 import time
+import smbus
 # Imposta l'indirizzo I2C del Teensy
 I2C_ADDRESS = 0x08
 # Inizializza il bus I2C (bus 1 per Raspberry Pi 3 e successivi)
