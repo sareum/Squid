@@ -95,7 +95,7 @@ def correction(data):
     gyZ = data[5] - gyro_calib[2]
     return [magX, magY, magZ, gyX, gyY, gyZ, data[6], data[7], data[8]]
 
-dt = 0.1# time intervall between two data
+dt = 0.01# time intervall between two data
 #begin comunication with motor
 servo.begin_communication()
 print("setting up motors... ")
@@ -151,7 +151,7 @@ while time.time()-tic <10:
     else:
         quat1 = ekf1.update(quat1,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     print(quat1)
-    time.sleep(0.1)
+    time.sleep(0.01)
 
 quat1 = quat1/np.linalg.norm(quat1)
 
@@ -182,7 +182,7 @@ while time.time()-t0 < 10:
     quat2 = ekf1.update(quat2,gyr=gyr_data1, acc=acc_data1, mag=mag_data1, dt=dt)
     print(quat2)
 
-    time.sleep(0.1)
+    time.sleep(0.01)
 
 quat2 = quat2/np.linalg.norm(quat2)
 quat2_scalar_last = [quat2[1], quat2[2], quat2[3], quat2[0]]
