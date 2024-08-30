@@ -1,10 +1,10 @@
-import smbus2
+import smbus
 import struct
 import time
 # Indirizzo I2C del Teensy
 TEENSY_I2C_ADDRESS = 0x08
 # Creazione dell'oggetto bus
-bus = smbus2.SMBus(1)
+bus = smbus.SMBus(1)
 def read_quaternions():
     # Lettura di 32 byte (8 float a 4 byte ciascuno)
     data = bus.read_i2c_block_data(TEENSY_I2C_ADDRESS, 0, 32)
