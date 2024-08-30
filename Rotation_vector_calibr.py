@@ -76,42 +76,21 @@ R_base = R_base/np.linalg.norm(R_base, 2)
 
 print("got the first matrix, START MOVING ")
 
-#write_position(2560, 1)
+write_position(2560, 1)
+
 t0 = time.time()
-variable = []
-quat2 = quat_base
 
 while time.time()-t0 < 3:
     tic = time.time()
-    data1 = read_sensors()    
-    variable.append(list(data1))
+    variable = read_sensors()    
     print(time.time()-tic)
 
-realtive = []
-rotation_vector = []
+quat2_scalar_last = [variable[1], variable[2], variable[3], variable[0]]
+new_matrix = np.array(R.from_quat(quat2_scalar_last).as_matrix())
+norm_2 = np.linalg.norm(new_matrix, 2)
+new_matrix = new_matrix / norm_2  
+relative = np.dot(R_base.T,new_matrix)  
 
-for iElement in range(0, len(variable)):
-    quat2_scalar_last = [variable[iElement][1], variable[iElement][2], variable[iElement][3], variable[iElement][0]] #SCALAR LAST AS DEFAULT!!!!
-    new_matrix = np.array(R.from_quat(quat2_scalar_last).as_matrix())
-    norm_2 = np.linalg.norm(new_matrix, 2)
-    new_matrix = new_matrix / norm_2    
-    realtive.append(np.dot(R_base.T,new_matrix))
-
-
-def appiattisci(lista):
-    for elemento in lista:
-        if isinstance(elemento[0], list):
-            for sub_elemento in elemento:
-                yield sub_elemento
-        else:
-            yield elemento
-
-def scrivi_csv(dati, nome_file):
-    with open(nome_file, mode='w', newline='') as file_csv:
-        writer = csv.writer(file_csv)
-        writer.writerows(appiattisci(dati))
-
-scrivi_csv(realtive,"relative.csv")
-
-print("done!")
+vec = R.from_matrix(relative).as_quat
+print(vec)
 servo.end_communication()
