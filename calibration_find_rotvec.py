@@ -50,7 +50,7 @@ def read_sensors():
         time.sleep(1)
 
     #choose data1 or data2 based on the tentacle to test    
-    return data1
+    return data2
 
 
 #begin comunication with motor
