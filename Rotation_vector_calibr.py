@@ -80,7 +80,7 @@ write_position(2560, 1)
 
 t0 = time.time()
 
-while time.time()-t0 < 3:
+while time.time()-t0 < 5:
     variable = read_sensors()    
 
 
@@ -91,5 +91,6 @@ new_matrix = new_matrix / norm_2
 relative = np.dot(R_base.T,new_matrix)  
 
 vec = R.from_matrix(relative).as_quat()
+
 print(vec)
 servo.end_communication()
