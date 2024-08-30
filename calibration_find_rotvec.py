@@ -84,6 +84,7 @@ while time.time()-t0 < 10:
     tic = time.time()
     data1 = read_sensors()    
     variable.append(list(data1))
+    print(time.time()-tic)
 
 realtive = []
 rotation_vector = []
