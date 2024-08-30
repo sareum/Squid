@@ -90,7 +90,7 @@ norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2  
 relative = np.dot(R_base.T,new_matrix)  
 
-vec = R.from_matrix(relative).as_quat()
+vec = R.from_matrix(relative).as_rotvec()
 
 print(vec)
 servo.end_communication()
