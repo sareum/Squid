@@ -81,9 +81,8 @@ write_position(2560, 1)
 t0 = time.time()
 
 while time.time()-t0 < 3:
-    tic = time.time()
     variable = read_sensors()    
-    print(time.time()-tic)
+
 
 quat2_scalar_last = [variable[1], variable[2], variable[3], variable[0]]
 new_matrix = np.array(R.from_quat(quat2_scalar_last).as_matrix())
@@ -91,6 +90,6 @@ norm_2 = np.linalg.norm(new_matrix, 2)
 new_matrix = new_matrix / norm_2  
 relative = np.dot(R_base.T,new_matrix)  
 
-vec = R.from_matrix(relative).as_quat
+vec = R.from_matrix(relative).as_quat()
 print(vec)
 servo.end_communication()
