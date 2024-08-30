@@ -37,20 +37,20 @@ servo = Dynamixel(ID=[1,2,3,4], descriptive_device_name="XW430-T200R test motor"
 
 
 def read_sensors():
-    data1 = []
-    data2 = []
+    right = []
+    left = []
 
     try:
         data = bus.read_i2c_block_data(TEENSY_I2C_ADDRESS, 0, 32)
         qW1, qX1, qY1, qZ1, qW2, qX2, qY2, qZ2 = struct.unpack('f' * 8, bytearray(data))
-        data1 = [qW1, qX1, qY1, qZ1]
-        data2 = [qW2, qX2, qY2, qZ2]
+        left = [qW1, qX1, qY1, qZ1]
+        right = [qW2, qX2, qY2, qZ2]
     except OSError as e:
         print(f"Errore di comunicazione I2C: {e}")
         time.sleep(1)
 
     #choose data1 or data2 based on the tentacle to test    
-    return data2
+    return left
 
 
 #begin comunication with motor
@@ -60,7 +60,7 @@ servo.set_operating_mode("position", ID = "all")
 
 #set motor position as 180 and fix it
 
-write_position(2048, 1)
+write_position(2048, 4)
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
@@ -76,7 +76,7 @@ R_base = R_base/np.linalg.norm(R_base, 2)
 
 print("got the first matrix, START MOVING ")
 
-write_position(2560, 1)
+write_position(2560, 4)
 
 t0 = time.time()
 

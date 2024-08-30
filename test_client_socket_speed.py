@@ -125,20 +125,21 @@ amplitude_right = 45
 amplitude_left = 45
 ############## END MOTOR SETUP #################
 
-def read_sensors(): #From teensy through i2c
-    data1 = []
-    data2 = []
+def read_sensors():
+    right = []
+    left = []
 
     try:
         data = bus.read_i2c_block_data(TEENSY_I2C_ADDRESS, 0, 32)
         qW1, qX1, qY1, qZ1, qW2, qX2, qY2, qZ2 = struct.unpack('f' * 8, bytearray(data))
-        data1 = [qW1, qX1, qY1, qZ1]
-        data2 = [qW2, qX2, qY2, qZ2]
+        left = [qW1, qX1, qY1, qZ1]
+        right = [qW2, qX2, qY2, qZ2]
     except OSError as e:
         print(f"Errore di comunicazione I2C: {e}")
         time.sleep(1)
-        
-    return data1, data2
+
+    #choose data1 or data2 based on the tentacle to test    
+    return right, left
 
 #flags:
 was_closing = False
