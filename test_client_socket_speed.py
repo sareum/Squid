@@ -151,7 +151,7 @@ ricevuto = False
 prima_volta = True
 data = None
 start_time = time.time()
-
+entrato_in_its_opening = False
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     try:
         s.bind((IP, PORT))
