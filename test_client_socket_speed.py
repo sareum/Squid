@@ -209,6 +209,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     entrato_in_its_opening = True
                     message = 'ready'
                     conn.sendall(message.encode('utf-8'))
+                    print("spedito il ready")
                     if (time.time()-its_time)>1:
                         print("sono nella prigione del tempo e sono salvo!")
                         its_opening = False
