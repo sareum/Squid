@@ -93,16 +93,21 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
 
 def decode_and_parse_data(data):
     # Decodifica i dati ricevuti (assumendo che siano stati codificati in UTF-8)
-    decoded_data = data.decode('utf-8')
+    try:
+        decoded_data = data.decode('utf-8')
+            
+        # Separazione dei dati basata sul separatore ','
+        parts = decoded_data.split(',')
 
-    # Separazione dei dati basata sul separatore ','
-    parts = decoded_data.split(',')
-
-    # Conversione delle stringhe in interi
-    amplitude_right = int(parts[0])
-    amplitude_left = int(parts[1])
-    reached = int(parts[2])
-
+        # Conversione delle stringhe in interi
+        amplitude_right = int(parts[0])
+        amplitude_left = int(parts[1])
+        reached = int(parts[2])
+    except Exception as e:
+        amplitude_right = 0
+        amplitude_left = 0
+        reached = 0
+        print("########### Wrong in decode ################")
     return amplitude_right, amplitude_left, reached
 
 
@@ -210,11 +215,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     message = 'ready'
                     conn.sendall(message.encode('utf-8'))
                     print("spedito il ready")
-                    if (time.time()-its_time)>1:
-                        print("sono nella prigione del tempo e sono salvo!")
-                        its_opening = False
-                        entrato_in_its_opening = False
-
+  
                     #check if something has been sent:
                     try:
                         data = conn.recv(1024)
@@ -233,7 +234,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             conn.close()
                             break
                         its_opening = False
-                
+                    if (time.time()-its_time)>2:
+                        print("sono nella prigione del tempo e sono salvo!")
+                        its_opening = False
+                        entrato_in_its_opening = False
+
                 motor_command[0] = float(f"{motor_command[0]:.4g}")
                 motor_command[1] = float(f"{motor_command[1]:.4g}")
                 
