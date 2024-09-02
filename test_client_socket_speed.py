@@ -198,6 +198,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 
                 #READ QUATERNIONS 
                 quat1, quat2 = read_sensors()
+                print("quat1: ", quat1)
                 #control the motor:
                 motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
                 #checks if something is in the serial
@@ -230,7 +231,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 string_data = data_to_encode.encode("utf-8")
                 conn.sendall(string_data)
             
-                print(time.time()-tic)
+                #print(time.time()-tic)
 
     except KeyboardInterrupt:
             print("Programma terminato.")
