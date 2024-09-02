@@ -136,7 +136,7 @@ def read_sensors():
         right = [qW2, qX2, qY2, qZ2]
     except OSError as e:
         print(f"Errore di comunicazione I2C: {e}")
-        time.sleep(1)
+        #time.sleep(1)
 
     #choose data1 or data2 based on the tentacle to test    
     return right, left
