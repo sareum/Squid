@@ -240,6 +240,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data_to_encode = str(motor_command)+','+ str(quat1)+','+ str(quat2)
                 string_data = data_to_encode.encode("utf-8")
                 conn.sendall(string_data)
+                print("inviato i comandi")
             
                 #print(time.time()-tic)
 
