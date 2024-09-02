@@ -235,10 +235,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             conn.close()
                             break
                         its_opening = False
-                    if (time.time()-its_time)>2:
+                    if (time.time()-its_time)>3:
                         print("sono nella prigione del tempo e sono salvo!")
                         its_opening = False
                         entrato_in_its_opening = False
+                        message = 'ready'
+                        conn.sendall(message.encode('utf-8'))
 
                 motor_command[0] = float(f"{motor_command[0]:.4g}")
                 motor_command[1] = float(f"{motor_command[1]:.4g}")
