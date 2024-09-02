@@ -108,6 +108,7 @@ def decode_and_parse_data(data):
         amplitude_left = 0
         reached = 0
         print("########### Wrong in decode ################")
+        print(data.decode('utf-8'))
     return amplitude_right, amplitude_left, reached
 
 
