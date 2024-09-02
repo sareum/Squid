@@ -213,6 +213,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 if its_opening:  
                     entrato_in_its_opening = True
                     message = 'ready'
+                    print("sopra il ready")
                     conn.sendall(message.encode('utf-8'))
                     print("spedito il ready")
   
@@ -244,6 +245,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 
                 data_to_encode = str(motor_command)+','+ str(quat1)+','+ str(quat2)
                 string_data = data_to_encode.encode("utf-8")
+                print("sopra i dati ")
                 conn.sendall(string_data)
                 print("inviato i comandi")
             
