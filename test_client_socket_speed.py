@@ -9,6 +9,7 @@ import ahrs
 import serial
 import smbus
 import struct
+import math
 
 # Configurazione
 PROTOCOL = 'TCP'
@@ -57,6 +58,32 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
 
     return position, t_mod
 
+def sin_wave_position(t, a, T):
+    global its_opening
+    global was_closing
+
+    period = T
+    peak_value = 200  # Valore massimo fisso
+    valley_value = peak_value - a  # Valore minimo variabile in base all'ampiezza
+
+    t_mod = t % period  # Tempo modulato per il periodo
+
+    # Calcolo dell'onda sinusoidale normalizzata tra 0 e 1
+    sine_value = 0.5 * (1 + math.sin(2 * math.pi * t_mod / period - math.pi / 2))
+
+    # Trasformazione dell'onda sinusoidale nel range [valley_value, peak_value]
+    position = valley_value + a * sine_value
+
+    # Stato di apertura/chiusura
+    if t_mod < period/2:  # Se siamo nella fase di salita (prima di raggiungere il valore massimo)
+        if was_closing:
+            its_opening = True
+            was_closing = False
+    else:  # Se siamo nella fase di discesa (dopo aver raggiunto il valore massimo)
+        was_closing = True
+
+    return position, t_mod
+
 def go_forward(time) :
     IDs = [1,2,3,4]
     a = 45
@@ -80,6 +107,27 @@ def write_motor_position_triangle(t, a_right, c_right, T_right, rise_time_ratio_
     q_dynamixel_right,t_mod = triangle_wave_position(t, a_right,  T_right, rise_time_ratio_right, fall_time_ratio_right)
     #position in deg
     q_dynamixel_left,_ = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+    
+    position_motor_step_right = q_dynamixel_right * 2048 / 180
+    position_motor_step_left = q_dynamixel_left * 2048 / 180
+    servo.write_position(position_motor_step_right, ID_right)
+    servo.write_position(position_motor_step_left, ID_left)
+    
+    data = [q_dynamixel_right, q_dynamixel_left]
+    return data,t_mod
+
+def write_motor_position_sin(t, a_right, c_right, T_right, rise_time_ratio_right, fall_time_ratio_right, a_left, c_left, T_left, rise_time_ratio_left, fall_time_ratio_left):
+    ID_right = [1,2]
+    ID_left = [3,4]
+
+    #a_dyna_right = a_right * 2048 / 180
+    #c_dyna_right = c_right * 2048 / 180
+    #a_dyna_left = a_left * 2048 / 180
+    #c_dyna_left = c_left * 2048 / 180
+
+    q_dynamixel_right,t_mod = sin_wave_position(t, a_right,  T_right)
+    #position in deg
+    q_dynamixel_left,_ = sin_wave_position(t, a_left, T_left)
     
     position_motor_step_right = q_dynamixel_right * 2048 / 180
     position_motor_step_left = q_dynamixel_left * 2048 / 180
@@ -206,7 +254,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 quat1, quat2 = read_sensors()
                 #print("quat1: ", quat1)
                 #control the motor:
-                motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
+                motor_command,t_mod = write_motor_position_sin(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
                 print("Sotto il motore_comandi")
                 #checks if something is in the serial
                 if entrato_in_its_opening == False:
