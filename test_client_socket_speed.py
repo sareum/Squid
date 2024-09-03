@@ -255,22 +255,19 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 #print("quat1: ", quat1)
                 #control the motor:
                 motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
-                print("Sotto il motore_comandi")
+               
                 #checks if something is in the serial
                 if entrato_in_its_opening == False:
                     its_time = time.time()
                 if its_opening:  
                     entrato_in_its_opening = True
                     message = 'ready'
-                    print("sopra il ready")
+
                     conn.sendall(message.encode('utf-8'))
-                    print("spedito il ready")
   
                     #check if something has been sent:
                     try:
-                        print("sto per riceveredati... ")
                         data = conn.recv(1024)
-                        print("dati ricevuti!")
                     except socket.error as e:
                         err = e.args[0]
                         if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
@@ -287,7 +284,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             break
                         its_opening = False
                     if (time.time()-its_time)>3:
-                        print("sono nella prigione del tempo e sono salvo!")
                         its_opening = False
                         entrato_in_its_opening = False
                         message = 'ready'
@@ -298,9 +294,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 
                 data_to_encode = str(motor_command)+','+ str(quat1)+','+ str(quat2)
                 string_data = data_to_encode.encode("utf-8")
-                print("sopra i dati ")
                 conn.sendall(string_data)
-                print("inviato i comandi")
             
                 #print(time.time()-tic)
 
