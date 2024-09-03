@@ -254,7 +254,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 quat1, quat2 = read_sensors()
                 #print("quat1: ", quat1)
                 #control the motor:
-                motor_command,t_mod = write_motor_position_sin(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
+                motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
                 print("Sotto il motore_comandi")
                 #checks if something is in the serial
                 if entrato_in_its_opening == False:
