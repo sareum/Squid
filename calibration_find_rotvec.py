@@ -42,9 +42,11 @@ def read_sensors():
 
     try:
         data = bus.read_i2c_block_data(TEENSY_I2C_ADDRESS, 0, 32)
+        print(data)
         qW1, qX1, qY1, qZ1, qW2, qX2, qY2, qZ2 = struct.unpack('f' * 8, bytearray(data))
         data1 = [qW1, qX1, qY1, qZ1]
         data2 = [qW2, qX2, qY2, qZ2]
+        
     except OSError as e:
         print(f"Errore di comunicazione I2C: {e}")
         time.sleep(1)
