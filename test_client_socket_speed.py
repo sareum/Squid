@@ -174,7 +174,7 @@ def decode_and_parse_data(data):
         print(e)
         print(data.decode('utf-8'))
 
-    return amplitude_right, amplitude_left, reached
+    return int(amplitude_right), int(amplitude_left), int(reached)
 
 
 ############### MOTOR SETUP ########################
