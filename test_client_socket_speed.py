@@ -10,6 +10,7 @@ import serial
 import smbus
 import struct
 import math
+import re
 
 # Configurazione
 PROTOCOL = 'TCP'
@@ -145,19 +146,34 @@ def decode_and_parse_data(data):
     try:
         decoded_data = data.decode('utf-8')
             
-        # Separazione dei dati basata sul separatore ','
-        parts = decoded_data.split(',')
+        # Trova la stringa tra la prima parentesi quadra aperta e la prima parentesi quadra chiusa
+        match = re.search(r'\[(.*?)\]', decoded_data)
+        
+        if match:
+            # Estrai i dati e separali basandosi sul separatore ','
+            content = match.group(1)
+            parts = content.split(',')
 
-        # Conversione delle stringhe in interi
-        amplitude_right = int(parts[0])
-        amplitude_left = int(parts[1])
-        reached = int(parts[2])
+            # Conversione delle stringhe in numeri (float o int in base a ciò che serve)
+            amplitude_right = float(parts[0])
+            amplitude_left = float(parts[1])
+            reached = int(parts[2])
+        else:
+            # Se non c'è match, assegna valori di default
+            amplitude_right = 0
+            amplitude_left = 0
+            reached = 0
+            print("########### No data in brackets ################")
+            print(decoded_data)
+
     except Exception as e:
         amplitude_right = 0
         amplitude_left = 0
         reached = 0
-        print("########### Wrong in decode ################")
+        print("########### Error in decode ################")
+        print(e)
         print(data.decode('utf-8'))
+
     return amplitude_right, amplitude_left, reached
 
 
