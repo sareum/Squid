@@ -50,7 +50,7 @@ def read_sensors():
         time.sleep(1)
 
     #choose data1 or data2 based on the tentacle to test    
-    return left
+    return right
 
 
 #begin comunication with motor
@@ -60,7 +60,7 @@ servo.set_operating_mode("position", ID = "all")
 
 #set motor position as 180 and fix it
 
-write_position(2048, 4)
+write_position(2048, 1)
 
 time.sleep(2)
 #Read the data and set it as the base rotation matrix
@@ -76,7 +76,7 @@ R_base = R_base/np.linalg.norm(R_base, 2)
 
 print("got the first matrix, START MOVING ")
 
-write_position(2560, 4)
+write_position(2560, 1)
 
 t0 = time.time()
 
