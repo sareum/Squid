@@ -70,7 +70,7 @@ while time.time()-tic < 2:
     quat_base = read_sensors()
 
 quat_base_scalar_last = [quat_base[1], quat_base[2], quat_base[3], quat_base[0]]
-
+print(quat_base_scalar_last)
 R_base = np.array(R.from_quat(quat_base_scalar_last).as_matrix())
 R_base = R_base/np.linalg.norm(R_base, 2)
 
