@@ -268,6 +268,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     #check if something has been sent:
                     try:
                         data = conn.recv(1024)
+                        print("data: ", data)
                     except socket.error as e:
                         err = e.args[0]
                         if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
