@@ -45,6 +45,7 @@ def read_sensors():
         qW1, qX1, qY1, qZ1, qW2, qX2, qY2, qZ2 = struct.unpack('f' * 8, bytearray(data))
         left = [qW1, qX1, qY1, qZ1]
         right = [qW2, qX2, qY2, qZ2]
+        print(right)
     except OSError as e:
         print(f"Errore di comunicazione I2C: {e}")
         time.sleep(1)
