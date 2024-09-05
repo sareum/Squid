@@ -201,12 +201,13 @@ def read_sensors():
 
     try:
         data = bus.read_i2c_block_data(TEENSY_I2C_ADDRESS, 0, 32)
+        print(data)
         qW1, qX1, qY1, qZ1, qW2, qX2, qY2, qZ2 = struct.unpack('f' * 8, bytearray(data))
         left = [qW1, qX1, qY1, qZ1]
         right = [qW2, qX2, qY2, qZ2]
     except OSError as e:
         print(f"Errore di comunicazione I2C: {e}")
-        time.sleep(0.1)
+        
 
     #choose data1 or data2 based on the tentacle to test    
     return right, left
@@ -314,7 +315,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data_to_encode = str(motor_command)+','+ str(quat1)+','+ str(quat2)
                 string_data = data_to_encode.encode("utf-8")
                 conn.sendall(string_data)
-                print(quat1)
                 #print(time.time()-tic)
 
     except KeyboardInterrupt:
