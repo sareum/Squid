@@ -223,6 +223,7 @@ prima_volta = True
 data = None
 start_time = time.time()
 entrato_in_its_opening = False
+tic = 0
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     try:
         s.bind((IP, PORT))
@@ -232,7 +233,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         with conn:         
             print(f"Connected by {addr}")
             while True:
-                tic = time.time()
                 #wait for camera calibration on the pc
                 if camera_calibration == False:
                     data = conn.recv(1024)
@@ -268,7 +268,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 
                 
                 #READ QUATERNIONS 
+                
                 quat1, quat2 = read_sensors()
+                print("tempo: ", time.time()-tic)
+                tic = time.time()
                 #print("quat1: ", quat1)
                 #control the motor:
                 motor_command,t_mod = write_motor_position_triangle(time.time()-start_time, amplitude_right, c_right, T, opening_ratio, closing_ration, amplitude_left, c_left, T, opening_ratio, closing_ration)
