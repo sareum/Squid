@@ -142,7 +142,6 @@ def write_motor_position_sin(t, a_right, c_right, T_right, rise_time_ratio_right
 
 def decode_and_parse_data(data):
     # Decodifica i dati ricevuti (assumendo che siano stati codificati in UTF-8)
-    print("sono nel decode_parse")
     try:
         decoded_data = data.decode('utf-8')
             
@@ -280,14 +279,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     entrato_in_its_opening = True
                     message = 'ready'
                     
-                    print("prima del sendall")
+                    #print("prima del sendall")
                     conn.sendall(message.encode('utf-8'))
   
                     #check if something has been sent:
                     try:
-                        print("Prima di data")
+                        #print("Prima di data")
                         data = conn.recv(1024)
-                        print("data: ", data)
+                        #print("data: ", data)
                     except socket.error as e:
                         err = e.args[0]
                         if err == errno.EAGAIN or err == errno.EWOULDBLOCK:
@@ -297,7 +296,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             print(e)
                     else:
                         amplitude_right, amplitude_left, reached = decode_and_parse_data(data)
-                        print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
+                        #print("data recived input from PID: ",amplitude_left,amplitude_right,reached)
                         relative_timer = time.time()  
                         if reached == 1:
                             conn.close()
@@ -315,7 +314,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data_to_encode = str(motor_command)+','+ str(quat1)+','+ str(quat2)
                 string_data = data_to_encode.encode("utf-8")
                 conn.sendall(string_data)
-            
+                print(quat1)
                 #print(time.time()-tic)
 
     except KeyboardInterrupt:
