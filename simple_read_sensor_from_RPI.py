@@ -48,5 +48,6 @@ while True:
         print("1: ",quat1)
         print("2: ",quat2)
         print("Time: ",time.time()-tic)
+        time.sleep(0.001)
     except KeyboardInterrupt:
         print("Programma terminato.")
