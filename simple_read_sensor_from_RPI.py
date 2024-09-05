@@ -43,8 +43,10 @@ def read_sensors():
 
 while True:
     try:
+        tic = time.time()
         quat1, quat2 = read_sensors()
         print("1: ",quat1)
         print("2: ",quat2)
+        print("Time: ",time.time()-tic)
     except KeyboardInterrupt:
         print("Programma terminato.")
