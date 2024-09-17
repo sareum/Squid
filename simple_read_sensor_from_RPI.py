@@ -40,8 +40,8 @@ def read_sensors():
 
     #choose data1 or data2 based on the tentacle to test    
     return right, left
-
-while True:
+toc = time.time()
+while (toc-time.time()) <20:
     try:
         tic = time.time()
         quat1, quat2 = read_sensors()
