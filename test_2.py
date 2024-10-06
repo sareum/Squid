@@ -13,7 +13,7 @@ def velocity_security(velocity):
 
 def wave_position(current_time, amplitude, period):
     # Calculate the position using a sine wave formula
-    return amplitude * np.sin(2 * np.pi * (current_time / period))
+    return amplitude * np.sin(2 * np.pi * (current_time / period))+600
 
 '''Main loop'''
 if __name__ == "__main__":
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     sleep(1)
 
     # Wave parameters
-    amplitude = 45  # Maximum position offset from the center
+    amplitude = 300 # Maximum position offset from the center
     period = 2      # Time for one complete wave cycle in seconds
     start_time = time()
 
