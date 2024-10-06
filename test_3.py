@@ -126,7 +126,6 @@ if __name__ == "__main__":
 
     try:
         while True:
-            current_time = time() - start_time
             go_forward(2000)
 
             # Sleep for a short period to control the update rate
