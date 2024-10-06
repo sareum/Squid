@@ -1,7 +1,13 @@
+import time
 from dynamixel_controller import Dynamixel
-from time import sleep, time
+from time import sleep
 import argparse
 import numpy as np
+import socket
+import errno
+import smbus
+import struct
+import re
 
 def velocity_security(velocity):
     # Velocity security
@@ -13,7 +19,7 @@ def velocity_security(velocity):
 
 def wave_position(current_time, amplitude, period):
     # Calculate the position using a sine wave formula
-    return amplitude * np.sin(2 * np.pi * (current_time / period))+600
+    return amplitude * np.sin(2 * np.pi * (current_time / period))
 
 '''Main loop'''
 if __name__ == "__main__":
@@ -30,30 +36,28 @@ if __name__ == "__main__":
     # Velocity security
     velocity = velocity_security(velocity)
 
-    # Initialize the servo for all four motors
-    servo = Dynamixel(ID=[1, 2, 3, 4], descriptive_device_name="XW430-T200", 
-                      series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
+    servo = Dynamixel(ID=1, descriptive_device_name="XW430-T200", 
+                      series_name="xm", baudrate=3000000, port_name="/dev/ttyUSB0")
     servo.begin_communication()
     servo.set_operating_mode("position")
 
     # Initial position
-    servo.write_position(0, ID=[1, 2, 3, 4])
+    servo.write_position(0)
     sleep(1)
 
     # Wave parameters
-    amplitude = 300 # Maximum position offset from the center
-    period = 2      # Time for one complete wave cycle in seconds
+    amplitude = 200  # Maximum position offset from the center
+    period = 2     # Time for one complete wave cycle in seconds
     start_time = time()
 
     try:
         while True:
             current_time = time() - start_time
-            # Calculate the position for each motor using the wave function
-            positions = [wave_position(current_time, amplitude, period) for _ in range(4)]
+            position = wave_position(current_time, amplitude, period)+700
 
-            # Write the calculated positions to the servo for all motors
-            servo.write_position(positions, ID=[1, 2, 3, 4])
-            print(f"Current Positions: {positions}")
+            # Write the calculated position to the servo
+            servo.write_position(position)
+            print(f"Current Position: {position:.2f}")
 
             # Sleep for a short period to control the update rate
             sleep(0.1)
