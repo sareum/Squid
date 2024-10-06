@@ -19,6 +19,10 @@ NUM_PACKETS = 10000  # Number of packets to send
 TEENSY_I2C_ADDRESS = 0x08
 bus = smbus.SMBus(1)
 
+# Global variables to track motor state
+was_closing = False
+its_opening = False
+
 ####################### MOTOR COMMAND ###################
 
 def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
@@ -34,7 +38,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
 
     if t_mod < rise_time: 
         position = peak_value - (peak_value - valley_value) * (t_mod / rise_time)
-        if was_closing == True:
+        if was_closing:
             its_opening = True
             was_closing = False
     elif rise_time < t_mod < rise_time + fall_time: 
