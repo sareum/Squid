@@ -42,7 +42,7 @@ if __name__ == "__main__":
     servo.set_operating_mode("position")
 
     # Initial position
-    servo.write_position(500)
+    servo.write_position(0)
     sleep(1)
 
     # Wave parameters
