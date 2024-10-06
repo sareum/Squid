@@ -1,6 +1,6 @@
 import time
 from dynamixel_controller import Dynamixel
-from time import sleep
+from time import sleep, time
 import argparse
 import numpy as np
 import socket
