@@ -19,7 +19,7 @@ def velocity_security(velocity):
 
 def wave_position(current_time, amplitude, period):
     # Calculate the position using a sine wave formula
-    return amplitude * np.sin(2 * np.pi * (current_time / period))
+    return amplitude * np.sin(2 * np.pi * (current_time / period))+1000
 
 '''Main loop'''
 if __name__ == "__main__":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     servo.set_operating_mode("position")
 
     # Initial position
-    servo.write_position(0)
+    servo.write_position(500)
     sleep(1)
 
     # Wave parameters
