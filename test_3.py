@@ -126,7 +126,7 @@ if __name__ == "__main__":
 
     try:
         while True:
-            go_forward()
+            go_forward(1)
 
             # Sleep for a short period to control the update rate
             sleep(0.1)
