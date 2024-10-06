@@ -40,14 +40,14 @@ if __name__ == "__main__":
     sleep(1)
 
     # Wave parameters
-    amplitude = 45  # Maximum position offset from the center
+    amplitude = 200  # Maximum position offset from the center
     period = 2     # Time for one complete wave cycle in seconds
     start_time = time()
 
     try:
         while True:
             current_time = time() - start_time
-            position = wave_position(current_time, amplitude, period)
+            position = wave_position(current_time, amplitude, period)+700
 
             # Write the calculated position to the servo
             servo.write_position(position)
