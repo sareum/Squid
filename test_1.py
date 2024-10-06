@@ -30,28 +30,30 @@ if __name__ == "__main__":
     # Velocity security
     velocity = velocity_security(velocity)
 
-    servo = Dynamixel(ID=1, descriptive_device_name="XW430-T200", 
+    # Initialize the servo for all four motors
+    servo = Dynamixel(ID=[1, 2, 3, 4], descriptive_device_name="XW430-T200", 
                       series_name="xm", baudrate=3000000, port_name="/dev/ttyUSB0")
     servo.begin_communication()
     servo.set_operating_mode("position")
 
     # Initial position
-    servo.write_position(0)
+    servo.write_position(0, ID=[1, 2, 3, 4])
     sleep(1)
 
     # Wave parameters
     amplitude = 45  # Maximum position offset from the center
-    period = 2     # Time for one complete wave cycle in seconds
+    period = 2      # Time for one complete wave cycle in seconds
     start_time = time()
 
     try:
         while True:
             current_time = time() - start_time
-            position = wave_position(current_time, amplitude, period)
+            # Calculate the position for each motor using the wave function
+            positions = [wave_position(current_time, amplitude, period) for _ in range(4)]
 
-            # Write the calculated position to the servo
-            servo.write_position(position)
-            print(f"Current Position: {position:.2f}")
+            # Write the calculated positions to the servo for all motors
+            servo.write_position(positions, ID=[1, 2, 3, 4])
+            print(f"Current Positions: {positions}")
 
             # Sleep for a short period to control the update rate
             sleep(0.1)
