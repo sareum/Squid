@@ -9,6 +9,18 @@ import smbus
 import struct
 import re
 
+# Configurazione
+PROTOCOL = 'TCP'
+IP = '172.20.10.11' # Network number
+PORT = 12345 # Same for client and server
+BUFFER_SIZE = 1024  # Dimensione del buffer in byte
+NUM_PACKETS = 10000  # Numero di pacchetti da inviare
+
+#I2C Bus for teensy communication
+TEENSY_I2C_ADDRESS  = 0x08
+bus = smbus.SMBus(1)
+
+
 def velocity_security(velocity):
     # Velocity security
     if velocity > MAX_VELOCITY: 
@@ -53,7 +65,7 @@ if __name__ == "__main__":
     try:
         while True:
             current_time = time() - start_time
-            position = wave_position(current_time, amplitude, period)+700
+            position = wave_position(current_time, amplitude, period)
 
             # Write the calculated position to the servo
             servo.write_position(position)
