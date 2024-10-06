@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     # Initialize the servo for all four motors
     servo = Dynamixel(ID=[1, 2, 3, 4], descriptive_device_name="XW430-T200", 
-                      series_name="xm", baudrate=3000000, port_name="/dev/ttyUSB0")
+                      series_name=["xm","xm","xm","xm"], baudrate=3000000, port_name="/dev/ttyUSB0")
     servo.begin_communication()
     servo.set_operating_mode("position")
 
