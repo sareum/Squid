@@ -53,8 +53,8 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
                                   a_left, T_left, rise_time_ratio_left, fall_time_ratio_left):
     #ID_right = [1, 2]
     #ID_left = [3, 4]
-    ID_right = [1, 3]
-    ID_left=[2, 4] 
+    ID_right = [1, 4]
+    ID_left=[2, 3] 
 
     
 
@@ -83,7 +83,7 @@ a_right = 110
 a_left =110
 T_right = 4  # Period for right motors
 T_left = 2   # Period for left motors
-rise_time_ratio_right = 0.5 #moving inward - thrust stroke
+rise_time_ratio_right = 0.5 # moving inward - thrust stroke
 fall_time_ratio_right = 0.5 # moving outward - return stroke
 rise_time_ratio_left = 0.5
 fall_time_ratio_left = 0.5
