@@ -125,7 +125,7 @@ if __name__ == "__main__":
             print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]}")
 
             # Sleep for a short period to control the update rate
-            sleep(0.001)
+            sleep(0.0001)
 
     except KeyboardInterrupt:
         print("Program finished")
