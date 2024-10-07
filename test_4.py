@@ -58,7 +58,7 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
     q_dynamixel_left, t_mod_left = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
 
     # Convert angles to motor positions (Dynamixel step units)
-    position_motor_step_right = q_dynamixel_right * 2048 / 180
+    position_motor_step_right = q_dynamixel_right * 2048 / 180 #whole range is 0-4095 for 360 deg rot 
     position_motor_step_left = q_dynamixel_left * 2048 / 180
 
     servo.write_position(position_motor_step_right, ID_right)
@@ -78,11 +78,11 @@ servo.set_operating_mode("position", ID="all")
 a_right = 75
 a_left = 75
 T_right = 4  # Period for right motors
-T_left = 2   # Period for left motors
-rise_time_ratio_right = 3 #moving inward - thrust stroke
-fall_time_ratio_right = 3 # moving outward - return stroke
-rise_time_ratio_left = 1
-fall_time_ratio_left = 1
+T_left = 4   # Period for left motors
+rise_time_ratio_right = 0.8 #moving inward - thrust stroke
+fall_time_ratio_right = 0.2 # moving outward - return stroke
+rise_time_ratio_left = 0.8
+fall_time_ratio_left = 0.2
 
 print(f"End motor setup")
 
