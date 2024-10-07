@@ -56,10 +56,17 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
     ID_right = [1, 4]
     ID_left=[2, 3] 
 
+    # Apply phase offset to the time variable for each motor group
+    t_right = t + 0.5
+    t_left = t + 0
+
+    # Calculate positions for the right and left motors with the phase-offset time values
+    q_dynamixel_right, t_mod_right = triangle_wave_position(t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
+    q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise
     
 
-    q_dynamixel_right, t_mod_right = triangle_wave_position(t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
-    q_dynamixel_left, t_mod_left = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+    #q_dynamixel_right, t_mod_right = triangle_wave_position(t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
+    #q_dynamixel_left, t_mod_left = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
 
     # Convert angles to motor positions (Dynamixel step units)
     position_motor_step_right = q_dynamixel_right * 2048 / 180 #whole range is 0-4095 for 360 deg rot 
@@ -81,7 +88,7 @@ servo.set_operating_mode("position", ID="all")
 # Triangular wave parameters
 a_right = 110
 a_left =110
-T_right = 4  # Period for right motors
+T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
 rise_time_ratio_right = 0.5 # moving inward - thrust stroke
 fall_time_ratio_right = 0.5 # moving outward - return stroke
