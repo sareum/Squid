@@ -1,3 +1,4 @@
+#code- moving 4 fins in some triangular wave motion + phase shift
 import time
 import numpy as np
 import socket
