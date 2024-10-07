@@ -125,7 +125,7 @@ if __name__ == "__main__":
             t = time.time() - t_start
 
             # Update the phase offset for the left motors every 10 seconds
-            if int(t) % 10 == 0:  # Check if 10 seconds have passed
+            if int(t) % 5 == 0:  # Check if 10 seconds have passed
                 phase_offset_left = (phase_offset_left + phase_increment) % (phase_max + phase_increment)
 
             # Write motor positions in a triangular wave pattern
