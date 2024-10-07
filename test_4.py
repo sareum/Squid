@@ -60,10 +60,11 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
     t_right = t + 0.5
     t_left = t + 0
 
-    # Calculate positions for the right and left motors with the phase-offset time values
+    #Calculate positions for the right and left motors with the phase-offset time values
     q_dynamixel_right, t_mod_right = triangle_wave_position(t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
-    q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise
-    
+    q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+
+  
 
     #q_dynamixel_right, t_mod_right = triangle_wave_position(t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
     #q_dynamixel_left, t_mod_left = triangle_wave_position(t, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
