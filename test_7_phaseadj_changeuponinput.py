@@ -1,3 +1,4 @@
+import threading
 import time
 import numpy as np
 import socket
@@ -19,9 +20,12 @@ NUM_PACKETS = 10000  # Number of packets to send
 TEENSY_I2C_ADDRESS = 0x08
 bus = smbus.SMBus(1)
 
-# Global variables to track motor state
+# Global variables to track motor state and phase offset
 was_closing = False
 its_opening = False
+phase_offset_left = 0  # Initial phase offset for the left motors
+phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
+phase_max = 2  # Maximum phase offset
 
 ####################### MOTOR COMMAND ###################
 
@@ -111,36 +115,48 @@ def read_sensors():
 
     return right, left
 
+def oscillation_loop():
+    ''' This function runs continuously to control motor oscillation '''
+    global phase_offset_left
+
+    t_start = time.time()
+
+    while True:
+        # Calculate time for motion control
+        t = time.time() - t_start
+
+        # Write motor positions in a triangular wave pattern
+        data, t_mod_right, t_mod_left = write_motor_position_triangle(
+            t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right,
+            a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
+            phase_offset_left=phase_offset_left
+        )
+        print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]} with Phase Offset: {phase_offset_left}")
+
+        # Sleep for a short period to control the update rate
+        sleep(0.0001)
+
+def input_thread():
+    ''' This function waits for user input to increment phase offset '''
+    global phase_offset_left
+
+    while True:
+        user_input = input("Press Enter to increase phase offset or 'q' to quit: ")
+        if user_input.strip().lower() == 'q':
+            break  # Exit the loop if the user inputs 'q'
+        else:
+            phase_offset_left = (phase_offset_left + phase_increment) % (phase_max + phase_increment)
+            print(f"Phase Offset incremented to: {phase_offset_left}")
 
 '''Main loop'''
 if __name__ == "__main__":
-    t_start = time.time()
-    phase_offset_left = 0  # Initial phase offset for the left motors
-    phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
-    phase_max = 2  # Maximum phase offset
-
     try:
-        while True:
-            # Calculate time for motion control
-            t = time.time() - t_start
+        # Start the oscillation loop in a separate thread
+        oscillation_thread = threading.Thread(target=oscillation_loop)
+        oscillation_thread.start()
 
-            # Check for keyboard input to increment the phase offset
-            user_input = input("Press Enter to increase phase offset or 'q' to quit: ")
-            if user_input.strip().lower() == 'q':
-                break  # Exit the loop if the user inputs 'q'
-            else:
-                phase_offset_left = (phase_offset_left + phase_increment) % (phase_max + phase_increment)
-
-            # Write motor positions in a triangular wave pattern
-            data, t_mod_right, t_mod_left = write_motor_position_triangle(
-                t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right,
-                a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
-                phase_offset_left=phase_offset_left
-            )
-            print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]} with Phase Offset: {phase_offset_left}")
-
-            # Sleep for a short period to control the update rate
-            sleep(0.0001)
+        # Run the input thread in the main program
+        input_thread()
 
     except KeyboardInterrupt:
         print("Program finished")
