@@ -79,10 +79,10 @@ a_right = 75
 a_left = 75
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
-rise_time_ratio_right = 0.5
-fall_time_ratio_right = 0.5
-rise_time_ratio_left = 0.5
-fall_time_ratio_left = 0.5
+rise_time_ratio_right = 3
+fall_time_ratio_right = 1
+rise_time_ratio_left = 3
+fall_time_ratio_left = 1
 
 print(f"End motor setup")
 
