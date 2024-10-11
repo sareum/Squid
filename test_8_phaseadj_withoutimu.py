@@ -100,20 +100,7 @@ print("End motor setup")
 
 ############## END MOTOR SETUP #################
 
-def read_sensors():
-    right = []
-    left = []
 
-    try:
-        data = bus.read_i2c_block_data(TEENSY_I2C_ADDRESS, 0, 32)
-        print(data)
-        qW1, qX1, qY1, qZ1, qW2, qX2, qY2, qZ2 = struct.unpack('f' * 8, bytearray(data))
-        left = [qW1, qX1, qY1, qZ1]
-        right = [qW2, qX2, qY2, qZ2]
-    except OSError as e:
-        print(f"Error in I2C communication: {e}")
-
-    return right, left
 
 def oscillation_loop():
     ''' This function runs continuously to control motor oscillation '''
