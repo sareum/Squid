@@ -24,7 +24,7 @@ bus = smbus.SMBus(1)
 was_closing = False
 its_opening = False
 phase_offset_left = 0  # Initial phase offset for the left motors
-phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
+phase_increment = 0.25  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
 ####################### MOTOR COMMAND ###################
@@ -87,8 +87,8 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
 # Triangular wave parameters
-a_right = 80
-a_left = 80                                                                                                                                                                                                                                                              
+a_right = 90
+a_left = 90                                                                                                                                                                                                                                                             
 T_right = 1  # Period for right motors
 T_left = 1   # Period for left motors
 rise_time_ratio_right = 0.5  # Moving inward - thrust stroke
