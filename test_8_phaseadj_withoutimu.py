@@ -24,7 +24,7 @@ bus = smbus.SMBus(1)
 was_closing = False
 its_opening = False
 phase_offset_left = 0  # Initial phase offset for the left motors
-phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
+phase_increment = 0.25  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
 ####################### MOTOR COMMAND ###################
