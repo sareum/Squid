@@ -91,10 +91,10 @@ a_right = 90
 a_left = 90                                                                                                                                                                                                                                                             
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
-rise_time_ratio_right = 0.2  # Moving inward - thrust stroke
-fall_time_ratio_right = 0.8  # Moving outward - return stroke
-rise_time_ratio_left = 0.2
-fall_time_ratio_left = 0.8
+rise_time_ratio_right = 0.8  # Moving inward - return stroke
+fall_time_ratio_right = 0.2  # Moving outward - thrust stroke
+rise_time_ratio_left = 0.8
+fall_time_ratio_left = 0.2
 
 print("End motor setup")
 
