@@ -87,8 +87,8 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
 # Triangular wave parameters
-a_right = 90
-a_left = 90                                                                                                                                                                                                                                                             
+a_right = 110
+a_left = 110                                                                                                                                                                                                                                                             
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
 rise_time_ratio_right = 0.8  # Moving inward - return stroke
