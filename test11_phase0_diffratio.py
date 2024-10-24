@@ -1,13 +1,8 @@
 import threading
 import time
 import numpy as np
-import socket
-import errno
 from dynamixel_controller import Dynamixel
 from time import sleep
-import smbus
-import struct
-import re
 
 # Configuration
 PROTOCOL = 'TCP'
@@ -16,15 +11,11 @@ PORT = 12345  # Same for client and server
 BUFFER_SIZE = 1024  # Buffer size in bytes
 NUM_PACKETS = 10000  # Number of packets to send
 
-# I2C Bus for Teensy communication
-TEENSY_I2C_ADDRESS = 0x08
-bus = smbus.SMBus(1)
-
 # Global variables to track motor state and phase offset
 was_closing = False
 its_opening = False
 phase_offset_left = 0  # Initial phase offset for the left motors
-phase_increment = 0  # Increment phase offset by 0.5 when Enter is pressed
+phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
 # Initial triangular wave parameters
@@ -32,7 +23,7 @@ a_right = 110
 a_left = 110
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
-x = 0.1  # Initial value for x
+x = 0.1  # Default value for x
 
 ####################### MOTOR COMMAND ###################
 
@@ -126,20 +117,18 @@ def oscillation_loop():
         print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]} with Phase Offset: {phase_offset_left}")
 
         # Sleep for a short period to control the update rate
-        sleep(0.000001)
+        sleep(0.01)  # Adjust the sleep duration for smoothness
 
-def input_thread():
-    ''' This function waits for user input to change x value or increment phase offset '''
-    global phase_offset_left
-    global x, rise_time_ratio_right, fall_time_ratio_right
+def input_x_value():
+    ''' This function waits for user input to change x value '''
+    global x
+    global rise_time_ratio_right, fall_time_ratio_right
     global rise_time_ratio_left, fall_time_ratio_left
 
     while True:
-        user_input = input("Enter new x value (0 to 1), press Enter to increment phase offset, or 'q' to quit: ")
-        if user_input.strip().lower() == 'q':
-            break  # Exit the loop if the user inputs 'q'
-        elif user_input.strip().replace('.', '', 1).isdigit():
-            # Update x value if a valid number is entered
+        user_input = input("Enter the x value (0 to 1) to start: ")
+        try:
+            # Try to parse and update the x value
             x = float(user_input)
             if 0 <= x <= 1:
                 rise_time_ratio_right = 1 - x
@@ -147,21 +136,35 @@ def input_thread():
                 rise_time_ratio_left = 1 - x
                 fall_time_ratio_left = x
                 print(f"x value updated to {x}. Rise time and fall time ratios updated.")
+                break  # Exit the loop once a valid x value is entered
             else:
-                print("Please enter a value between 0 and 1.")
+                print("Invalid input. Please enter a value between 0 and 1.")
+        except ValueError:
+            print("Invalid input. Please enter a valid number between 0 and 1.")
+
+def input_thread():
+    ''' This function waits for user input to increment phase offset '''
+    global phase_offset_left
+
+    while True:
+        user_input = input("Press Enter to increase phase offset or 'q' to quit: ")
+        if user_input.strip().lower() == 'q':
+            break  # Exit the loop if the user inputs 'q'
         else:
-            # Increment phase offset if Enter is pressed without entering a new x value
             phase_offset_left = (phase_offset_left + phase_increment) % (phase_max + phase_increment)
             print(f"Phase Offset incremented to: {phase_offset_left}")
 
 '''Main loop'''
 if __name__ == "__main__":
     try:
+        # First, collect x value from the user before starting oscillation
+        input_x_value()
+
         # Start the oscillation loop in a separate thread
         oscillation_thread = threading.Thread(target=oscillation_loop)
         oscillation_thread.start()
 
-        # Run the input thread in the main program
+        # Run the input thread in the main program for phase offset control
         input_thread()
 
     except KeyboardInterrupt:
