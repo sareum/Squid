@@ -27,6 +27,13 @@ phase_offset_left = 0  # Initial phase offset for the left motors
 phase_increment = 0  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
+# Initial triangular wave parameters
+a_right = 110
+a_left = 110
+T_right = 2  # Period for right motors
+T_left = 2   # Period for left motors
+x = 0.1  # Initial value for x
+
 ####################### MOTOR COMMAND ###################
 
 def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
@@ -87,14 +94,10 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
 # Triangular wave parameters
-a_right = 110
-a_left = 110                                                                                                                                                                                                                                                             
-T_right = 2  # Period for right motors
-T_left = 2   # Period for left motors
-rise_time_ratio_right = 0.9  # Moving inward - return stroke
-fall_time_ratio_right = 0.1  # Moving outward - thrust stroke
-rise_time_ratio_left = 0.9
-fall_time_ratio_left = 0.1
+rise_time_ratio_right = 1 - x  # Moving inward - return stroke
+fall_time_ratio_right = x  # Moving outward - thrust stroke
+rise_time_ratio_left = 1 - x
+fall_time_ratio_left = x
 
 print("End motor setup")
 
@@ -105,6 +108,8 @@ print("End motor setup")
 def oscillation_loop():
     ''' This function runs continuously to control motor oscillation '''
     global phase_offset_left
+    global rise_time_ratio_right, fall_time_ratio_right
+    global rise_time_ratio_left, fall_time_ratio_left
 
     t_start = time.time()
 
@@ -124,14 +129,28 @@ def oscillation_loop():
         sleep(0.000001)
 
 def input_thread():
-    ''' This function waits for user input to increment phase offset '''
+    ''' This function waits for user input to change x value or increment phase offset '''
     global phase_offset_left
+    global x, rise_time_ratio_right, fall_time_ratio_right
+    global rise_time_ratio_left, fall_time_ratio_left
 
     while True:
-        user_input = input("Press Enter to increase phase offset or 'q' to quit: ")
+        user_input = input("Enter new x value (0 to 1), press Enter to increment phase offset, or 'q' to quit: ")
         if user_input.strip().lower() == 'q':
             break  # Exit the loop if the user inputs 'q'
+        elif user_input.strip().replace('.', '', 1).isdigit():
+            # Update x value if a valid number is entered
+            x = float(user_input)
+            if 0 <= x <= 1:
+                rise_time_ratio_right = 1 - x
+                fall_time_ratio_right = x
+                rise_time_ratio_left = 1 - x
+                fall_time_ratio_left = x
+                print(f"x value updated to {x}. Rise time and fall time ratios updated.")
+            else:
+                print("Please enter a value between 0 and 1.")
         else:
+            # Increment phase offset if Enter is pressed without entering a new x value
             phase_offset_left = (phase_offset_left + phase_increment) % (phase_max + phase_increment)
             print(f"Phase Offset incremented to: {phase_offset_left}")
 
