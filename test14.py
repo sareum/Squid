@@ -115,7 +115,7 @@ def read_sensors():
 if __name__ == "__main__":
     t_start = time.time()
     phase_offset_left = 0  # Initial phase offset for the left motors
-    phase_increment = 0.5  # Increment phase offset by 0.5 every 10 seconds
+    phase_increment = 0  # Increment phase offset by 0.5 every 10 seconds
     phase_max = 2  # Maximum phase offset
     num_cycles = 12  # Total number of cycles
     cycle_time = T_right * num_cycles  # Total time for all cycles
