@@ -53,8 +53,8 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
                                   a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
                                   phase_offset_left=0):
     # Motor IDs for right and left sides
-    ID_right = [1, 4]
-    ID_left = [2, 3]
+    ID_right = [1, 3]
+    ID_left = [2, 4]
 
     # Apply fixed phase offset to right and varying phase offset to left motors
     t_right = t  # No phase offset for the right motors
@@ -87,10 +87,10 @@ a_right = 120
 a_left = 120
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
-rise_time_ratio_right = 0.5  # Moving inward - thrust stroke
-fall_time_ratio_right = 0.5  # Moving outward - return stroke
-rise_time_ratio_left = 0.5
-fall_time_ratio_left = 0.5
+rise_time_ratio_right = 0.75  # Moving inward - thrust stroke
+fall_time_ratio_right = 0.25  # Moving outward - return stroke
+rise_time_ratio_left = 0.75
+fall_time_ratio_left = 0.25
 
 print("End motor setup")
 
