@@ -53,8 +53,8 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
                                   a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
                                   phase_offset_left=0):
     # Motor IDs for right and left sides
-    ID_right = [1, 3]
-    ID_left = [2, 4]
+    ID_right = [1, 3,4]
+    ID_left = [2]
 
     # Apply fixed phase offset to right and varying phase offset to left motors
     t_right = t  # No phase offset for the right motors
@@ -83,7 +83,7 @@ servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
 # Triangular wave parameters
-a_right = 120
+a_right = 0
 a_left = 120
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
