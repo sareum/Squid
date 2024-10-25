@@ -19,8 +19,8 @@ phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
 # Initial triangular wave parameters
-a_right = 110
-a_left = 110
+a_right = 100
+a_left = 100
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
 x = 0.1  # Default value for x
