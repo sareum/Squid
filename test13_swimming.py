@@ -6,25 +6,25 @@ from time import sleep
 
 # Configuration
 PROTOCOL = 'TCP'
-IP = '172.20.10.11'  # Network number
-PORT = 12345  # Same for client and server
-BUFFER_SIZE = 1024  # Buffer size in bytes
-NUM_PACKETS = 10000  # Number of packets to send
+IP = '172.20.10.11'
+PORT = 12345
+BUFFER_SIZE = 1024
+NUM_PACKETS = 10000
 
-# Global variables to track motor state, phase offset, and stop signal
+# Global variables
 was_closing = False
 its_opening = False
-phase_offset_left = 0  # Initial phase offset for the left motors
-phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
-phase_max = 2  # Maximum phase offset
-stop_signal = False  # Signal to stop oscillation loop after a full cycle
+phase_offset_left = 0  
+phase_increment = 0.5  
+phase_max = 2  
+stop_requested = False  
 
 # Initial triangular wave parameters
 a_right = 120
 a_left = 120
-T_right = 2  # Period for right motors
-T_left = 2   # Period for left motors
-x = 0.1  # Default value for x
+T_right = 2  
+T_left = 2   
+x = 0.1  
 
 ####################### MOTOR COMMAND ###################
 
@@ -32,7 +32,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     global its_opening
     global was_closing
     period = T
-    peak_value = 200  # Fixed value corresponding to closed tentacles
+    peak_value = 200  
     valley_value = peak_value - a  
     rise_time = rise_time_ratio * period
     fall_time = fall_time_ratio * period
@@ -55,23 +55,18 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
 def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right,
                                   a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
                                   phase_offset_left=0):
-    # Motor IDs for right and left sides
     ID_right = [1, 3]
     ID_left = [2, 4]
 
-    # Apply fixed phase offset to right and varying phase offset to left motors
-    t_right = t  # No phase offset for the right motors
-    t_left = t + phase_offset_left  # Varying phase offset for the left motors
+    t_right = t  
+    t_left = t + phase_offset_left  
 
-    # Calculate positions for the right and left motors with the phase-offset time values
     q_dynamixel_right, t_mod_right = triangle_wave_position(t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
     q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
 
-    # Convert angles to motor positions (Dynamixel step units)
-    position_motor_step_right = q_dynamixel_right * 2048 / 180  # Scaling to Dynamixel units
+    position_motor_step_right = q_dynamixel_right * 2048 / 180  
     position_motor_step_left = q_dynamixel_left * 2048 / 180
 
-    # Send positions to the motors
     servo.write_position(position_motor_step_right, ID_right)
     servo.write_position(position_motor_step_left, ID_left)
 
@@ -85,9 +80,8 @@ servo = Dynamixel(ID=[1, 2, 3, 4], descriptive_device_name="XW430-T200R test mot
 servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
-# Triangular wave parameters
-rise_time_ratio_right = 1 - x  # Moving inward - return stroke
-fall_time_ratio_right = x  # Moving outward - thrust stroke
+rise_time_ratio_right = 1 - x  
+fall_time_ratio_right = x  
 rise_time_ratio_left = 1 - x
 fall_time_ratio_left = x
 
@@ -96,19 +90,15 @@ print("End motor setup")
 ############## END MOTOR SETUP #################
 
 def oscillation_loop():
-    ''' This function runs continuously to control motor oscillation '''
     global phase_offset_left
     global rise_time_ratio_right, fall_time_ratio_right
     global rise_time_ratio_left, fall_time_ratio_left
-    global stop_signal
+    global stop_requested
 
     t_start = time.time()
 
     while True:
-        # Calculate time for motion control
         t = time.time() - t_start
-
-        # Write motor positions in a triangular wave pattern
         data, t_mod_right, t_mod_left = write_motor_position_triangle(
             t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right,
             a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
@@ -116,16 +106,14 @@ def oscillation_loop():
         )
         print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]} with Phase Offset: {phase_offset_left}")
 
-        # Check if stop signal is set and allow motor to complete the cycle
-        if stop_signal and (t_mod_right < 0.01 or t_mod_left < 0.01):
+        # Check if stop was requested, and stop only at end of cycle
+        if stop_requested and (t_mod_right < 0.01 or t_mod_left < 0.01):
             print("Stopping motor at end of cycle.")
-            break  # Exit the loop once one full cycle is completed
+            break  
 
-        # Sleep for a short period to control the update rate
-        sleep(0.005)  # Adjust the sleep duration for smoothness
+        sleep(0.005) 
 
 def input_x_value():
-    ''' This function waits for user input to change x value '''
     global x
     global rise_time_ratio_right, fall_time_ratio_right
     global rise_time_ratio_left, fall_time_ratio_left
@@ -133,7 +121,6 @@ def input_x_value():
     while True:
         user_input = input("Enter the x value (0 to 1) to start: ")
         try:
-            # Try to parse and update the x value
             x = float(user_input)
             if 0 <= x <= 1:
                 rise_time_ratio_right = 1 - x
@@ -141,23 +128,22 @@ def input_x_value():
                 rise_time_ratio_left = 1 - x
                 fall_time_ratio_left = x
                 print(f"x value updated to {x}. Rise time and fall time ratios updated.")
-                break  # Exit the loop once a valid x value is entered
+                break  
             else:
                 print("Invalid input. Please enter a value between 0 and 1.")
         except ValueError:
             print("Invalid input. Please enter a valid number between 0 and 1.")
 
 def input_thread():
-    ''' This function waits for user input to increment phase offset '''
     global phase_offset_left
-    global stop_signal
+    global stop_requested
 
     while True:
         user_input = input("Press Enter to increase phase offset, 's' to stop, or 'q' to quit: ")
         if user_input.strip().lower() == 'q':
-            break  # Exit the loop if the user inputs 'q'
+            break  
         elif user_input.strip().lower() == 's':
-            stop_signal = True  # Set the stop signal to end after completing a full cycle
+            stop_requested = True  
             break
         else:
             phase_offset_left = (phase_offset_left + phase_increment) % (phase_max + phase_increment)
@@ -166,21 +152,19 @@ def input_thread():
 '''Main loop'''
 if __name__ == "__main__":
     try:
-        # First, collect x value from the user before starting oscillation
         input_x_value()
 
-        # Start the oscillation loop in a separate thread
         oscillation_thread = threading.Thread(target=oscillation_loop)
         oscillation_thread.start()
 
-        # Run the input thread in the main program for phase offset control
         input_thread()
 
-        # Wait for oscillation thread to finish if stop was signaled
-        if stop_signal:
+        if stop_requested:
             oscillation_thread.join()
 
     except KeyboardInterrupt:
-        print("Program finished")
+        print("Stop requested by keyboard interrupt; waiting for end of cycle.")
+        stop_requested = True
+        oscillation_thread.join()
     finally:
         servo.end_communication()
