@@ -14,7 +14,7 @@ NUM_PACKETS = 10000  # Number of packets to send
 # Global variables to track motor state and phase offset
 was_closing = False
 its_opening = False
-phase_offset_left = 1.0  # Initial phase offset for the left motors
+phase_offset_left = 0  # Initial phase offset for the left motors
 phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
