@@ -117,7 +117,7 @@ def oscillation_loop():
         print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]} with Phase Offset: {phase_offset_left}")
 
         # Sleep for a short period to control the update rate
-        sleep(0.01)  # Adjust the sleep duration for smoothness
+        sleep(0.005)  # Adjust the sleep duration for smoothness
 
 def input_x_value():
     ''' This function waits for user input to change x value '''
