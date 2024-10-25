@@ -14,13 +14,13 @@ NUM_PACKETS = 10000  # Number of packets to send
 # Global variables to track motor state and phase offset
 was_closing = False
 its_opening = False
-phase_offset_left = 0  # Initial phase offset for the left motors
+phase_offset_left = 0.25  # Initial phase offset for the left motors
 phase_increment = 0.5  # Increment phase offset by 0.5 when Enter is pressed
 phase_max = 2  # Maximum phase offset
 
 # Initial triangular wave parameters
-a_right = 130
-a_left = 130
+a_right = 120
+a_left = 120
 T_right = 2  # Period for right motors
 T_left = 2   # Period for left motors
 x = 0.1  # Default value for x
