@@ -105,6 +105,7 @@ def oscillation_loop():
 
     t_start = time.time()
     cycle_count = 0
+    prev_t_mod_right = 0  # To track the previous mod value of t for right motor
 
     while cycle_count < MAX_CYCLES:
         # Calculate time for motion control
@@ -118,10 +119,13 @@ def oscillation_loop():
         )
         print(f"Right Motor Position: {data[0]}, Left Motor Position: {data[1]} with Phase Offset: {phase_offset_left}")
 
-        # Increment cycle count when a full cycle completes
-        if t_mod_right < 0.005:  # Check if we're near the beginning of a new cycle
+        # Detect a new cycle completion when `t_mod_right` goes from near T_right back to near 0
+        if prev_t_mod_right > T_right - 0.05 and t_mod_right < 0.05:
             cycle_count += 1
             print(f"Cycle {cycle_count} completed.")
+
+        # Update the previous mod value
+        prev_t_mod_right = t_mod_right
 
         # Sleep for a short period to control the update rate
         sleep(0.005)  # Adjust the sleep duration for smoothness
