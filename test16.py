@@ -60,7 +60,7 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
 
     q_dynamixel_right, t_mod_right = triangle_wave_position(t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
     q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
-    q_dynamixel_left = 360 - q_dynamixel_left  # Mirror
+    q_dynamixel_left = 355 - q_dynamixel_left  # Mirror
 
     position_motor_step_right = q_dynamixel_right * 2048 / 180
     position_motor_step_left = q_dynamixel_left * 2048 / 180
