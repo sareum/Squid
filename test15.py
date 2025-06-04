@@ -114,7 +114,7 @@ def read_sensors():
 '''Main loop'''
 if __name__ == "__main__":
     t_start = time.time()
-    phase_offset_left = 1.0
+    phase_offset_left = 0
     phase_increment = 0
     phase_max = 2
     num_cycles = 12
