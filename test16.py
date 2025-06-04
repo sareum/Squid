@@ -87,10 +87,10 @@ a_right = 120
 a_left = 120
 T_right = 2
 T_left = 2
-rise_time_ratio_right = 0.75
-fall_time_ratio_right = 0.25
-rise_time_ratio_left = 0.75
-fall_time_ratio_left = 0.25
+rise_time_ratio_right = 0.25
+fall_time_ratio_right = 0.75
+rise_time_ratio_left = 0.25
+fall_time_ratio_left = 0.75
 
 print("End motor setup")
 
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         print("Returning to initial position...")
 
         # 🔁 Move both motors to initial (neutral) position = 200 degrees
-        q_initial_right = 200
+        q_initial_right = 220
         q_initial_left = 280 - 200  # Mirror of 200
 
         pos_right = q_initial_right * 2048 / 180
