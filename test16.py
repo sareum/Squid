@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
         # 🔁 Move both motors to initial (neutral) position = 200 degrees
         q_initial_right = 190
-        q_initial_left = 320 - 200  # Mirror of 200
+        q_initial_left = 100  # Mirror of 200
 
         pos_right = q_initial_right * 2048 / 180
         pos_left = q_initial_left * 2048 / 180
