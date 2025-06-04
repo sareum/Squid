@@ -52,27 +52,19 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
 def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right,
                                   a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
                                   phase_offset_left=0):
-    # Motor IDs
     ID_right = [1]
     ID_left = [2]
 
     t_right = t
     t_left = t + phase_offset_left
 
-    # Triangle wave for right motor
-    q_dynamixel_right, t_mod_right = triangle_wave_position(
-        t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
+    q_dynamixel_right, t_mod_right = triangle_wave_position(t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
+    q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
+    q_dynamixel_left = 280 - q_dynamixel_left  # Mirror
 
-    # Triangle wave for left motor (mirrored)
-    q_dynamixel_left, t_mod_left = triangle_wave_position(
-        t_left, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
-    q_dynamixel_left = 280 - q_dynamixel_left  # Mirror across center (140 deg)
-
-    # Convert to motor steps
     position_motor_step_right = q_dynamixel_right * 2048 / 180
     position_motor_step_left = q_dynamixel_left * 2048 / 180
 
-    # Send commands
     servo.write_position(position_motor_step_right, ID_right)
     servo.write_position(position_motor_step_left, ID_left)
 
@@ -125,7 +117,7 @@ if __name__ == "__main__":
     phase_offset_left = 0
     phase_increment = 0
     phase_max = 2
-    num_cycles = 12
+    num_cycles = 10                           # 🔁 Only 10 cycles
     cycle_time = T_right * num_cycles
 
     try:
@@ -133,7 +125,7 @@ if __name__ == "__main__":
             t = time.time() - t_start
 
             if t >= cycle_time:
-                print("Completed 12 cycles.")
+                print("Completed 10 cycles.")
                 break
 
             if int(t) % 5 == 0:
@@ -144,11 +136,26 @@ if __name__ == "__main__":
                 a_left, T_left, rise_time_ratio_left, fall_time_ratio_left,
                 phase_offset_left=phase_offset_left
             )
-            print(f"Right Motor Position: {data[0]}, Left Motor Position (Mirrored): {data[1]} with Phase Offset: {phase_offset_left}")
+            print(f"Right Motor: {data[0]:.2f}, Left Motor (Mirrored): {data[1]:.2f}, Phase Offset: {phase_offset_left:.2f}")
 
             sleep(0.0001)
 
     except KeyboardInterrupt:
-        print("Program finished")
+        print("Program interrupted.")
+
     finally:
+        print("Returning to initial position...")
+
+        # 🔁 Move both motors to initial (neutral) position = 200 degrees
+        q_initial_right = 200
+        q_initial_left = 280 - 200  # Mirror of 200
+
+        pos_right = q_initial_right * 2048 / 180
+        pos_left = q_initial_left * 2048 / 180
+
+        servo.write_position(pos_right, [1])
+        servo.write_position(pos_left, [2])
+        time.sleep(1)
+
         servo.end_communication()
+        print("Program finished cleanly.")
