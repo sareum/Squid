@@ -83,14 +83,14 @@ servo = Dynamixel(
 servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
-a_right = 100
-a_left = 100
+a_right =80
+a_left = 80
 T_right = 2
 T_left = 2
-rise_time_ratio_right = 0.25
-fall_time_ratio_right = 0.75
-rise_time_ratio_left = 0.25
-fall_time_ratio_left = 0.75
+rise_time_ratio_right = 0.2
+fall_time_ratio_right = 0.8
+rise_time_ratio_left = 0.2
+fall_time_ratio_left = 0.80
 
 print("End motor setup")
 
@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
         # 🔁 Move both motors to initial (neutral) position = 200 degrees
         q_initial_right = 190
-        q_initial_left = 100  # Mirror of 200
+        q_initial_left = 110  # Mirror of 200
 
         pos_right = q_initial_right * 2048 / 180
         pos_left = q_initial_left * 2048 / 180
