@@ -88,10 +88,10 @@ a_right =120
 a_left = 120
 T_right = 2
 T_left = 2
-rise_time_ratio_right = 0.2
-fall_time_ratio_right = 0.8
-rise_time_ratio_left = 0.2
-fall_time_ratio_left = 0.80
+rise_time_ratio_right = 0.5
+fall_time_ratio_right = 0.5
+rise_time_ratio_left = 0.5
+fall_time_ratio_left = 0.5
 
 print("End motor setup")
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
     phase_offset_left = 0
     phase_increment = 0
     phase_max = 2
-    num_cycles = 15                           # 🔁 Only 10 cycles
+    num_cycles = 30                           # 🔁 Only 10 cycles
     cycle_time = T_right * num_cycles
 
     try:
