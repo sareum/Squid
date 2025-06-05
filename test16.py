@@ -29,7 +29,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     global its_opening
     global was_closing
     period = T
-    peak_value = 170##
+    peak_value = 135##
     valley_value = peak_value - a  
     rise_time = rise_time_ratio * period
     fall_time = fall_time_ratio * period
@@ -60,7 +60,7 @@ def write_motor_position_triangle(t, a_right, T_right, rise_time_ratio_right, fa
 
     q_dynamixel_right, t_mod_right = triangle_wave_position(t_right, a_right, T_right, rise_time_ratio_right, fall_time_ratio_right)
     q_dynamixel_left, t_mod_left = triangle_wave_position(t_left, a_left, T_left, rise_time_ratio_left, fall_time_ratio_left)
-    q_dynamixel_left = 355 - q_dynamixel_left  # Mirror
+    q_dynamixel_left = 360 - q_dynamixel_left  # Mirror
 
     position_motor_step_right = q_dynamixel_right * 2048 / 180
     position_motor_step_left = q_dynamixel_left * 2048 / 180
@@ -83,8 +83,8 @@ servo = Dynamixel(
 servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
-a_right =80
-a_left = 80
+a_right =90
+a_left = 90
 T_right = 2
 T_left = 2
 rise_time_ratio_right = 0.2
@@ -147,11 +147,7 @@ if __name__ == "__main__":
         print("Returning to initial position...")
 
         # 🔁 Move both motors to initial (neutral) position = 200 degrees
-        q_initial_right = 170
-        q_initial_left = 190  # Mirror of 200
-
-        pos_right = q_initial_right * 2048 / 180
-        pos_left = q_initial_left * 2048 / 180
+    
 
         servo.write_position(pos_right, [1])
         servo.write_position(pos_left, [2])
