@@ -118,7 +118,7 @@ if __name__ == "__main__":
     phase_offset_left = 0
     phase_increment = 0
     phase_max = 2
-    num_cycles = 10                           # 🔁 Only 10 cycles
+    num_cycles = 15                           # 🔁 Only 10 cycles
     cycle_time = T_right * num_cycles
 
     try:
@@ -150,8 +150,6 @@ if __name__ == "__main__":
         # 🔁 Move both motors to initial (neutral) position = 200 degrees
     
 
-        servo.write_position(pos_right, [1])
-        servo.write_position(pos_left, [2])
         time.sleep(1)
 
         servo.end_communication()
