@@ -88,10 +88,10 @@ a_right =120
 a_left = 120
 T_right = 2
 T_left = 2
-rise_time_ratio_right = 0.5
-fall_time_ratio_right = 0.5
-rise_time_ratio_left = 0.5
-fall_time_ratio_left = 0.5
+rise_time_ratio_right = 0.2
+fall_time_ratio_right = 0.8
+rise_time_ratio_left = 0.2
+fall_time_ratio_left = 0.8
 
 print("End motor setup")
 
