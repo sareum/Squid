@@ -29,7 +29,7 @@ def triangle_wave_position(t, a, T, rise_time_ratio, fall_time_ratio):
     global was_closing
     period = T
     ##############################
-    peak_value = 150##
+    peak_value = 165##
     ##############################
     valley_value = peak_value - a  
     rise_time = rise_time_ratio * period
@@ -84,10 +84,10 @@ servo = Dynamixel(
 servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
-a_right =30
-a_left = 30
-T_right = 0.5
-T_left = 0.5
+a_right =45
+a_left = 45
+T_right = 1
+T_left = 1
 rise_time_ratio_right = 0.2
 fall_time_ratio_right = 0.8
 rise_time_ratio_left = 0.2
