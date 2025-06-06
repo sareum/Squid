@@ -84,10 +84,10 @@ servo = Dynamixel(
 servo.begin_communication()
 servo.set_operating_mode("position", ID="all")
 
-a_right =80
-a_left = 80
-T_right = 2
-T_left = 2
+a_right =150
+a_left = 150
+T_right = 1
+T_left = 1
 rise_time_ratio_right = 0.2
 fall_time_ratio_right = 0.8
 rise_time_ratio_left = 0.2
