@@ -6,7 +6,6 @@ Python 版：双 Dynamixel 电机相位差 PID 控制
 """
 import time
 import threading
-import msvcrt
 from dynamixel_sdk import PortHandler, PacketHandler, COMM_SUCCESS
 
 # ----------------------- 用户参数 -----------------------
