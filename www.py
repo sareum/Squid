@@ -10,8 +10,8 @@ import msvcrt
 from dynamixel_sdk import PortHandler, PacketHandler, COMM_SUCCESS
 
 # ----------------------- 用户参数 -----------------------
-DEVICENAME       = 'COM6'
-BAUDRATE         = 1000000
+DEVICENAME       = '/dev/ttyUSB0'
+BAUDRATE         = 3000000
 PROTOCOL_VERSION = 2.0
 DXL_IDS          = [1, 2]
 POSITION_SCALE   = 0.087891
