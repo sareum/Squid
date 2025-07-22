@@ -10,7 +10,7 @@ import time
 from dynamixel_sdk import PortHandler, PacketHandler
 
 # ----------------------- 用户配置 -----------------------
-DEVICENAME             = 'COM6'        # 串口号
+DEVICENAME             = '/dev/ttyUSB0'        # 串口号
 BAUDRATE               = 1000000
 PROTOCOL_VERSION       = 2.0
 DXL_IDS                = [1, 2]        # 电机 ID 列表
