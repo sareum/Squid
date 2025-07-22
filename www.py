@@ -138,16 +138,7 @@ last = time.time()
 print("开始 PID 控制，按 Enter 或任意键退出…")
 while not stop_flag:
     # kbhit 兼容低延迟退出
-    if msvcrt.kbhit():
-        msvcrt.getch()
-        stop_flag = True
-        print("检测到键击，退出控制循环")
-        break
-    now = time.time(); dt = now - last
-    if dt < CONTROL_PERIOD:
-        time.sleep(CONTROL_PERIOD - dt)
-        continue
-    last = now
+    
     # 读取状态
     p1 = read_position(DXL_IDS[0]); p2 = read_position(DXL_IDS[1])
     v1 = read_velocity(DXL_IDS[0]); v2 = read_velocity(DXL_IDS[1])
